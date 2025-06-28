@@ -129,6 +129,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  createSliders();
   updateChart();
 });
