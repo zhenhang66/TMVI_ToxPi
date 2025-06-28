@@ -15,7 +15,13 @@ document.addEventListener('DOMContentLoaded', () => {
     0.0, 0.7850, 0.7461, 0.8512, 0.0, 0.9128, 0.8139
   ];
 
-  const weights = Array(26).fill(1); // Equal weighting
+  const weights = [
+    1, 1, 1,  // Built Environment
+    1, 1, 1, 1,  // Social Vulnerability
+    1, 1, 1, 1, 1, 1,  // Health Outcomes
+    1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1  // Environmental Justice
+  ];
 
   const colors = [
     "#b41f85", "#b868c4", "#e5d0f3",
