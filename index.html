@@ -2,140 +2,35 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CD-TMVI Pie Visualizer</title>
+  <title>CD-TMVI Radial Chart</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="app.js" defer></script>
   <style>
     body {
       font-family: sans-serif;
-      margin: 20px;
+      margin: 40px;
+      text-align: center;
     }
-    fieldset {
-      margin-bottom: 20px;
-      border: 1px solid #ccc;
-      padding: 10px;
+    #chart {
+      margin-bottom: 30px;
     }
-    legend {
-      font-weight: bold;
-      font-size: 1.1em;
+    #exportBtn {
+      padding: 10px 18px;
+      font-size: 14px;
+      background-color: #1f77b4;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
     }
-    label {
-      display: block;
-      margin-top: 5px;
-    }
-    .slider-container {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .percent {
-      width: 50px;
-      text-align: right;
+    #exportBtn:hover {
+      background-color: #125e96;
     }
   </style>
 </head>
 <body>
-
-  <h2>Customize CD-TMVI Variable Weights</h2>
-
-  <form id="weightForm">
-
-    <fieldset>
-      <legend>Built Environment Vulnerability</legend>
-      <div class="slider-container">
-        <label>Impervious Surface: 
-          <input type="range" min="0" max="100" value="5" name="Impervious Surface">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-      <div class="slider-container">
-        <label>100-Year Floodplain: 
-          <input type="range" min="0" max="100" value="5" name="100-Year Floodplain">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-      <div class="slider-container">
-        <label>Industrial Zoning: 
-          <input type="range" min="0" max="100" value="5" name="Industrial Zoning">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Social Vulnerability</legend>
-      <div class="slider-container">
-        <label>Household Characteristics: 
-          <input type="range" min="0" max="100" value="5" name="Household Characteristics">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-      <div class="slider-container">
-        <label>Socioeconomic Status: 
-          <input type="range" min="0" max="100" value="5" name="Socioeconomic Status">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-      <div class="slider-container">
-        <label>Racial and Ethnicity Minority: 
-          <input type="range" min="0" max="100" value="5" name="Racial and Ethnicity Minority">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-      <div class="slider-container">
-        <label>Housing Types and Transportation: 
-          <input type="range" min="0" max="100" value="5" name="Housing Types and Transportation">
-          <span class="percent">5%</span>
-        </label>
-      </div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Health Outcomes</legend>
-      <div class="slider-container"><label>Obesity: <input type="range" min="0" max="100" value="2" name="Obesity"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>High Cholesterol: <input type="range" min="0" max="100" value="2" name="High Cholesterol"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Chronic Obstructive Pulmonary Disease: <input type="range" min="0" max="100" value="2" name="Chronic Obstructive Pulmonary Disease"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Depression: <input type="range" min="0" max="100" value="2" name="Depression"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Asthma: <input type="range" min="0" max="100" value="2" name="Asthma"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Diagnosed Diabetes: <input type="range" min="0" max="100" value="2" name="Diagnosed Diabetes"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Teeth Lost: <input type="range" min="0" max="100" value="2" name="Teeth Lost"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Coronary Heart Disease: <input type="range" min="0" max="100" value="2" name="Coronary Heart Disease"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Stroke: <input type="range" min="0" max="100" value="2" name="Stroke"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Arthritis: <input type="range" min="0" max="100" value="2" name="Arthritis"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>High Blood Pressure: <input type="range" min="0" max="100" value="2" name="High Blood Pressure"><span class="percent">2%</span></label></div>
-      <div class="slider-container"><label>Cancer: <input type="range" min="0" max="100" value="2" name="Cancer"><span class="percent">2%</span></label></div>
-    </fieldset>
-
-    <fieldset>
-      <legend>Environmental Justice</legend>
-      <div class="slider-container"><label>Air Toxic Cancer Risks: <input type="range" min="0" max="100" value="5" name="Air Toxic Cancer Risks"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>PM2.5: <input type="range" min="0" max="100" value="5" name="PM2.5"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>Toxic Release Inventory Site: <input type="range" min="0" max="100" value="5" name="Toxic Release Inventory Site"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>Risk Management Site: <input type="range" min="0" max="100" value="5" name="Risk Management Site"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>Disposal Site: <input type="range" min="0" max="100" value="5" name="Disposal Site"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>Ozone: <input type="range" min="0" max="100" value="5" name="Ozone"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>Diesel PM: <input type="range" min="0" max="100" value="5" name="Diesel PM"><span class="percent">5%</span></label></div>
-      <div class="slider-container"><label>National Priority Listed Superfund Site: <input type="range" min="0" max="100" value="1" name="National Priority Listed Superfund Site"><span class="percent">1%</span></label></div>
-    </fieldset>
-
-    <br/>
-    <button type="submit">Generate Pie Chart</button>
-  </form>
-
- <div id="chart" style="margin-bottom:20px;"></div>
- <button id="exportBtn">Export High-Res PNG</button>
-  
-  <script src="app.js"></script>
-  <script>
-    // Update slider value display
-    document.querySelectorAll('input[type=range]').forEach(slider => {
-      const span = slider.nextElementSibling;
-      const update = () => span.textContent = `${slider.value}%`;
-      slider.addEventListener('input', update);
-      update();
-    });
-  </script>
-
+  <h2 style="margin-bottom:10px;">CD-TMVI Radial Profile</h2>
+  <div id="chart"></div>
+  <button id="exportBtn">Export High-Res PNG</button>
 </body>
 </html>
