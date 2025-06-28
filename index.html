@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>CD-TMVI Visualizer</title>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <h2>Customize CD-TMVI Weights</h2>
+  <form id="weightForm">
+    <label>Transit Access: <input type="range" min="0" max="1" step="0.05" value="0.25" name="Transit Access"></label><br/>
+    <label>Housing Cost: <input type="range" min="0" max="1" step="0.05" value="0.25" name="Housing Cost"></label><br/>
+    <label>Heat Risk: <input type="range" min="0" max="1" step="0.05" value="0.25" name="Heat Risk"></label><br/>
+    <label>Flood Vulnerability: <input type="range" min="0" max="1" step="0.05" value="0.25" name="Flood Vulnerability"></label><br/>
+    <button type="submit">Update Chart</button>
+  </form>
+  <div id="chart" style="width:600px;height:600px;"></div>
+  <script src="app.js"></script>
+</body>
+</html>
