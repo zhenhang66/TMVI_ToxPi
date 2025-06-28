@@ -15,92 +15,83 @@ document.addEventListener('DOMContentLoaded', () => {
     0.0, 0.7850, 0.7461, 0.8512, 0.0, 0.9128, 0.8139
   ];
 
+  const weights = Array(26).fill(1); // Equal weighting
+
   const colors = [
-    "#b41f85", "#b868c4", "#e5d0f3",       // Environmental
-    "#cb181d", "#ef3b2c", "#fb6a4a", "#fcae91",  // Demographics
+    "#b41f85", "#b868c4", "#e5d0f3",
+    "#cb181d", "#ef3b2c", "#fb6a4a", "#fcae91",
     "#084594", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef",
-    "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#feedde", "#fbb4b9",  // Health
+    "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#feedde", "#fbb4b9",
     "#a6bddb", "#3690c0", "#0570b0", "#045a8d", "#023858", "#f768a1", "#7a0177"
   ];
 
-  // Set default equal weights
-  let weights = new Array(labels.length).fill(1);
+  const normWeights = (() => {
+    const sum = weights.reduce((a, b) => a + b, 0);
+    return weights.map(w => w / sum);
+  })();
 
-  const chartDiv = document.getElementById('chart');
-  const slidersDiv = document.getElementById('sliders');
+  const traces = [];
+  let angleStart = 0;
 
-  function normalize(arr) {
-    const total = arr.reduce((sum, w) => sum + w, 0);
-    return arr.map(w => w / total);
-  }
+  for (let i = 0; i < labels.length; i++) {
+    const angle = normWeights[i] * 360;
+    const theta = [
+      angleStart,
+      angleStart,
+      angleStart + angle,
+      angleStart + angle
+    ];
+    const r = [0, scores[i], scores[i], 0];
 
-  function updateChart() {
-    const normWeights = normalize(weights);
-    const totalSlices = labels.length;
-    const traces = [];
-
-    let currentAngle = 0;
-
-    for (let i = 0; i < totalSlices; i++) {
-      const angle = normWeights[i] * 360;
-      const theta = [currentAngle, currentAngle + angle, currentAngle];
-      const r = [0, scores[i], 0];
     traces.push({
-    type: 'scatterpolar',
-    mode: 'lines',  
-    r: r,
-    theta: theta,
-    fill: 'toself',
-    fillcolor: colors[i],
-    line: { width: 0 },
-    hoverinfo: 'text',
-    name: labels[i],
-    text: `${labels[i]}<br>Weight: ${(normWeights[i] * 100).toFixed(1)}%<br>Score: ${scores[i].toFixed(2)}`,
-    showlegend: false
+      type: 'scatterpolar',
+      mode: 'lines',
+      r: r,
+      theta: theta,
+      fill: 'toself',
+      fillcolor: colors[i],
+      line: { width: 0 },
+      hoverinfo: 'text',
+      name: labels[i],
+      text: `${labels[i]}<br>Score: ${scores[i].toFixed(2)}`,
+      showlegend: false
     });
-      currentAngle += angle;
-    }
 
-    const layout = {
-      title: 'ToxPi-Style Interactive Radial Chart',
-      polar: {
-        radialaxis: {
-          visible: true,
-          range: [0, 1],
-          tickfont: { size: 10 }
-        },
-        angularaxis: {
-          direction: 'counterclockwise',
-          rotation: 90,
-          tickfont: { size: 8 },
-          ticks: ''
-        }
+    angleStart += angle;
+  }
+
+  const layout = {
+    polar: {
+      radialaxis: {
+        visible: true,
+        range: [0, 1],
+        tickfont: { size: 10 }
       },
-      width: 800,
-      height: 800,
-      margin: { t: 60, b: 60, l: 60, r: 60 }
-    };
+      angularaxis: {
+        rotation: 90,
+        direction: 'counterclockwise',
+        tickfont: { size: 8 },
+        ticks: ''
+      }
+    },
+    width: 800,
+    height: 800,
+    margin: { t: 50, b: 50, l: 50, r: 50 }
+  };
 
-    Plotly.newPlot('chart', traces, layout);
-  }
+  Plotly.newPlot('chart', traces, layout);
 
-  // Export image
-  const exportButton = document.getElementById('exportBtn');
-  if (exportButton) {
-    exportButton.addEventListener('click', function () {
-      Plotly.toImage(chartDiv, {
-        format: 'png',
-        width: 3300,
-        height: 2550,
-        scale: 1
-      }).then(function (dataUrl) {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = 'interactive_radial_chart_300dpi.png';
-        link.click();
-      });
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    Plotly.toImage(document.getElementById('chart'), {
+      format: 'png',
+      width: 3300,
+      height: 2550,
+      scale: 1
+    }).then(url => {
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'cd_tmvi_radial_chart.png';
+      link.click();
     });
-  }
-
-  updateChart();
+  });
 });
