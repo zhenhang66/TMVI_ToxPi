@@ -2,12 +2,14 @@ document.getElementById('weightForm').addEventListener('submit', function (e) {
   e.preventDefault();
 
   const sliders = Array.from(document.querySelectorAll('input[type=range]'));
-  
+
+  // Step 1: Read slider values as 0–100 percents
   const rawValues = sliders.map(slider => ({
     label: slider.name,
-    value: parseFloat(slider.value)  // Keep as 0–100 for UI
+    value: parseFloat(slider.value) / 100  // convert percent to 0–1 scale
   }));
 
+  // Step 2: Normalize values to sum = 1
   const total = rawValues.reduce((sum, item) => sum + item.value, 0);
   const normalized = rawValues
     .filter(item => item.value > 0)
