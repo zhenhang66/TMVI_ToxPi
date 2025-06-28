@@ -84,33 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
     Plotly.newPlot('chart', traces, layout);
   }
 
-  function createSliders() {
-    labels.forEach((label, i) => {
-      const container = document.createElement('div');
-      container.style.margin = '6px 0';
-
-      const name = document.createElement('label');
-      name.innerText = label;
-      name.style.fontSize = '12px';
-
-      const input = document.createElement('input');
-      input.type = 'range';
-      input.min = 0;
-      input.max = 100;
-      input.value = 100;
-      input.style.width = '200px';
-      input.addEventListener('input', () => {
-        weights[i] = parseFloat(input.value);
-        updateChart();
-      });
-
-      container.appendChild(name);
-      container.appendChild(document.createElement('br'));
-      container.appendChild(input);
-      slidersDiv.appendChild(container);
-    });
-  }
-
   // Export image
   const exportButton = document.getElementById('exportBtn');
   if (exportButton) {
