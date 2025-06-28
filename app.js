@@ -1,12 +1,4 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const scores = [
-    0.2581, 0.9973, 0.0,
-    1.0, 0.9362, 0.9085, 0.8215,
-    0.6645, 0.6854, 0.2192, 0.6610, 0.7538, 0.8317,
-    0.4068, 0.7884, 0.7477, 0.8063, 0.7794, 0.6231,
-    0.0, 0.7850, 0.7461, 0.8512, 0.0, 0.9128, 0.8139
-  ];
-
+document.addEventListener('DOMContentLoaded', () => {
   const labels = [
     "Industrial Zoning", "Impervious Surface", "100-Year Floodplain",
     "Socioeconomic Status", "Household Characteristics", "Racial/Ethnic Minority", "Housing & Transportation",
@@ -15,68 +7,114 @@ document.addEventListener('DOMContentLoaded', function () {
     "Ozone", "PM2.5", "Diesel PM", "Air Toxics", "Superfund", "TRI Site", "RMP Site"
   ];
 
-  // Official color palette from your uploaded legend
-  const traceColors = [
-    "#b41f85", "#b868c4", "#e5d0f3", // Environmental
-    "#cb181d", "#ef3b2c", "#fb6a4a", "#fcae91", // Demographics
+  const scores = [
+    0.2581, 0.9973, 0.0,
+    1.0, 0.9362, 0.9085, 0.8215,
+    0.6645, 0.6854, 0.2192, 0.6610, 0.7538, 0.8317,
+    0.4068, 0.7884, 0.7477, 0.8063, 0.7794, 0.6231,
+    0.0, 0.7850, 0.7461, 0.8512, 0.0, 0.9128, 0.8139
+  ];
+
+  const colors = [
+    "#b41f85", "#b868c4", "#e5d0f3",       // Environmental
+    "#cb181d", "#ef3b2c", "#fb6a4a", "#fcae91",  // Demographics
     "#084594", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef",
-    "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#feedde", "#fbb4b9", // Health
+    "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#feedde", "#fbb4b9",  // Health
     "#a6bddb", "#3690c0", "#0570b0", "#045a8d", "#023858", "#f768a1", "#7a0177"
   ];
 
-  const totalSlices = scores.length;
-  const anglePerSlice = 360 / totalSlices;
+  // Set default equal weights
+  let weights = new Array(labels.length).fill(1);
 
-  const wedgeTraces = [];
+  const chartDiv = document.getElementById('chart');
+  const slidersDiv = document.getElementById('sliders');
 
-  for (let i = 0; i < totalSlices; i++) {
-    const startAngle = i * anglePerSlice;
-    const endAngle = startAngle + anglePerSlice;
-    const midAngle = startAngle + anglePerSlice / 2;
+  function normalize(arr) {
+    const total = arr.reduce((sum, w) => sum + w, 0);
+    return arr.map(w => w / total);
+  }
 
-    wedgeTraces.push({
-      type: 'scatterpolar',
-      r: [0, scores[i], 0],
-      theta: [startAngle, endAngle, startAngle],
-      fill: 'toself',
-      name: labels[i],
-      text: `${labels[i]}<br>Score: ${scores[i].toFixed(2)}`,
-      hoverinfo: 'text',
-      line: { width: 0 },
-      fillcolor: traceColors[i],
-      showlegend: false
+  function updateChart() {
+    const normWeights = normalize(weights);
+    const totalSlices = labels.length;
+    const traces = [];
+
+    let currentAngle = 0;
+
+    for (let i = 0; i < totalSlices; i++) {
+      const angle = normWeights[i] * 360;
+      const theta = [currentAngle, currentAngle + angle, currentAngle];
+      const r = [0, scores[i], 0];
+      traces.push({
+        type: 'scatterpolar',
+        r: r,
+        theta: theta,
+        fill: 'toself',
+        fillcolor: colors[i],
+        line: { width: 0 },
+        hoverinfo: 'text',
+        name: labels[i],
+        text: `${labels[i]}<br>Weight: ${(normWeights[i] * 100).toFixed(1)}%<br>Score: ${scores[i].toFixed(2)}`,
+        showlegend: false
+      });
+      currentAngle += angle;
+    }
+
+    const layout = {
+      title: 'ToxPi-Style Interactive Radial Chart',
+      polar: {
+        radialaxis: {
+          visible: true,
+          range: [0, 1],
+          tickfont: { size: 10 }
+        },
+        angularaxis: {
+          direction: 'counterclockwise',
+          rotation: 90,
+          tickfont: { size: 8 },
+          ticks: ''
+        }
+      },
+      width: 800,
+      height: 800,
+      margin: { t: 60, b: 60, l: 60, r: 60 }
+    };
+
+    Plotly.newPlot('chart', traces, layout);
+  }
+
+  function createSliders() {
+    labels.forEach((label, i) => {
+      const container = document.createElement('div');
+      container.style.margin = '6px 0';
+
+      const name = document.createElement('label');
+      name.innerText = label;
+      name.style.fontSize = '12px';
+
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.min = 0;
+      input.max = 100;
+      input.value = 100;
+      input.style.width = '200px';
+      input.addEventListener('input', () => {
+        weights[i] = parseFloat(input.value);
+        updateChart();
+      });
+
+      container.appendChild(name);
+      container.appendChild(document.createElement('br'));
+      container.appendChild(input);
+      slidersDiv.appendChild(container);
     });
   }
 
-  const layout = {
-    title: 'ToxPi-Style Radial Chart – Tract 48245002100',
-    polar: {
-      radialaxis: {
-        visible: true,
-        range: [0, 1],
-        tickfont: { size: 10 }
-      },
-      angularaxis: {
-        direction: 'counterclockwise',
-        rotation: 90,
-        tickmode: 'array',
-        tickvals: labels.map((_, i) => i * anglePerSlice + anglePerSlice / 2),
-        ticktext: labels,
-        tickfont: { size: 10 }
-      }
-    },
-    width: 800,
-    height: 800,
-    margin: { t: 60, b: 60, l: 60, r: 60 }
-  };
-
-  Plotly.newPlot('chart', wedgeTraces, layout);
-
-  // Export button (Letter-size @ 300 DPI)
+  // Export image
   const exportButton = document.getElementById('exportBtn');
   if (exportButton) {
     exportButton.addEventListener('click', function () {
-      Plotly.toImage('chart', {
+      Plotly.toImage(chartDiv, {
         format: 'png',
         width: 3300,
         height: 2550,
@@ -84,9 +122,12 @@ document.addEventListener('DOMContentLoaded', function () {
       }).then(function (dataUrl) {
         const link = document.createElement('a');
         link.href = dataUrl;
-        link.download = 'toxpi_chart_letter_300dpi.png';
+        link.download = 'interactive_radial_chart_300dpi.png';
         link.click();
       });
     });
   }
+
+  createSliders();
+  updateChart();
 });
