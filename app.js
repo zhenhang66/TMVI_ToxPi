@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Sample ToxPi scores (radial length) for 26 variables, from tract 48245002100
   const scores = [
     0.2581, 0.9973, 0.0,
     1.0, 0.9362, 0.9085, 0.8215,
@@ -8,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
     0.0, 0.7850, 0.7461, 0.8512, 0.0, 0.9128, 0.8139
   ];
 
-  // Optional: labels for hover
   const labels = [
     "Industrial Zoning", "Impervious Surface", "100-Year Floodplain",
     "Socioeconomic Status", "Household Characteristics", "Racial/Ethnic Minority", "Housing & Transportation",
@@ -17,83 +15,78 @@ document.addEventListener('DOMContentLoaded', function () {
     "Ozone", "PM2.5", "Diesel PM", "Air Toxics", "Superfund", "TRI Site", "RMP Site"
   ];
 
-  // Placeholder: equal weights (360/26 ≈ 13.846° per slice)
+  // Official color palette from your uploaded legend
+  const traceColors = [
+    "#b41f85", "#b868c4", "#e5d0f3", // Environmental
+    "#cb181d", "#ef3b2c", "#fb6a4a", "#fcae91", // Demographics
+    "#084594", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef",
+    "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#feedde", "#fbb4b9", // Health
+    "#a6bddb", "#3690c0", "#0570b0", "#045a8d", "#023858", "#f768a1", "#7a0177"
+  ];
+
   const totalSlices = scores.length;
   const anglePerSlice = 360 / totalSlices;
 
-  const theta = [];
-  const r = [];
-  const traceColors = [
-    "#e6e6cc", "#b3b34d", "#666600", // Slice 1
-    "#ffb3b3", "#ff8080", "#e64d4d", "#b31a1a", // Slice 2
-    "#ccffff", "#b3e6e6", "#99cccc", "#80b3b3", "#669999", "#4d8080", "#336666", "#336666", "#003333",
-    "#cce6ff", "#b3ccff", "#99b3ff", // Slice 3
-    "#e6b3e6", "#cc99cc", "#b380b3", "#996699", "#804d80", "#663366", "#4d1a4d", "#330033" // Slice 4
-  ];
-
-  const sectorTraces = [];
-  const overlayTheta = [];
-  const overlayR = [];
+  const wedgeTraces = [];
 
   for (let i = 0; i < totalSlices; i++) {
-    const start = i * anglePerSlice;
-    const end = start + anglePerSlice;
+    const startAngle = i * anglePerSlice;
+    const endAngle = startAngle + anglePerSlice;
+    const midAngle = startAngle + anglePerSlice / 2;
 
-    // Triangle: center → outer arc → back to center
-    const t = [start, end, start];
-    const v = [0, scores[i], 0];
-
-    overlayTheta.push((start + end) / 2);
-    overlayR.push(scores[i]);
-
-    sectorTraces.push({
+    wedgeTraces.push({
       type: 'scatterpolar',
-      r: v,
-      theta: t,
+      r: [0, scores[i], 0],
+      theta: [startAngle, endAngle, startAngle],
       fill: 'toself',
       name: labels[i],
-      hoverinfo: 'text',
       text: `${labels[i]}<br>Score: ${scores[i].toFixed(2)}`,
-      line: { color: traceColors[i], width: 1 },
+      hoverinfo: 'text',
+      line: { width: 0 },
       fillcolor: traceColors[i],
       showlegend: false
     });
   }
 
-  // Outer polygon trace
-  const polygonTrace = {
-    type: 'scatterpolar',
-    r: [...overlayR, overlayR[0]],
-    theta: [...overlayTheta, overlayTheta[0]],
-    mode: 'lines',
-    name: 'Polygon Overlay',
-    line: {
-      color: 'black',
-      width: 2
-    },
-    hoverinfo: 'none',
-    showlegend: false
-  };
-
   const layout = {
-    title: 'ToxPi-style Radial Chart – Tract 48245002100',
+    title: 'ToxPi-Style Radial Chart – Tract 48245002100',
     polar: {
       radialaxis: {
         visible: true,
-        range: [0, 1]
+        range: [0, 1],
+        tickfont: { size: 10 }
       },
       angularaxis: {
-        tickmode: 'array',
-        tickvals: overlayTheta,
-        ticktext: labels,
+        direction: 'counterclockwise',
         rotation: 90,
-        direction: 'clockwise'
+        tickmode: 'array',
+        tickvals: labels.map((_, i) => i * anglePerSlice + anglePerSlice / 2),
+        ticktext: labels,
+        tickfont: { size: 10 }
       }
     },
     width: 800,
     height: 800,
-    showlegend: false
+    margin: { t: 60, b: 60, l: 60, r: 60 }
   };
 
-  Plotly.newPlot('chart', [...sectorTraces, polygonTrace], layout);
+  Plotly.newPlot('chart', wedgeTraces, layout);
+
+  // Export button (Letter-size @ 300 DPI)
+  const exportButton = document.getElementById('exportBtn');
+  if (exportButton) {
+    exportButton.addEventListener('click', function () {
+      Plotly.toImage('chart', {
+        format: 'png',
+        width: 3300,
+        height: 2550,
+        scale: 1
+      }).then(function (dataUrl) {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = 'toxpi_chart_letter_300dpi.png';
+        link.click();
+      });
+    });
+  }
 });
