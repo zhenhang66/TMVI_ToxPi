@@ -46,16 +46,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const theta = [currentAngle, currentAngle + angle, currentAngle];
       const r = [0, scores[i], 0];
       traces.push({
-        type: 'scatterpolar',
-        r: r,
-        theta: theta,
-        fill: 'toself',
-        fillcolor: colors[i],
-        line: { width: 0 },
-        hoverinfo: 'text',
-        name: labels[i],
-        text: `${labels[i]}<br>Weight: ${(normWeights[i] * 100).toFixed(1)}%<br>Score: ${scores[i].toFixed(2)}`,
-        showlegend: false
+      type: 'scatterpolar',
+      mode: 'lines',  //
+      r: r,
+      theta: theta,
+      fill: 'toself',
+      fillcolor: colors[i],
+      line: { width: 0 },
+      hoverinfo: 'text',
+      name: labels[i],
+      text: `${labels[i]}<br>Weight: ${(normWeights[i] * 100).toFixed(1)}%<br>Score: ${scores[i].toFixed(2)}`,
+      showlegend: false
       });
       currentAngle += angle;
     }
