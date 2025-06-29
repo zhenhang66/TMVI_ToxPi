@@ -2,47 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>CD-TMVI Interactive Radial Chart</title>
+  <title>CD-TMVI Radial Pie Chart</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <style>
-    body {
-      font-family: sans-serif;
-      margin: 40px;
-    }
-    h2 {
-      text-align: center;
-    }
-    #chart {
-      margin: 40px auto;
-      max-width: 900px;
-    }
+    body { font-family: sans-serif; margin: 40px; }
+    h2 { text-align: center; }
+    #chart { margin: 40px auto; max-width: 900px; }
     fieldset {
       border: 1px solid #ccc;
       padding: 10px;
       margin-bottom: 16px;
     }
-    legend {
-      font-weight: bold;
-    }
+    legend { font-weight: bold; }
     .input-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
       margin-bottom: 10px;
     }
-    label {
-      flex: 1 1 240px;
-    }
-    input[type="number"] {
-      width: 60px;
-    }
+    label { flex: 1 1 240px; }
+    input[type="number"] { width: 60px; }
+    #form-controls { text-align: center; }
     #exportBtn, #generateBtn {
       padding: 8px 16px;
       font-size: 14px;
       margin-top: 10px;
-    }
-    #form-controls {
-      text-align: center;
     }
   </style>
 </head>
@@ -55,50 +39,50 @@
   <fieldset>
     <legend>Built Environment</legend>
     <div class="input-row">
-      <label>Industrial Zoning <input type="number" name="Industrial Zoning" value="1" min="0" step="0.1"> %</label>
-      <label>Impervious Surface <input type="number" name="Impervious Surface" value="1" min="0" step="0.1"> %</label>
-      <label>100-Year Floodplain <input type="number" name="100-Year Floodplain" value="1" min="0" step="0.1"> %</label>
+      <label>Industrial Zoning <input type="number" name="Industrial Zoning" value="1" min="0" step="0.1">%</label>
+      <label>Impervious Surface <input type="number" name="Impervious Surface" value="1" min="0" step="0.1">%</label>
+      <label>100-Year Floodplain <input type="number" name="100-Year Floodplain" value="1" min="0" step="0.1">%</label>
     </div>
   </fieldset>
 
   <fieldset>
     <legend>Social Vulnerability</legend>
     <div class="input-row">
-      <label>Socioeconomic Status <input type="number" name="Socioeconomic Status" value="1" min="0" step="0.1"> %</label>
-      <label>Household Characteristics <input type="number" name="Household Characteristics" value="1" min="0" step="0.1"> %</label>
-      <label>Racial/Ethnic Minority <input type="number" name="Racial/Ethnic Minority" value="1" min="0" step="0.1"> %</label>
-      <label>Housing & Transportation <input type="number" name="Housing & Transportation" value="1" min="0" step="0.1"> %</label>
+      <label>Socioeconomic Status <input type="number" name="Socioeconomic Status" value="1" min="0" step="0.1">%</label>
+      <label>Household Characteristics <input type="number" name="Household Characteristics" value="1" min="0" step="0.1">%</label>
+      <label>Racial/Ethnic Minority <input type="number" name="Racial/Ethnic Minority" value="1" min="0" step="0.1">%</label>
+      <label>Housing & Transportation <input type="number" name="Housing & Transportation" value="1" min="0" step="0.1">%</label>
     </div>
   </fieldset>
 
   <fieldset>
     <legend>Health Outcomes</legend>
     <div class="input-row">
-      <label>Arthritis <input type="number" name="Arthritis" value="1" min="0" step="0.1"> %</label>
-      <label>High Blood Pressure <input type="number" name="High Blood Pressure" value="1" min="0" step="0.1"> %</label>
-      <label>Cancer <input type="number" name="Cancer" value="1" min="0" step="0.1"> %</label>
-      <label>Asthma <input type="number" name="Asthma" value="1" min="0" step="0.1"> %</label>
-      <label>Heart Disease <input type="number" name="Heart Disease" value="1" min="0" step="0.1"> %</label>
-      <label>COPD <input type="number" name="COPD" value="1" min="0" step="0.1"> %</label>
-      <label>Depression <input type="number" name="Depression" value="1" min="0" step="0.1"> %</label>
-      <label>Diabetes <input type="number" name="Diabetes" value="1" min="0" step="0.1"> %</label>
-      <label>Cholesterol <input type="number" name="Cholesterol" value="1" min="0" step="0.1"> %</label>
-      <label>Obesity <input type="number" name="Obesity" value="1" min="0" step="0.1"> %</label>
-      <label>Stroke <input type="number" name="Stroke" value="1" min="0" step="0.1"> %</label>
-      <label>Teeth Lost <input type="number" name="Teeth Lost" value="1" min="0" step="0.1"> %</label>
+      <label>Arthritis <input type="number" name="Arthritis" value="1" min="0" step="0.1">%</label>
+      <label>High Blood Pressure <input type="number" name="High Blood Pressure" value="1" min="0" step="0.1">%</label>
+      <label>Cancer <input type="number" name="Cancer" value="1" min="0" step="0.1">%</label>
+      <label>Asthma <input type="number" name="Asthma" value="1" min="0" step="0.1">%</label>
+      <label>Heart Disease <input type="number" name="Heart Disease" value="1" min="0" step="0.1">%</label>
+      <label>COPD <input type="number" name="COPD" value="1" min="0" step="0.1">%</label>
+      <label>Depression <input type="number" name="Depression" value="1" min="0" step="0.1">%</label>
+      <label>Diabetes <input type="number" name="Diabetes" value="1" min="0" step="0.1">%</label>
+      <label>Cholesterol <input type="number" name="Cholesterol" value="1" min="0" step="0.1">%</label>
+      <label>Obesity <input type="number" name="Obesity" value="1" min="0" step="0.1">%</label>
+      <label>Stroke <input type="number" name="Stroke" value="1" min="0" step="0.1">%</label>
+      <label>Teeth Lost <input type="number" name="Teeth Lost" value="1" min="0" step="0.1">%</label>
     </div>
   </fieldset>
 
   <fieldset>
     <legend>Environmental Justice</legend>
     <div class="input-row">
-      <label>Ozone <input type="number" name="Ozone" value="1" min="0" step="0.1"> %</label>
-      <label>PM2.5 <input type="number" name="PM2.5" value="1" min="0" step="0.1"> %</label>
-      <label>Diesel PM <input type="number" name="Diesel PM" value="1" min="0" step="0.1"> %</label>
-      <label>Air Toxics <input type="number" name="Air Toxics" value="1" min="0" step="0.1"> %</label>
-      <label>Superfund <input type="number" name="Superfund" value="1" min="0" step="0.1"> %</label>
-      <label>TRI Site <input type="number" name="TRI Site" value="1" min="0" step="0.1"> %</label>
-      <label>RMP Site <input type="number" name="RMP Site" value="1" min="0" step="0.1"> %</label>
+      <label>Ozone <input type="number" name="Ozone" value="1" min="0" step="0.1">%</label>
+      <label>PM2.5 <input type="number" name="PM2.5" value="1" min="0" step="0.1">%</label>
+      <label>Diesel PM <input type="number" name="Diesel PM" value="1" min="0" step="0.1">%</label>
+      <label>Air Toxics <input type="number" name="Air Toxics" value="1" min="0" step="0.1">%</label>
+      <label>Superfund <input type="number" name="Superfund" value="1" min="0" step="0.1">%</label>
+      <label>TRI Site <input type="number" name="TRI Site" value="1" min="0" step="0.1">%</label>
+      <label>RMP Site <input type="number" name="RMP Site" value="1" min="0" step="0.1">%</label>
     </div>
   </fieldset>
 
@@ -108,14 +92,15 @@
 </form>
 
 <div id="chart"></div>
+
 <div id="form-controls">
   <button id="exportBtn">Export High-Res PNG</button>
 </div>
 
 <script>
-const labels = [/* ... same as before ... */];
-const scores = [/* ... same as before ... */];
-const colors = [/* ... same as before ... */];
+const labels = [ "Industrial Zoning", "Impervious Surface", "100-Year Floodplain", "Socioeconomic Status", "Household Characteristics", "Racial/Ethnic Minority", "Housing & Transportation", "Arthritis", "High Blood Pressure", "Cancer", "Asthma", "Heart Disease", "COPD", "Depression", "Diabetes", "Cholesterol", "Obesity", "Stroke", "Teeth Lost", "Ozone", "PM2.5", "Diesel PM", "Air Toxics", "Superfund", "TRI Site", "RMP Site" ];
+const scores = [ 0.2581, 0.9973, 0.0, 1.0, 0.9362, 0.9085, 0.8215, 0.6645, 0.6854, 0.2192, 0.6610, 0.7538, 0.8317, 0.4068, 0.7884, 0.7477, 0.8063, 0.7794, 0.6231, 0.0, 0.7850, 0.7461, 0.8512, 0.0, 0.9128, 0.8139 ];
+const colors = [ "#b41f85", "#b868c4", "#e5d0f3", "#cb181d", "#ef3b2c", "#fb6a4a", "#fcae91", "#084594", "#2171b5", "#4292c6", "#6baed6", "#9ecae1", "#c6dbef", "#e6550d", "#fd8d3c", "#fdae6b", "#fdd0a2", "#feedde", "#fbb4b9", "#a6bddb", "#3690c0", "#0570b0", "#045a8d", "#023858", "#f768a1", "#7a0177" ];
 
 function drawChart(weights) {
   const total = weights.reduce((sum, w) => sum + w, 0) || 1;
@@ -126,62 +111,4 @@ function drawChart(weights) {
 
   for (let i = 0; i < labels.length; i++) {
     const angle = normWeights[i] * 360;
-    const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
-    const r = [0, scores[i], scores[i], 0];
-
-    traces.push({
-      type: 'scatterpolar',
-      mode: 'lines',
-      r: r,
-      theta: theta,
-      fill: 'toself',
-      fillcolor: colors[i],
-      line: { width: 0 },
-      hoverinfo: 'text',
-      name: labels[i],
-      text: `${labels[i]}<br>Score: ${scores[i].toFixed(2)}`,
-      showlegend: false
-    });
-
-    startAngle += angle;
-  }
-
-  const layout = {
-    polar: {
-      radialaxis: { visible: true, range: [0, 1] },
-      angularaxis: { direction: 'counterclockwise', rotation: 90 }
-    },
-    margin: { t: 30, b: 30, l: 30, r: 30 },
-    width: 800,
-    height: 800
-  };
-
-  Plotly.newPlot('chart', traces, layout);
-}
-
-// ✅ Form submit listener
-document.getElementById('weightForm').addEventListener('submit', e => {
-  e.preventDefault();
-  const formData = new FormData(e.target);
-  const weights = labels.map(label => parseFloat(formData.get(label)) || 0);
-  drawChart(weights);
-});
-
-// ✅ Optional: Draw initial equal-weight chart
-drawChart(Array(labels.length).fill(1));
-
-// ✅ Export button
-document.getElementById('exportBtn').addEventListener('click', () => {
-  Plotly.toImage(document.getElementById('chart'), {
-    format: 'png',
-    width: 3300,
-    height: 2550,
-    scale: 1
-  }).then(url => {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'cd_tmvi_radial_chart.png';
-    a.click();
-  });
-});
-</script>
+    const theta = [startAngle, start
