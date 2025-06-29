@@ -18,7 +18,7 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 40px; margin-top: 40px;
     }
     .chart-block {
@@ -32,7 +32,23 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .single-chart { height: 300px; }
+    .chart-wrapper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 12px;
+    }
+    .single-chart { width: 300px; height: 300px; }
+    .chart-legend div {
+      display: flex; align-items: center; font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .chart-legend span {
+      width: 12px; height: 12px;
+      display: inline-block;
+      margin-right: 6px;
+      border-radius: 2px;
+    }
   </style>
 </head>
 <body>
@@ -53,16 +69,11 @@
 
   <section style="text-align: center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
+    <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
   </section>
-
-  <section style="text-align: center; margin-top: 20px">
-  <button onclick="downloadCSV()">Export Scores as CSV</button>
-  <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
-</section>
 
   <section id="chartGrid" class="chart-grid"></section>
 </main>
-
 <script>
 let parsedData = [], variableKeys = [], variableWeights = {}, normalizedMatrix = [];
 
@@ -138,49 +149,34 @@ document.getElementById('generateBtn').addEventListener('click', function () {
     title.textContent = `${row["Name"] || row["CASRN"] || `Row ${i+1}`} — Score: ${toxpi.toFixed(3)}`;
     block.appendChild(title);
 
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chart-wrapper';
+
     const chartDiv = document.createElement('div');
     chartDiv.className = 'single-chart';
     chartDiv.id = `chart-${i}`;
-   // Wrapper for chart and legend
-    const wrapper = document.createElement('div');
-    wrapper.className = 'chart-wrapper';
-    wrapper.style.display = 'flex';
-    wrapper.style.alignItems = 'flex-start';
-    wrapper.style.gap = '12px';
-
-  // Chart
-    chartDiv.style.width = '300px';
-    chartDiv.style.height = '300px';
+    drawSingleChart(chartDiv.id, variableKeys, scores, normWeights);
     wrapper.appendChild(chartDiv);
 
-// Legend
-    const legend = document.createElement('div');
-    legend.style.fontSize = '12px';
-    legend.style.lineHeight = '1.4';
+    const legendDiv = document.createElement('div');
+    legendDiv.className = 'chart-legend';
     variableKeys.forEach((k, j) => {
-  const row = document.createElement('div');
-  const colorBox = document.createElement('span');
-  colorBox.style.display = 'inline-block';
-  colorBox.style.width = '12px';
-  colorBox.style.height = '12px';
-  colorBox.style.backgroundColor = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
-  colorBox.style.marginRight = '6px';
-  row.appendChild(colorBox);
-  row.append(k.split('!')[0]);
-  legend.appendChild(row);
-});
-wrapper.appendChild(legend);
-block.appendChild(wrapper);
+      const row = document.createElement('div');
+      const colorBox = document.createElement('span');
+      colorBox.style.backgroundColor = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
+      row.appendChild(colorBox);
+      row.append(k.split('!')[0]);
+      legendDiv.appendChild(row);
+    });
+    wrapper.appendChild(legendDiv);
+    block.appendChild(wrapper);
 
-// Checkbox
-const checkbox = document.createElement('div');
-checkbox.style.textAlign = 'center';
-checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
-block.appendChild(checkbox);
+    const checkbox = document.createElement('div');
+    checkbox.style.textAlign = 'center';
+    checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
+    block.appendChild(checkbox);
 
-grid.appendChild(block);
-
-    drawSingleChart(`chart-${i}`, variableKeys, scores, normWeights);
+    grid.appendChild(block);
   });
 });
 
@@ -238,12 +234,12 @@ function downloadCSV() {
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
   link.download = "ToxPi_scores_export.csv";
-  link.style.display = "none";
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
 }
-<function exportSelectedCharts() {
+
+function exportSelectedCharts() {
   const checkboxes = document.querySelectorAll('.download-checkbox:checked');
   if (checkboxes.length === 0) {
     alert("No charts selected.");
@@ -266,6 +262,7 @@ function downloadCSV() {
       document.body.removeChild(link);
     });
   });
-}>
+}
+</script>
 </body>
 </html>
