@@ -1,197 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Radial Chart Generator – All Tracts</title>
-  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 40px;
-    }
-    h2, h3 {
-      text-align: center;
-    }
-    section {
-      margin-bottom: 30px;
-    }
-    #weights-section, #generate-section, #upload-section {
-      text-align: center;
-    }
-    .input-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
-      margin: 10px 0;
-    }
-    label {
-      flex: 1 1 200px;
-    }
-    input[type="number"] {
-      width: 60px;
-    }
-    .chart-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 40px;
-      margin-top: 40px;
-    }
-    .chart-block {
-      border: 1px solid #ddd;
-      padding: 10px;
-      border-radius: 6px;
-      background-color: #fafafa;
-    }
-    .chart-title {
-      text-align: center;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-    .single-chart {
-      height: 300px;
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h2>Batch Radial Chart Generator</h2>
-  </header>
-
-  <main>
-    <section id="upload-section">
-      <p><strong>Step 1:</strong> Upload your dataset (.csv)</p>
-      <input type="file" id="csvUpload" accept=".csv">
-    </section>
-
-    <section id="weights-section">
-      <!-- Dynamic weight sliders go here -->
-    </section>
-
-    <section id="generate-section" style="display:none">
-      <button id="generateBtn">Generate All Charts</button>
-    </section>
-
-    <section id="chartGrid" class="chart-grid">
-      <!-- Radial charts will render here -->
-    </section>
-  </main>
-
-  <script>
-    let parsedData = [];
-    let variableKeys = [];
-
-    document.getElementById('csvUpload').addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      Papa.parse(file, {
-        header: true,
-        dynamicTyping: true,
-        skipEmptyLines: true,
-        complete: function (results) {
-          parsedData = results.data;
-          const fixedCols = ['Row', 'Source', 'CASRN', 'Name'];
-          variableKeys = Object.keys(parsedData[0] || {}).filter(key => !fixedCols.includes(key));
-          buildWeightInputs(variableKeys);
-          document.getElementById('generate-section').style.display = 'block';
-        }
-      });
-    });
-
-    function buildWeightInputs(keys) {
-      const container = document.getElementById('weights-section');
-      container.innerHTML = '<h3>Step 2: Adjust Weights</h3><div class="input-row" id="weightInputs"></div>';
-      const row = document.getElementById('weightInputs');
-      keys.forEach(key => {
-        const label = document.createElement('label');
-        label.innerHTML = `${key} <input type="number" name="${key}" value="1" min="0" step="0.1">`;
-        row.appendChild(label);
-      });
-    }
-
-    document.getElementById('generateBtn').addEventListener('click', function () {
-      const weightInputs = variableKeys.map(key => {
-        const el = document.querySelector(`input[name="${key}"]`);
-        return parseFloat(el?.value) || 0;
-      });
-
-      const chartGrid = document.getElementById('chartGrid');
-      chartGrid.innerHTML = ''; // Clear previous charts
-
-      parsedData.forEach((row, index) => {
-        const scores = variableKeys.map(key => {
-          const val = row[key];
-          const num = parseFloat(val);
-          return isNaN(num) ? 0 : num;
-        });
-
-        const block = document.createElement('div');
-        block.className = 'chart-block';
-
-        const title = document.createElement('div');
-        title.className = 'chart-title';
-        title.textContent = row['Name'] || row['CASRN'] || `Row ${index + 1}`;
-        block.appendChild(title);
-
-        const chartDiv = document.createElement('div');
-        chartDiv.className = 'single-chart';
-        chartDiv.id = `chart-${index}`;
-        block.appendChild(chartDiv);
-
-        chartGrid.appendChild(block);
-
-        drawSingleChart(`chart-${index}`, variableKeys, scores, weightInputs);
-      });
-    });
-
-    function drawSingleChart(containerId, labels, scores, weights) {
-      const total = weights.reduce((sum, w) => sum + w, 0) || 1;
-      const normWeights = weights.map(w => w / total);
-      const traces = [];
-      let startAngle = 0;
-      const colors = Array.from({ length: labels.length }, (_, i) => `hsl(${i * 360 / labels.length}, 60%, 60%)`);
-
-      for (let i = 0; i < labels.length; i++) {
-        const angle = normWeights[i] * 360;
-        const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
-        const r = [0, scores[i], scores[i], 0];
-
-        traces.push({
-          type: 'scatterpolar',
-          mode: 'lines',
-          r: r,
-          theta: theta,
-          fill: 'toself',
-          fillcolor: colors[i],
-          line: { width: 0 },
-          hoverinfo: 'text',
-          text: `${labels[i]}<br>Score: ${scores[i]?.toFixed(2)}`,
-          showlegend: false
-        });
-
-        startAngle += angle;
-      }
-
-      const layout = {
-        polar: {
-          radialaxis: { visible: false, range: [0, 1] },
-          angularaxis: { direction: 'counterclockwise', rotation: 90 }
-        },
-        margin: { t: 10, b: 10, l: 10, r: 10 },
-        width: 300,
-        height: 300
-      };
-
-      Plotly.newPlot(containerId, traces, layout, { displayModeBar: false });
-    }
-  </script>
 <script>
 let parsedData = [];
 let variableKeys = [];
-let variableWeights = {}; // parsed from headers
+let variableWeights = {};
+let normalizedMatrix = [];
 
 document.getElementById('csvUpload').addEventListener('change', function (e) {
   const file = e.target.files[0];
@@ -202,23 +13,37 @@ document.getElementById('csvUpload').addEventListener('change', function (e) {
     dynamicTyping: true,
     skipEmptyLines: true,
     complete: function (results) {
-      parsedData = results.data;
       const headers = results.meta.fields || [];
+      parsedData = results.data;
 
-      variableKeys = headers.filter(key => {
-        return !["Row", "Source", "CASRN", "Name", "ToxPi Score"].includes(key);
-      });
+      variableKeys = headers.filter(
+        key => !["Row", "Source", "CASRN", "Name", "ToxPi Score"].includes(key)
+      );
 
-      // Extract weights from header pattern: Label!1/16!
+      // Extract weights like !1/16!
       variableWeights = {};
       variableKeys.forEach(key => {
         const match = key.match(/!([\d]+)\/([\d]+)!/);
         if (match) {
-          const fraction = parseFloat(match[1]) / parseFloat(match[2]);
-          variableWeights[key] = fraction;
+          const weight = parseFloat(match[1]) / parseFloat(match[2]);
+          variableWeights[key] = weight;
         } else {
-          variableWeights[key] = 1; // fallback
+          variableWeights[key] = 1;
         }
+      });
+
+      // Normalize values column-by-column
+      normalizedMatrix = parsedData.map(() => ({}));
+      variableKeys.forEach(key => {
+        const values = parsedData.map(row => parseFloat(row[key]));
+        const min = Math.min(...values);
+        const max = Math.max(...values);
+        const range = max - min || 1;
+
+        parsedData.forEach((row, i) => {
+          const x = parseFloat(row[key]);
+          normalizedMatrix[i][key] = isNaN(x) ? 0 : (x - min) / range;
+        });
       });
 
       buildWeightInputs(variableKeys, variableWeights);
@@ -233,10 +58,10 @@ function buildWeightInputs(keys, weights) {
   const row = document.getElementById('weightInputs');
 
   keys.forEach(key => {
-    const displayLabel = key.split('!')[0]; // trim at !
+    const labelText = key.split('!')[0];
     const defaultWeight = weights[key] || 1;
     const label = document.createElement('label');
-    label.innerHTML = `${displayLabel} <input type="number" name="${key}" value="${defaultWeight}" min="0" step="0.001">`;
+    label.innerHTML = `${labelText} <input type="number" name="${key}" value="${defaultWeight}" min="0" step="0.001">`;
     row.appendChild(label);
   });
 }
@@ -247,27 +72,26 @@ document.getElementById('generateBtn').addEventListener('click', function () {
     return parseFloat(el?.value) || 0;
   });
 
-  const weightSum = weights.reduce((sum, w) => sum + w, 0) || 1;
-  const normalizedWeights = weights.map(w => w / weightSum);
+  const totalWeight = weights.reduce((sum, w) => sum + w, 0) || 1;
+  const normalizedWeights = weights.map(w => w / totalWeight);
 
   const chartGrid = document.getElementById('chartGrid');
-  chartGrid.innerHTML = ''; // Clear previous charts
+  chartGrid.innerHTML = '';
 
   parsedData.forEach((row, index) => {
-    const scores = variableKeys.map(key => {
-      const val = row[key];
-      const num = parseFloat(val);
-      return isNaN(num) ? 0 : num;
-    });
-
-    const toxpiScore = scores.reduce((sum, score, i) => sum + score * normalizedWeights[i], 0);
+    const normalizedScores = variableKeys.map(key => normalizedMatrix[index][key]);
+    const toxpiScore = normalizedScores.reduce(
+      (sum, score, i) => sum + score * normalizedWeights[i],
+      0
+    );
 
     const block = document.createElement('div');
     block.className = 'chart-block';
 
     const title = document.createElement('div');
     title.className = 'chart-title';
-    title.textContent = `${row['Name'] || row['CASRN'] || `Row ${index + 1}`} — Score: ${toxpiScore.toFixed(3)}`;
+    const name = row['Name'] || row['CASRN'] || `Row ${index + 1}`;
+    title.textContent = `${name} — Score: ${toxpiScore.toFixed(3)}`;
     block.appendChild(title);
 
     const chartDiv = document.createElement('div');
@@ -277,14 +101,16 @@ document.getElementById('generateBtn').addEventListener('click', function () {
 
     chartGrid.appendChild(block);
 
-    drawSingleChart(`chart-${index}`, variableKeys, scores, normalizedWeights);
+    drawSingleChart(`chart-${index}`, variableKeys, normalizedScores, normalizedWeights);
   });
 });
 
 function drawSingleChart(containerId, labels, scores, weights) {
-  const traces = [];
   let startAngle = 0;
-  const colors = Array.from({ length: labels.length }, (_, i) => `hsl(${i * 360 / labels.length}, 60%, 60%)`);
+  const traces = [];
+  const colors = Array.from({ length: labels.length }, (_, i) =>
+    `hsl(${i * 360 / labels.length}, 60%, 60%)`
+  );
 
   for (let i = 0; i < labels.length; i++) {
     const angle = weights[i] * 360;
@@ -300,14 +126,14 @@ function drawSingleChart(containerId, labels, scores, weights) {
       fillcolor: colors[i],
       line: { width: 0 },
       hoverinfo: 'text',
-      text: `${labels[i].split('!')[0]}<br>Score: ${scores[i]?.toFixed(2)}<br>Weight: ${(weights[i] * 100).toFixed(1)}%`,
+      text: `${labels[i].split('!')[0]}<br>Score: ${scores[i].toFixed(3)}<br>Weight: ${(weights[i] * 100).toFixed(1)}%`,
       showlegend: false
     });
 
     startAngle += angle;
   }
 
-  const layout = {
+  Plotly.newPlot(containerId, traces, {
     polar: {
       radialaxis: { visible: false, range: [0, 1] },
       angularaxis: { direction: 'counterclockwise', rotation: 90 }
@@ -315,10 +141,6 @@ function drawSingleChart(containerId, labels, scores, weights) {
     margin: { t: 10, b: 10, l: 10, r: 10 },
     width: 300,
     height: 300
-  };
-
-  Plotly.newPlot(containerId, traces, layout, { displayModeBar: false });
+  }, { displayModeBar: false });
 }
 </script>
-</body>
-</html>
