@@ -54,6 +54,10 @@
     <button onclick="downloadCSV()">Export Scores as CSV</button>
   </section>
 
+  <section style="text-align: center; margin-top: 10px">
+  <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
+</section>
+
   <section id="chartGrid" class="chart-grid"></section>
 </main>
 
@@ -138,6 +142,11 @@ document.getElementById('generateBtn').addEventListener('click', function () {
     block.appendChild(chartDiv);
     grid.appendChild(block);
 
+    const checkbox = document.createElement('div');
+    checkbox.style.textAlign = 'center';
+    checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
+    block.appendChild(checkbox);
+
     drawSingleChart(`chart-${i}`, variableKeys, scores, normWeights);
   });
 });
@@ -201,6 +210,28 @@ function downloadCSV() {
   link.click();
   document.body.removeChild(link);
 }
-</script>
+<function exportSelectedCharts() {
+  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert("No charts selected.");
+    return;
+  }
+
+  checkboxes.forEach((cb, index) => {
+    const chartId = cb.dataset.id;
+    const chartDiv = document.getElementById(chartId);
+    const titleDiv = chartDiv?.parentElement?.querySelector('.chart-title');
+    const fileName = titleDiv?.textContent.split('—')[0]?.trim().replace(/\s+/g, "_") || `chart_${index + 1}`;
+
+    Plotly.toImage(chartDiv, { format: 'png', width: 600, height: 600 }).then(dataUrl => {
+      const link = document.createElement("a");
+      link.href = dataUrl;
+      link.download = `${fileName}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+}>
 </body>
 </html>
