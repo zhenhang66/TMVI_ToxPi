@@ -161,7 +161,7 @@ function drawSingleChart(id, labels, scores, weights) {
     const angle = weights[i] * 360;
     const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
     const r = [0, scores[i], scores[i], 0];
-
+    console.log("Label:", labels[i], "Weight:", weights[i]);
     traces.push({
       type: 'scatterpolar',
       mode: 'lines',
