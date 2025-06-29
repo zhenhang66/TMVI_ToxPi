@@ -188,6 +188,137 @@
       Plotly.newPlot(containerId, traces, layout, { displayModeBar: false });
     }
   </script>
+<script>
+let parsedData = [];
+let variableKeys = [];
+let variableWeights = {}; // parsed from headers
 
+document.getElementById('csvUpload').addEventListener('change', function (e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  Papa.parse(file, {
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true,
+    complete: function (results) {
+      parsedData = results.data;
+      const headers = results.meta.fields || [];
+
+      variableKeys = headers.filter(key => {
+        return !["Row", "Source", "CASRN", "Name", "ToxPi Score"].includes(key);
+      });
+
+      // Extract weights from header pattern: Label!1/16!
+      variableWeights = {};
+      variableKeys.forEach(key => {
+        const match = key.match(/!([\d]+)\/([\d]+)!/);
+        if (match) {
+          const fraction = parseFloat(match[1]) / parseFloat(match[2]);
+          variableWeights[key] = fraction;
+        } else {
+          variableWeights[key] = 1; // fallback
+        }
+      });
+
+      buildWeightInputs(variableKeys, variableWeights);
+      document.getElementById('generate-section').style.display = 'block';
+    }
+  });
+});
+
+function buildWeightInputs(keys, weights) {
+  const container = document.getElementById('weights-section');
+  container.innerHTML = '<h3>Step 2: Adjust Weights</h3><div class="input-row" id="weightInputs"></div>';
+  const row = document.getElementById('weightInputs');
+
+  keys.forEach(key => {
+    const displayLabel = key.split('!')[0]; // trim at !
+    const defaultWeight = weights[key] || 1;
+    const label = document.createElement('label');
+    label.innerHTML = `${displayLabel} <input type="number" name="${key}" value="${defaultWeight}" min="0" step="0.001">`;
+    row.appendChild(label);
+  });
+}
+
+document.getElementById('generateBtn').addEventListener('click', function () {
+  const weights = variableKeys.map(key => {
+    const el = document.querySelector(`input[name="${key}"]`);
+    return parseFloat(el?.value) || 0;
+  });
+
+  const weightSum = weights.reduce((sum, w) => sum + w, 0) || 1;
+  const normalizedWeights = weights.map(w => w / weightSum);
+
+  const chartGrid = document.getElementById('chartGrid');
+  chartGrid.innerHTML = ''; // Clear previous charts
+
+  parsedData.forEach((row, index) => {
+    const scores = variableKeys.map(key => {
+      const val = row[key];
+      const num = parseFloat(val);
+      return isNaN(num) ? 0 : num;
+    });
+
+    const toxpiScore = scores.reduce((sum, score, i) => sum + score * normalizedWeights[i], 0);
+
+    const block = document.createElement('div');
+    block.className = 'chart-block';
+
+    const title = document.createElement('div');
+    title.className = 'chart-title';
+    title.textContent = `${row['Name'] || row['CASRN'] || `Row ${index + 1}`} — Score: ${toxpiScore.toFixed(3)}`;
+    block.appendChild(title);
+
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'single-chart';
+    chartDiv.id = `chart-${index}`;
+    block.appendChild(chartDiv);
+
+    chartGrid.appendChild(block);
+
+    drawSingleChart(`chart-${index}`, variableKeys, scores, normalizedWeights);
+  });
+});
+
+function drawSingleChart(containerId, labels, scores, weights) {
+  const traces = [];
+  let startAngle = 0;
+  const colors = Array.from({ length: labels.length }, (_, i) => `hsl(${i * 360 / labels.length}, 60%, 60%)`);
+
+  for (let i = 0; i < labels.length; i++) {
+    const angle = weights[i] * 360;
+    const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
+    const r = [0, scores[i], scores[i], 0];
+
+    traces.push({
+      type: 'scatterpolar',
+      mode: 'lines',
+      r: r,
+      theta: theta,
+      fill: 'toself',
+      fillcolor: colors[i],
+      line: { width: 0 },
+      hoverinfo: 'text',
+      text: `${labels[i].split('!')[0]}<br>Score: ${scores[i]?.toFixed(2)}<br>Weight: ${(weights[i] * 100).toFixed(1)}%`,
+      showlegend: false
+    });
+
+    startAngle += angle;
+  }
+
+  const layout = {
+    polar: {
+      radialaxis: { visible: false, range: [0, 1] },
+      angularaxis: { direction: 'counterclockwise', rotation: 90 }
+    },
+    margin: { t: 10, b: 10, l: 10, r: 10 },
+    width: 300,
+    height: 300
+  };
+
+  Plotly.newPlot(containerId, traces, layout, { displayModeBar: false });
+}
+</script>
 </body>
 </html>
