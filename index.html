@@ -88,9 +88,13 @@ document.getElementById('csvUpload').addEventListener('change', function (e) {
     complete: function (results) {
       const headers = results.meta.fields || [];
       parsedData = results.data;
+      console.log("Parsed headers:", headers);
+      console.log("Parsed rows:", parsedData.length);
+      
       variableKeys = headers.filter(
         key => !["Row", "Source", "CASRN", "Name", "ToxPi Score"].includes(key)
       );
+      console.log("Variable keys:", variableKeys);
       variableWeights = {};
       variableKeys.forEach(key => {
         const match = key.match(/!([\d]+)\/([\d]+)!/);
