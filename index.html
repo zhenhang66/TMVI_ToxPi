@@ -5,6 +5,7 @@
   <title>Radial Chart Generator – ToxPi Style</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
     body { font-family: sans-serif; margin: 40px; }
     h2, h3 { text-align: center; }
@@ -53,6 +54,11 @@
   <section style="text-align: center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
   </section>
+
+  <section style="text-align: center; margin-top: 20px">
+  <button onclick="downloadCSV()">Export Scores as CSV</button>
+  <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
+</section>
 
   <section id="chartGrid" class="chart-grid"></section>
 </main>
@@ -135,8 +141,44 @@ document.getElementById('generateBtn').addEventListener('click', function () {
     const chartDiv = document.createElement('div');
     chartDiv.className = 'single-chart';
     chartDiv.id = `chart-${i}`;
-    block.appendChild(chartDiv);
-    grid.appendChild(block);
+   // Wrapper for chart and legend
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chart-wrapper';
+    wrapper.style.display = 'flex';
+    wrapper.style.alignItems = 'flex-start';
+    wrapper.style.gap = '12px';
+
+  // Chart
+    chartDiv.style.width = '300px';
+    chartDiv.style.height = '300px';
+    wrapper.appendChild(chartDiv);
+
+// Legend
+    const legend = document.createElement('div');
+    legend.style.fontSize = '12px';
+    legend.style.lineHeight = '1.4';
+    variableKeys.forEach((k, j) => {
+  const row = document.createElement('div');
+  const colorBox = document.createElement('span');
+  colorBox.style.display = 'inline-block';
+  colorBox.style.width = '12px';
+  colorBox.style.height = '12px';
+  colorBox.style.backgroundColor = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
+  colorBox.style.marginRight = '6px';
+  row.appendChild(colorBox);
+  row.append(k.split('!')[0]);
+  legend.appendChild(row);
+});
+wrapper.appendChild(legend);
+block.appendChild(wrapper);
+
+// Checkbox
+const checkbox = document.createElement('div');
+checkbox.style.textAlign = 'center';
+checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
+block.appendChild(checkbox);
+
+grid.appendChild(block);
 
     drawSingleChart(`chart-${i}`, variableKeys, scores, normWeights);
   });
@@ -201,6 +243,29 @@ function downloadCSV() {
   link.click();
   document.body.removeChild(link);
 }
-</script>
+<function exportSelectedCharts() {
+  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert("No charts selected.");
+    return;
+  }
+
+  checkboxes.forEach((cb, index) => {
+    const chartId = cb.dataset.id;
+    const chartDiv = document.getElementById(chartId);
+    const wrapper = chartDiv?.closest('.chart-wrapper');
+    const titleDiv = wrapper?.parentElement?.querySelector('.chart-title');
+    const fileName = titleDiv?.textContent.split('—')[0]?.trim().replace(/\s+/g, "_") || `chart_${index + 1}`;
+
+    html2canvas(wrapper).then(canvas => {
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `${fileName}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+}>
 </body>
 </html>
