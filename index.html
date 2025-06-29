@@ -2,73 +2,49 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Custom Radial Chart Generator</title>
+  <title>Radial Chart Generator – All Tracts</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <style>
     body { font-family: sans-serif; margin: 40px; }
     h2, h3 { text-align: center; }
-    #chart { margin: 40px auto; max-width: 900px; }
+    section { margin-bottom: 30px; }
+    #weights-section, #generate-section, #upload-section { text-align: center; }
     .input-row {
       display: flex;
       flex-wrap: wrap;
       gap: 10px;
-      margin-bottom: 10px;
       justify-content: center;
+      margin: 10px 0;
     }
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
-    #upload-section, #controls { text-align: center; margin-bottom: 20px; }
-    #weights-section { margin: 20px auto; max-width: 1000px; }
-    #scoreTable { margin: 20px auto; border-collapse: collapse; width: 80%; }
-    #scoreTable th, #scoreTable td {
-      border: 1px solid #ccc;
-      padding: 6px 10px;
-      text-align: left;
+
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-top: 40px;
     }
-    #exportBtn, #generateBtn {
-      padding: 8px 16px;
-      font-size: 14px;
-      margin-top: 10px;
+    .chart-block {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .chart-title {
+      text-align: center;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .single-chart {
+      height: 300px;
     }
   </style>
 </head>
-<body>
-
-<h2>Custom Radial Chart Generator</h2>
-
-<div id="upload-section">
-  <p><strong>Step 1:</strong> Upload your data file (.csv)</p>
-  <input type="file" id="csvUpload" accept=".csv">
-</div>
-
-<div id="controls" style="display:none">
-  <p><strong>Step 2:</strong> Choose an entry (e.g., census tract)</p>
-  <select id="tractSelect"></select>
-</div>
-
-<div id="weights-section"></div>
-
-<div id="generate-section" style="text-align: center; display: none;">
-  <button id="generateBtn">Generate Chart</button>
-</div>
-
-<div id="chart"></div>
-
-<div id="form-controls" style="text-align:center; margin-top: 20px;">
-  <button id="exportBtn" style="display:none">Export High-Res PNG</button>
-</div>
-
-<h3>Score Table</h3>
-<div id="scoreTableContainer">
-  <table id="scoreTable"></table>
-</div>
-
+  
 <script>
 let parsedData = [];
 let variableKeys = [];
-let currentScores = [];
-let labels = [];
 
 document.getElementById('csvUpload').addEventListener('change', function (e) {
   const file = e.target.files[0];
@@ -81,66 +57,67 @@ document.getElementById('csvUpload').addEventListener('change', function (e) {
     complete: function (results) {
       parsedData = results.data;
       const fixedCols = ['Row', 'Source', 'CASRN', 'Name'];
-      variableKeys = Object.keys(parsedData[0]).filter(key => !fixedCols.includes(key));
-      labels = [...variableKeys]; // store for future use
-
+      variableKeys = Object.keys(parsedData[0] || {}).filter(key => !fixedCols.includes(key));
       buildWeightInputs(variableKeys);
-      populateDropdown(parsedData.map(row => row['Name']));
-      document.getElementById('controls').style.display = 'block';
       document.getElementById('generate-section').style.display = 'block';
-      document.getElementById('exportBtn').style.display = 'inline-block';
     }
   });
 });
 
 function buildWeightInputs(keys) {
   const container = document.getElementById('weights-section');
-  container.innerHTML = '<h3>Step 3: Set Weights</h3><div class="input-row" id="weightInputs"></div>';
+  container.innerHTML = '<h3>Step 2: Adjust Weights</h3><div class="input-row" id="weightInputs"></div>';
   const row = document.getElementById('weightInputs');
   keys.forEach(key => {
     const label = document.createElement('label');
-    label.innerHTML = `${key} <input type="number" name="${key}" value="1" min="0" step="0.1"> %`;
+    label.innerHTML = `${key} <input type="number" name="${key}" value="1" min="0" step="0.1">`;
     row.appendChild(label);
   });
 }
 
-function populateDropdown(names) {
-  const select = document.getElementById('tractSelect');
-  select.innerHTML = '';
-  names.forEach(name => {
-    const opt = document.createElement('option');
-    opt.value = name;
-    opt.text = name;
-    select.appendChild(opt);
-  });
-}
-
 document.getElementById('generateBtn').addEventListener('click', function () {
-  const selectedName = document.getElementById('tractSelect').value;
-  const selectedRow = parsedData.find(row => row['Name'] == selectedName);
-  if (!selectedRow) return;
-
-  currentScores = variableKeys.map(key => parseFloat(selectedRow[key]) || 0);
-
-  const formData = new FormData(document.getElementById('weightForm') || new HTMLFormElement());
-  const weights = variableKeys.map(key => {
+  const weightInputs = variableKeys.map(key => {
     const el = document.querySelector(`input[name="${key}"]`);
     return parseFloat(el?.value) || 0;
   });
 
-  drawChart(weights, currentScores);
-  buildScoreTable(variableKeys, currentScores, weights);
+  const chartGrid = document.getElementById('chartGrid');
+  chartGrid.innerHTML = ''; // Clear old charts
+
+  parsedData.forEach((row, index) => {
+    const scores = variableKeys.map(key => {
+      const val = row[key];
+      const num = parseFloat(val);
+      return isNaN(num) ? 0 : num;
+    });
+
+    const block = document.createElement('div');
+    block.className = 'chart-block';
+
+    const title = document.createElement('div');
+    title.className = 'chart-title';
+    title.textContent = row['Name'] || row['CASRN'] || `Row ${index + 1}`;
+    block.appendChild(title);
+
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'single-chart';
+    chartDiv.id = `chart-${index}`;
+    block.appendChild(chartDiv);
+
+    chartGrid.appendChild(block);
+
+    drawSingleChart(`chart-${index}`, variableKeys, scores, weightInputs);
+  });
 });
 
-function drawChart(weights, scores) {
+function drawSingleChart(containerId, labels, scores, weights) {
   const total = weights.reduce((sum, w) => sum + w, 0) || 1;
   const normWeights = weights.map(w => w / total);
-
   const traces = [];
   let startAngle = 0;
-  const colors = Array.from({ length: weights.length }, (_, i) => `hsl(${i * 360 / weights.length},60%,60%)`);
+  const colors = Array.from({ length: labels.length }, (_, i) => `hsl(${i * 360 / labels.length}, 60%, 60%)`);
 
-  for (let i = 0; i < variableKeys.length; i++) {
+  for (let i = 0; i < labels.length; i++) {
     const angle = normWeights[i] * 360;
     const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
     const r = [0, scores[i], scores[i], 0];
@@ -154,8 +131,7 @@ function drawChart(weights, scores) {
       fillcolor: colors[i],
       line: { width: 0 },
       hoverinfo: 'text',
-      name: variableKeys[i],
-      text: `${variableKeys[i]}<br>Score: ${scores[i]?.toFixed(2)}`,
+      text: `${labels[i]}<br>Score: ${scores[i]?.toFixed(2)}`,
       showlegend: false
     });
 
@@ -164,49 +140,38 @@ function drawChart(weights, scores) {
 
   const layout = {
     polar: {
-      radialaxis: { visible: true, range: [0, 1] },
+      radialaxis: { visible: false, range: [0, 1] },
       angularaxis: { direction: 'counterclockwise', rotation: 90 }
     },
-    margin: { t: 30, b: 30, l: 30, r: 30 },
-    width: 800,
-    height: 800
+    margin: { t: 10, b: 10, l: 10, r: 10 },
+    width: 300,
+    height: 300
   };
 
-  Plotly.newPlot('chart', traces, layout);
+  Plotly.newPlot(containerId, traces, layout, { displayModeBar: false });
 }
-
-function buildScoreTable(labels, scores, weights) {
-  const table = document.getElementById('scoreTable');
-  table.innerHTML = `<thead><tr><th>Variable</th><th>Score</th><th>Weight</th><th>Score × Weight</th></tr></thead><tbody></tbody>`;
-  const tbody = table.querySelector('tbody');
-
-  let total = 0;
-  for (let i = 0; i < labels.length; i++) {
-    const row = document.createElement('tr');
-    const weighted = scores[i] * weights[i];
-    total += weighted;
-
-    row.innerHTML = `<td>${labels[i]}</td><td>${scores[i]?.toFixed(3)}</td><td>${weights[i]}</td><td>${weighted.toFixed(3)}</td>`;
-    tbody.appendChild(row);
-  }
-
-  const totalRow = document.createElement('tr');
-  totalRow.innerHTML = `<td colspan="3"><strong>ToxPi Total</strong></td><td><strong>${total.toFixed(3)}</strong></td>`;
-  tbody.appendChild(totalRow);
-}
-
-document.getElementById('exportBtn').addEventListener('click', () => {
-  Plotly.toImage(document.getElementById('chart'), {
-    format: 'png',
-    width: 3300,
-    height: 2550
-  }).then(url => {
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'radial_chart.png';
-    a.click();
-  });
-});
 </script>
-</body>
-</html>
+<body>
+
+<header>
+  <h2>Batch Radial Chart Generator</h2>
+</header>
+
+<main>
+  <section id="upload-section">
+    <p><strong>Step 1:</strong> Upload your dataset (.csv)</p>
+    <input type="file" id="csvUpload" accept=".csv">
+  </section>
+
+  <section id="weights-section">
+    <!-- Dynamic weight inputs go here -->
+  </section>
+
+  <section id="generate-section" style="display:none">
+    <button id="generateBtn">Generate All Charts</button>
+  </section>
+
+  <section id="chartGrid" class="chart-grid">
+    <!-- One .chart-block per tract -->
+  </section>
+</main>
