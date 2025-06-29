@@ -2,11 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Radial Chart Generator – ToxPi Style</title>
+  <title>ToxPi-Style Radial Chart Generator</title>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
   <style>
-    body { font-family: sans-serif; margin: 40px; }
+    body { font-family: sans-serif; margin: 40px; background: #fff; }
     h2, h3 { text-align: center; }
     section { margin-bottom: 30px; }
     #weights-section, #generate-section, #upload-section { text-align: center; }
@@ -17,8 +18,10 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 40px; margin-top: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 40px;
+      margin-top: 40px;
     }
     .chart-block {
       border: 1px solid #ddd;
@@ -31,7 +34,21 @@
       font-weight: bold;
       margin-bottom: 10px;
     }
-    .single-chart { height: 300px; }
+    .chart-wrapper {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 10px;
+    }
+    .single-chart { width: 300px; height: 300px; }
+    .chart-legend div {
+      display: flex; align-items: center; margin-bottom: 4px;
+      font-size: 12px; line-height: 1.3;
+    }
+    .chart-legend span {
+      display: inline-block; width: 12px; height: 12px;
+      margin-right: 6px; border-radius: 2px;
+    }
   </style>
 </head>
 <body>
@@ -46,17 +63,14 @@
 
   <section id="weights-section"></section>
 
-  <section id="generate-section" style="display:none">
+  <section id="generate-section" style="text-align:center; display:none">
     <button id="generateBtn">Generate All Charts</button>
   </section>
 
   <section style="text-align: center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
+    <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
   </section>
-
-  <section style="text-align: center; margin-top: 10px">
-  <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
-</section>
 
   <section id="chartGrid" class="chart-grid"></section>
 </main>
@@ -73,15 +87,16 @@ document.getElementById('csvUpload').addEventListener('change', function (e) {
     dynamicTyping: true,
     skipEmptyLines: true,
     complete: function (results) {
-      const headers = results.meta.fields || [];
       parsedData = results.data;
+      const headers = results.meta.fields || [];
       variableKeys = headers.filter(
         key => !["Row", "Source", "CASRN", "Name", "ToxPi Score"].includes(key)
       );
+
       variableWeights = {};
-      variableKeys.forEach(key => {
-        const match = key.match(/!([\d]+)\/([\d]+)!/);
-        variableWeights[key] = match ? parseFloat(match[1]) / parseFloat(match[2]) : 1;
+      variableKeys.forEach(k => {
+        const match = k.match(/!([\d]+)\/([\d]+)!/);
+        variableWeights[k] = match ? parseFloat(match[1]) / parseFloat(match[2]) : 1;
       });
 
       normalizedMatrix = parsedData.map(() => ({}));
@@ -136,32 +151,45 @@ document.getElementById('generateBtn').addEventListener('click', function () {
     title.textContent = `${row["Name"] || row["CASRN"] || `Row ${i+1}`} — Score: ${toxpi.toFixed(3)}`;
     block.appendChild(title);
 
+    // chart + legend wrapper
+    const wrapper = document.createElement('div');
+    wrapper.className = 'chart-wrapper';
+
     const chartDiv = document.createElement('div');
     chartDiv.className = 'single-chart';
     chartDiv.id = `chart-${i}`;
-    block.appendChild(chartDiv);
-    grid.appendChild(block);
+    drawSingleChart(chartDiv.id, variableKeys, scores, normWeights);
+    wrapper.appendChild(chartDiv);
+
+    const legendDiv = document.createElement('div');
+    legendDiv.className = 'chart-legend';
+    variableKeys.forEach((k, j) => {
+      const row = document.createElement('div');
+      const colorBox = document.createElement('span');
+      colorBox.style.background = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
+      row.appendChild(colorBox);
+      row.append(k.split('!')[0]);
+      legendDiv.appendChild(row);
+    });
+    wrapper.appendChild(legendDiv);
+    block.appendChild(wrapper);
 
     const checkbox = document.createElement('div');
     checkbox.style.textAlign = 'center';
     checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
     block.appendChild(checkbox);
 
-    drawSingleChart(`chart-${i}`, variableKeys, scores, normWeights);
+    grid.appendChild(block);
   });
 });
 
 function drawSingleChart(id, labels, scores, weights) {
   let traces = [], startAngle = 0;
-  const colors = Array.from({ length: labels.length }, (_, i) =>
-    `hsl(${i * 360 / labels.length}, 60%, 60%)`
-  );
-
+  const colors = labels.map((_, i) => `hsl(${i * 360 / labels.length}, 60%, 60%)`);
   for (let i = 0; i < labels.length; i++) {
     const angle = weights[i] * 360;
     const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
     const r = [0, scores[i], scores[i], 0];
-    console.log("Label:", labels[i], "Weight:", weights[i]);
     traces.push({
       type: 'scatterpolar',
       mode: 'lines',
@@ -173,65 +201,6 @@ function drawSingleChart(id, labels, scores, weights) {
       text: `${labels[i].split('!')[0]}<br>Score: ${scores[i].toFixed(2)}<br>Weight: ${(weights[i] * 100).toFixed(1)}%`,
       showlegend: false
     });
-
     startAngle += angle;
   }
-
-  Plotly.newPlot(id, traces, {
-    polar: {
-      radialaxis: { visible: false, range: [0, 1] },
-      angularaxis: { direction: 'counterclockwise', rotation: 90 }
-    },
-    margin: { t: 10, b: 10, l: 10, r: 10 },
-    width: 300, height: 300
-  }, { displayModeBar: false });
-}
-
-function downloadCSV() {
-  const headers = ["Name", "ToxPi Score", ...variableKeys.map(k => k.split('!')[0]), ...variableKeys.map(k => k.split('!')[0] + " Weight")];
-  const inputs = variableKeys.map(k => parseFloat(document.querySelector(`input[name="${k}"]`)?.value || 0));
-  const sum = inputs.reduce((s, w) => s + w, 0) || 1;
-  const normWeights = inputs.map(w => w / sum);
-
-  const rows = parsedData.map((row, i) => {
-    const name = row["Name"] || row["CASRN"] || `Row ${i+1}`;
-    const vals = variableKeys.map(k => normalizedMatrix[i][k].toFixed(4));
-    const score = vals.reduce((sum, v, j) => sum + parseFloat(v) * normWeights[j], 0).toFixed(4);
-    return [name, score, ...vals, ...normWeights.map(w => w.toFixed(4))];
-  });
-
-  const csv = [headers.join(",")].concat(rows.map(r => r.join(","))).join("\n");
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = "ToxPi_scores_export.csv";
-  link.style.display = "none";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-}
-<function exportSelectedCharts() {
-  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
-  if (checkboxes.length === 0) {
-    alert("No charts selected.");
-    return;
-  }
-
-  checkboxes.forEach((cb, index) => {
-    const chartId = cb.dataset.id;
-    const chartDiv = document.getElementById(chartId);
-    const titleDiv = chartDiv?.parentElement?.querySelector('.chart-title');
-    const fileName = titleDiv?.textContent.split('—')[0]?.trim().replace(/\s+/g, "_") || `chart_${index + 1}`;
-
-    Plotly.toImage(chartDiv, { format: 'png', width: 600, height: 600 }).then(dataUrl => {
-      const link = document.createElement("a");
-      link.href = dataUrl;
-      link.download = `${fileName}.png`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    });
-  });
-}>
-</body>
-</html>
+  Plotly.new
