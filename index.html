@@ -40,16 +40,16 @@
       justify-content: center;
       gap: 12px;
     }
-    .single-chart { width: 1000px; height: 1000px; }
+    .single-chart { width: 1000px; height: 1000px; max-width: 100%}
     .chart-legend div {
       display: flex;
       align-items: center;
-      font-size: 12px;
+      font-size: 50px;
       margin-bottom: 4px;
     }
     .chart-legend span {
-      width: 50px;
-      height: 100px;
+      width: 30px;
+      height: 30px;
       display: inline-block;
       margin-right: 6px;
       border-radius: 2px;
@@ -265,8 +265,9 @@ function exportSelectedCharts() {
     
     console.log("📦 Exporting chart:", chartId);
     const exportWrapper = document.createElement('div');
-    exportWrapper.style.width = '3300px';
-    exportWrapper.style.height = '2550px';
+    exportWrapper.style.width = '3000px';
+    exportWrapper.style.height = '2500px';
+    exportWrapper.style.overflow = 'hidden';
     exportWrapper.style.display = 'flex';
     exportWrapper.style.alignItems = 'center';
     exportWrapper.style.justifyContent = 'space-between';
@@ -285,8 +286,9 @@ function exportSelectedCharts() {
     }
 
     const chartClone = chartCanvas.cloneNode(true);
-    chartClone.style.width = '2000px'; // or 1400px
-    chartClone.style.height = '2000px';
+    chartClone.setAttribute('width', '2000');
+    chartClone.setAttribute('height', '2000');
+
 
     const legendClone = legend.cloneNode(true);
     legendClone.style.display = 'grid';
