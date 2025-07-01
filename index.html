@@ -224,7 +224,6 @@ function downloadCSV() {
     return;
   }
 
-  // Calculate ToxPi scores
   const weights = variableKeys.map(key => {
     const el = document.querySelector(`input[name="${key}"]`);
     return parseFloat(el?.value) || 0;
@@ -232,21 +231,24 @@ function downloadCSV() {
   const total = weights.reduce((sum, w) => sum + w, 0) || 1;
   const normWeights = weights.map(w => w / total);
 
-  const rows = [["Name", "ToxPi Score"]];
+  const headers = ["Name", "ToxPi Score", ...variableKeys];
+  const rows = [headers];
+
   parsedData.forEach((row, i) => {
     const scores = variableKeys.map(k => normalizedMatrix[i][k]);
     const toxpi = scores.reduce((sum, s, j) => sum + s * normWeights[j], 0);
-    rows.push([row["Name"] || row["CASRN"] || `Row ${i + 1}`, toxpi.toFixed(3)]);
+    const name = row["Name"] || row["CASRN"] || `Row ${i + 1}`;
+    rows.push([name, toxpi.toFixed(3), ...scores.map(s => s.toFixed(3))]);
   });
 
   const csvContent = rows.map(r => r.join(",")).join("\n");
   const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "toxpi_scores.csv";
+  link.download = "toxpi_scores_expanded.csv";
   link.click();
 }
-    
+ 
 function exportSelectedCharts() {
   const checkboxes = document.querySelectorAll('.download-checkbox:checked');
 
