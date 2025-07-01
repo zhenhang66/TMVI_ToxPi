@@ -40,7 +40,7 @@
       justify-content: center;
       gap: 12px;
     }
-    .single-chart { width: 300px; height: 300px; }
+    .single-chart { width: 600px; height: 600px; }
     .chart-legend div {
       display: flex;
       align-items: center;
@@ -302,7 +302,7 @@ function exportSelectedCharts() {
 
     html2canvas(exportWrapper, {
       backgroundColor: null,
-      scale: 2,
+      scale: 1,
       width: 3300,
       height: 2550
     }).then(canvas => {
