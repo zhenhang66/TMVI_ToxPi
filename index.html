@@ -153,6 +153,7 @@
 
         const wrapper = document.createElement('div');
         wrapper.className = 'chart-wrapper';
+        wrapper.id = `wrapper-${i}`;
 
         const chartDiv = document.createElement('div');
         chartDiv.className = 'single-chart';
@@ -217,6 +218,62 @@ Plotly.newPlot(id, traces, {
 }, { displayModeBar: false });
     }
 
+function downloadCSV() {
+  if (!parsedData.length) {
+    alert("No data to export yet. Please upload a CSV and generate charts first.");
+    return;
+  }
+
+  // Calculate ToxPi scores
+  const weights = variableKeys.map(key => {
+    const el = document.querySelector(`input[name="${key}"]`);
+    return parseFloat(el?.value) || 0;
+  });
+  const total = weights.reduce((sum, w) => sum + w, 0) || 1;
+  const normWeights = weights.map(w => w / total);
+
+  const rows = [["Name", "ToxPi Score"]];
+  parsedData.forEach((row, i) => {
+    const scores = variableKeys.map(k => normalizedMatrix[i][k]);
+    const toxpi = scores.reduce((sum, s, j) => sum + s * normWeights[j], 0);
+    rows.push([row["Name"] || row["CASRN"] || `Row ${i + 1}`, toxpi.toFixed(3)]);
+  });
+
+  const csvContent = rows.map(r => r.join(",")).join("\n");
+  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "toxpi_scores.csv";
+  link.click();
+}
+    
+function exportSelectedCharts() {
+  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+
+  checkboxes.forEach(cb => {
+    const chartId = cb.dataset.id; // e.g., "chart-2"
+    const chartIndex = chartId.split('-')[1];
+    const wrapper = document.getElementById(`wrapper-${chartIndex}`);
+
+    if (!wrapper) {
+      console.warn(`⚠️ No wrapper found for ${chartId}`);
+      return;
+    }
+
+    html2canvas(wrapper, {
+      backgroundColor: null,
+      scale: 3
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `${chartId}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }).catch(err => {
+      console.error(`❌ Failed to export ${chartId}:`, err);
+    });
+  });
+}
+    
 </script>
 </body>
 </html>
