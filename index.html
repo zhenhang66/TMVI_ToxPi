@@ -153,7 +153,6 @@
 
         const wrapper = document.createElement('div');
         wrapper.className = 'chart-wrapper';
-        wrapper.id = `wrapper-${i}`; // ✅ Assign unique ID
 
         const chartDiv = document.createElement('div');
         chartDiv.className = 'single-chart';
@@ -208,7 +207,7 @@
         startAngle += angle;
       }
 
-      Plotly.newPlot(id, traces, {
+Plotly.newPlot(id, traces, {
   polar: {
     radialaxis: { visible: false, range: [0, 1] },
     angularaxis: { direction: 'counterclockwise', rotation: 90 }
@@ -217,33 +216,7 @@
   width: 300, height: 300
 }, { displayModeBar: false });
     }
-    
-function exportSelectedCharts() {
-  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
 
-  checkboxes.forEach(cb => {
-    const chartId = cb.dataset.id; // e.g., "chart-2"
-    const chartIndex = chartId.split('-')[1];
-    const wrapper = document.getElementById(`wrapper-${chartIndex}`);
-
-    if (!wrapper) {
-      console.warn(`⚠️ No wrapper found for ${chartId}`);
-      return;
-    }
-
-    html2canvas(wrapper, {
-      backgroundColor: null,
-      scale: 3  // For high resolution (300+ DPI equivalent)
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = `${chartId}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    }).catch(err => {
-      console.error(`❌ Failed to export ${chartId}:`, err);
-    });
-  });
-}
-
+</script>
 </body>
 </html>
