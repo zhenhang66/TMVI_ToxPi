@@ -40,20 +40,19 @@
       justify-content: center;
       gap: 12px;
     }
-    .single-chart { width: 1000px; height: 1000px; max-width: 100%}
-    .chart-legend div {
-      display: flex;
-      align-items: center;
-      font-size: 50px;
-      margin-bottom: 4px;
+    .single-chart {
+  width: 700px;
+  height: 700px;
     }
-    .chart-legend span {
-      width: 30px;
-      height: 30px;
-      display: inline-block;
-      margin-right: 6px;
-      border-radius: 2px;
-    }
+
+    .chart-legend {
+  font-size: 18px;
+  max-width: 700px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  row-gap: 10px;
+  column-gap: 20px;
+  }
   </style>
 </head>
 <body>
