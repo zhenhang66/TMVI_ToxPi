@@ -201,6 +201,34 @@ function downloadCSV() {
   link.click();
   document.body.removeChild(link);
 }
-</script>
+  
+<function exportSelectedCharts() {
+  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert("No charts selected.");
+    return;
+  }
+
+  checkboxes.forEach((cb, index) => {
+    const chartId = cb.dataset.id;
+    const chartDiv = document.getElementById(chartId);
+    const wrapper = chartDiv?.closest('.chart-wrapper');
+    const titleDiv = wrapper?.parentElement?.querySelector('.chart-title');
+    const fileName = titleDiv?.textContent.split('—')[0]?.trim().replace(/\s+/g, "_") || `chart_${index + 1}`;
+
+    html2canvas(wrapper, {
+      scale: 3.125, // 96 DPI × 3.125 ≈ 300 DPI
+      useCORS: true,
+    }).then(canvas => {
+      const link = document.createElement("a");
+      link.href = canvas.toDataURL("image/png");
+      link.download = `${fileName}_300dpi.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+}
+>
 </body>
 </html>
