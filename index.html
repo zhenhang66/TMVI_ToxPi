@@ -262,7 +262,8 @@ function exportSelectedCharts() {
       console.warn(`⚠️ No wrapper found for ${chartId}`);
       return;
     }
-
+    
+    console.log("📦 Exporting chart:", chartId);
     const exportWrapper = document.createElement('div');
     exportWrapper.style.width = '3300px';
     exportWrapper.style.height = '2550px';
@@ -272,12 +273,21 @@ function exportSelectedCharts() {
     exportWrapper.style.padding = '100px';
     exportWrapper.style.background = 'white';
 
+    exportWrapper.style.position = 'absolute';
+    exportWrapper.style.left = '-9999px';
+
     const chartCanvas = wrapper.querySelector('.single-chart');
+    const legend = wrapper.querySelector('.chart-legend');
+
+    if (!chartCanvas || !legend) {
+      console.warn(`⚠️ Missing chart or legend in ${chartId}`);
+      return;
+    }
+
     const chartClone = chartCanvas.cloneNode(true);
     chartClone.style.width = '1100px';
     chartClone.style.height = '1100px';
 
-    const legend = wrapper.querySelector('.chart-legend');
     const legendClone = legend.cloneNode(true);
     legendClone.style.display = 'grid';
     legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
@@ -288,6 +298,7 @@ function exportSelectedCharts() {
 
     exportWrapper.appendChild(chartClone);
     exportWrapper.appendChild(legendClone);
+    document.body.appendChild(exportWrapper);
 
     html2canvas(exportWrapper, {
       backgroundColor: null,
@@ -299,11 +310,13 @@ function exportSelectedCharts() {
       link.download = `${chartId}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
+      exportWrapper.remove();
     }).catch(err => {
       console.error(`❌ Export failed for ${chartId}:`, err);
+      exportWrapper.remove();
     });
-  }); // 👈 This closes forEach
-}     // 👈 This closes function exportSelectedCharts
+  }); // ✅ closes forEach
+}     // ✅ closes exportSelectedCharts
 
 </script>
 </body>
