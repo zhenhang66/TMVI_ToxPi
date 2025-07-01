@@ -52,6 +52,7 @@
 
   <section style="text-align: center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
+    <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
   </section>
 
   <section id="chartGrid" class="chart-grid"></section>
@@ -137,6 +138,11 @@ document.getElementById('generateBtn').addEventListener('click', function () {
     chartDiv.id = `chart-${i}`;
     block.appendChild(chartDiv);
     grid.appendChild(block);
+    
+    const checkbox = document.createElement('div');
+    checkbox.style.textAlign = 'center';
+    checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
+    block.appendChild(checkbox);
 
     drawSingleChart(`chart-${i}`, variableKeys, scores, normWeights);
   });
