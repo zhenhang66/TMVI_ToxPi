@@ -262,38 +262,32 @@ function exportSelectedCharts() {
       return;
     }
 
-// Clone chart and legend elements from the original wrapper
-const chartDiv = wrapper.querySelector('.single-chart');
-const legendDiv = wrapper.querySelector('.chart-legend');
+  const exportWrapper = document.createElement('div');
+  exportWrapper.style.width = '3300px';
+  exportWrapper.style.height = '2550px';
+  exportWrapper.style.display = 'flex';
+  exportWrapper.style.alignItems = 'center';
+  exportWrapper.style.justifyContent = 'space-between';
+  exportWrapper.style.padding = '100px';
+  exportWrapper.style.background = 'white';
 
-const chartClone = chartDiv.cloneNode(true);
-const legendClone = legendDiv.cloneNode(true);
+  const chartCanvas = wrapper.querySelector('.single-chart');
+  const chartClone = chartCanvas.cloneNode(true);
+  chartClone.style.width = '1100px';
+  chartClone.style.height = '1100px';
 
-// Style clones for export layout
-chartClone.style.width = '1100px';
-chartClone.style.height = '1100px';
+  const legend = wrapper.querySelector('.chart-legend');
+  const legendClone = legend.cloneNode(true);
+  legendClone.style.display = 'grid';
+  legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+  legendClone.style.rowGap = '20px';
+  legendClone.style.columnGap = '40px';
+  legendClone.style.fontSize = '42px';
+  legendClone.style.maxWidth = '1800px';
 
-legendClone.style.display = 'grid';
-legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
-legendClone.style.rowGap = '20px';
-legendClone.style.columnGap = '40px';
-legendClone.style.fontSize = '42px';
-legendClone.style.maxWidth = '1800px';
+  exportWrapper.appendChild(chartClone);
+  exportWrapper.appendChild(legendClone);
 
-// Create export container
-const exportWrapper = document.createElement('div');
-exportWrapper.style.width = '3300px';
-exportWrapper.style.height = '2550px';
-exportWrapper.style.display = 'flex';
-exportWrapper.style.alignItems = 'center';
-exportWrapper.style.justifyContent = 'space-between';
-exportWrapper.style.padding = '100px';
-exportWrapper.style.background = 'white';
-
-exportWrapper.appendChild(chartClone);
-exportWrapper.appendChild(legendClone);
-
-// Export as PNG
 html2canvas(exportWrapper, {
   backgroundColor: null,
   scale: 1,
@@ -304,10 +298,10 @@ html2canvas(exportWrapper, {
   link.download = `${chartId}.png`;
   link.href = canvas.toDataURL('image/png');
   link.click();
-  exportWrapper.remove(); // Clean up
 }).catch(err => {
   console.error(`❌ Export failed for ${chartId}:`, err);
 });
+}
 
 </script>
 </body>
