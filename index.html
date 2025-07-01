@@ -40,7 +40,7 @@
       justify-content: center;
       gap: 12px;
     }
-    .single-chart { width: 600px; height: 600px; }
+    .single-chart { width: 1000px; height: 1000px; }
     .chart-legend div {
       display: flex;
       align-items: center;
@@ -48,8 +48,8 @@
       margin-bottom: 4px;
     }
     .chart-legend span {
-      width: 12px;
-      height: 12px;
+      width: 50px;
+      height: 100px;
       display: inline-block;
       margin-right: 6px;
       border-radius: 2px;
@@ -302,7 +302,7 @@ function exportSelectedCharts() {
 
     html2canvas(exportWrapper, {
       backgroundColor: null,
-      scale: 1,
+      scale: 2,
       width: 3300,
       height: 2550
     }).then(canvas => {
