@@ -62,36 +62,49 @@
 <script>
 let parsedData = [], variableKeys = [], variableWeights = {}, normalizedMatrix = [];
 
-document.getElementById('csvUpload').addEventListener('change', function (e) {
-  const file = e.target.files[0];
-  if (!file) return;
+document.getElementById('generateBtn').addEventListener('click', function () {
+  // ✅ Recollect weights from sliders
+  const weights = variableKeys.map(key => {
+    const el = document.querySelector(`input[name="${key}"]`);
+    return parseFloat(el?.value) || 0;
+  });
 
-  Papa.parse(file, {
-    header: true,
-    dynamicTyping: true,
-    skipEmptyLines: true,
-    complete: function (results) {
-      const headers = results.meta.fields || [];
-      parsedData = results.data;
-      variableKeys = headers.filter(
-        key => !["Row", "Source", "CASRN", "Name", "ToxPi Score"].includes(key)
-      );
-      variableWeights = {};
-      variableKeys.forEach(key => {
-        const match = key.match(/!([\d]+)\/([\d]+)!/);
-        variableWeights[key] = match ? parseFloat(match[1]) / parseFloat(match[2]) : 1;
-      });
+  // 🧠 Normalize weights
+  const total = weights.reduce((sum, w) => sum + w, 0) || 1;
+  const normWeights = weights.map(w => w / total);
 
-      normalizedMatrix = parsedData.map(() => ({}));
-      variableKeys.forEach(key => {
-        const values = parsedData.map(row => parseFloat(row[key]));
-        const min = Math.min(...values), max = Math.max(...values);
-        const range = max - min || 1;
-        parsedData.forEach((row, i) => {
-          const x = parseFloat(row[key]);
-          normalizedMatrix[i][key] = isNaN(x) ? 0 : (x - min) / range;
-        });
-      });
+  // 🧱 Clear and rebuild chart grid
+  const grid = document.getElementById('chartGrid');
+  grid.innerHTML = '';
+
+  parsedData.forEach((row, i) => {
+    const scores = variableKeys.map(k => normalizedMatrix[i][k]);
+
+    const block = document.createElement('div');
+    block.className = 'chart-block';
+
+    const title = document.createElement('div');
+    title.className = 'chart-title';
+    title.textContent = `${row["Name"] || row["CASRN"] || `Row ${i+1}`} — Score: ${(
+      scores.reduce((s, x, j) => s + x * normWeights[j], 0)
+    ).toFixed(3)}`;
+    block.appendChild(title);
+
+    const chartDiv = document.createElement('div');
+    chartDiv.className = 'single-chart';
+    chartDiv.id = `chart-${i}`;
+    block.appendChild(chartDiv);
+
+    const checkbox = document.createElement('div');
+    checkbox.style.textAlign = 'center';
+    checkbox.innerHTML = `<input type="checkbox" class="download-checkbox" data-id="chart-${i}"> Select for PNG Export`;
+    block.appendChild(checkbox);
+
+    grid.appendChild(block);
+    drawSingleChart(chartDiv.id, variableKeys, scores, normWeights);
+  });
+});
+
 
       buildWeightInputs();
       document.getElementById('generate-section').style.display = 'block';
