@@ -253,7 +253,7 @@ function exportSelectedCharts() {
   const checkboxes = document.querySelectorAll('.download-checkbox:checked');
 
   checkboxes.forEach(cb => {
-    const chartId = cb.dataset.id; // e.g., "chart-2"
+    const chartId = cb.dataset.id;
     const chartIndex = chartId.split('-')[1];
     const wrapper = document.getElementById(`wrapper-${chartIndex}`);
 
@@ -262,46 +262,47 @@ function exportSelectedCharts() {
       return;
     }
 
-  const exportWrapper = document.createElement('div');
-  exportWrapper.style.width = '3300px';
-  exportWrapper.style.height = '2550px';
-  exportWrapper.style.display = 'flex';
-  exportWrapper.style.alignItems = 'center';
-  exportWrapper.style.justifyContent = 'space-between';
-  exportWrapper.style.padding = '100px';
-  exportWrapper.style.background = 'white';
+    const exportWrapper = document.createElement('div');
+    exportWrapper.style.width = '3300px';
+    exportWrapper.style.height = '2550px';
+    exportWrapper.style.display = 'flex';
+    exportWrapper.style.alignItems = 'center';
+    exportWrapper.style.justifyContent = 'space-between';
+    exportWrapper.style.padding = '100px';
+    exportWrapper.style.background = 'white';
 
-  const chartCanvas = wrapper.querySelector('.single-chart');
-  const chartClone = chartCanvas.cloneNode(true);
-  chartClone.style.width = '1100px';
-  chartClone.style.height = '1100px';
+    const chartCanvas = wrapper.querySelector('.single-chart');
+    const chartClone = chartCanvas.cloneNode(true);
+    chartClone.style.width = '1100px';
+    chartClone.style.height = '1100px';
 
-  const legend = wrapper.querySelector('.chart-legend');
-  const legendClone = legend.cloneNode(true);
-  legendClone.style.display = 'grid';
-  legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
-  legendClone.style.rowGap = '20px';
-  legendClone.style.columnGap = '40px';
-  legendClone.style.fontSize = '42px';
-  legendClone.style.maxWidth = '1800px';
+    const legend = wrapper.querySelector('.chart-legend');
+    const legendClone = legend.cloneNode(true);
+    legendClone.style.display = 'grid';
+    legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
+    legendClone.style.rowGap = '20px';
+    legendClone.style.columnGap = '40px';
+    legendClone.style.fontSize = '42px';
+    legendClone.style.maxWidth = '1800px';
 
-  exportWrapper.appendChild(chartClone);
-  exportWrapper.appendChild(legendClone);
+    exportWrapper.appendChild(chartClone);
+    exportWrapper.appendChild(legendClone);
 
-html2canvas(exportWrapper, {
-  backgroundColor: null,
-  scale: 1,
-  width: 3300,
-  height: 2550
-}).then(canvas => {
-  const link = document.createElement('a');
-  link.download = `${chartId}.png`;
-  link.href = canvas.toDataURL('image/png');
-  link.click();
-}).catch(err => {
-  console.error(`❌ Export failed for ${chartId}:`, err);
-});
-}
+    html2canvas(exportWrapper, {
+      backgroundColor: null,
+      scale: 1,
+      width: 3300,
+      height: 2550
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `${chartId}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    }).catch(err => {
+      console.error(`❌ Export failed for ${chartId}:`, err);
+    });
+  }); // 👈 This closes forEach
+}     // 👈 This closes function exportSelectedCharts
 
 </script>
 </body>
