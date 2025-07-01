@@ -151,8 +151,10 @@
         title.textContent = `${row["Name"] || row["CASRN"] || `Row ${i + 1}`} — Score: ${toxpi.toFixed(3)}`;
         block.appendChild(title);
 
-        const wrapper = document.createElement('div');
-        wrapper.className = 'chart-wrapper';
+        const chartId = cb.dataset.id;
+        const wrapperId = `wrapper-${chartId.split('-')[1]}`; // match the index
+        const wrapper = document.getElementById(wrapperId);
+
 
         const chartDiv = document.createElement('div');
         chartDiv.className = 'single-chart';
