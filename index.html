@@ -285,15 +285,15 @@ function exportSelectedCharts() {
     }
 
     const chartClone = chartCanvas.cloneNode(true);
-    chartClone.style.width = '1400px'; // or 1500px
-    chartClone.style.height = '1400px';
+    chartClone.style.width = '2000px'; // or 1400px
+    chartClone.style.height = '2000px';
 
     const legendClone = legend.cloneNode(true);
     legendClone.style.display = 'grid';
     legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(300px, 1fr))';
     legendClone.style.rowGap = '20px';
     legendClone.style.columnGap = '40px';
-    legendClone.style.fontSize = '48px'; // or go big with 60px
+    legendClone.style.fontSize = '60px'; // or go big with 60px
     legendClone.style.maxWidth = '1800px';
 
     exportWrapper.appendChild(chartClone);
