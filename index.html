@@ -299,22 +299,20 @@ function exportSelectedCharts() {
     console.log("📤 Exporting", chartId);
 
     const exportWrapper = document.createElement('div');
-    exportWrapper.style.width = '3300px';
-    exportWrapper.style.height = '2550px';
+    exportWrapper.style.width = '1600px';
+    exportWrapper.style.height = '1600px';
     exportWrapper.style.display = 'flex';
     exportWrapper.style.alignItems = 'center';
-    exportWrapper.style.justifyContent = 'space-between';
+    exportWrapper.style.justifyContent = 'center';
     exportWrapper.style.background = 'white';
     exportWrapper.style.padding = '60px';
-    exportWrapper.style.gap = '60px';
     exportWrapper.style.position = 'absolute';
     exportWrapper.style.left = '-9999px';
 
     const chartCanvas = wrapper.querySelector('.single-chart');
-    const legend = wrapper.querySelector('.chart-legend');
-    
-    if (!chartCanvas || !legend) {
-      console.warn(`⚠️ Chart or legend missing for ${chartId}`);
+
+    if (!chartCanvas) {
+      console.warn(`⚠️ Chart missing for ${chartId}`);
       return;
     }
 
@@ -326,39 +324,27 @@ function exportSelectedCharts() {
     chartClone.style.transform = 'scale(1)';
     chartClone.style.transformOrigin = 'top left';
 
-    const legendClone = legend.cloneNode(true);
-    legendClone.style.display = 'grid';
-    legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(220px, 1fr))';
-    legendClone.style.fontSize = '32px';
-    legendClone.style.maxWidth = '1500px';
-    legendClone.style.rowGap = '10px';
-    legendClone.style.columnGap = '25px';
-    legendClone.style.marginLeft = '20px';
-
     exportWrapper.appendChild(chartClone);
-    exportWrapper.appendChild(legendClone);
     document.body.appendChild(exportWrapper);
 
-  html2canvas(exportWrapper, {
-    backgroundColor: null,
-    scale: 2,
-    width: 3300,
-    height: 2550
-  }).then(canvas => {
-    const link = document.createElement('a');
-    link.download = `${chartId}.png`;
-    link.href = canvas.toDataURL('image/png');
-  
-    console.log("✅ Canvas captured:", canvas.toDataURL().substring(0, 100)); // 🟢 Add this line
-    link.click();
-    exportWrapper.remove();
-  }).catch(err => {
-    console.error(`❌ Export failed for ${chartId}: `, err);
-    exportWrapper.remove();
-  });
+    html2canvas(exportWrapper, {
+      backgroundColor: null,
+      scale: 2,
+      width: 1600,
+      height: 1600
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.download = `${chartId}.png`;
+      link.href = canvas.toDataURL('image/png');
+      setTimeout(() => link.click(), 0); // This helps avoid browser popup blockers
+      exportWrapper.remove();
+    }).catch(err => {
+      console.error(`❌ Export failed for ${chartId}:`, err);
+      exportWrapper.remove();
+    });
   });
 }
-    
+  
 </script>
 </body>
 </html>
