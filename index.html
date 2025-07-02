@@ -339,21 +339,23 @@ function exportSelectedCharts() {
     exportWrapper.appendChild(legendClone);
     document.body.appendChild(exportWrapper);
 
-    html2canvas(exportWrapper, {
-      backgroundColor: null,
-      scale: 2,
-      width: 3300,
-      height: 2550
-    }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = `${chartId}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-      exportWrapper.remove();
-    }).catch(err => {
-      console.error(`❌ Export failed for ${chartId}:`, err);
-      exportWrapper.remove();
-    });
+  html2canvas(exportWrapper, {
+    backgroundColor: null,
+    scale: 2,
+    width: 3300,
+    height: 2550
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = `${chartId}.png`;
+    link.href = canvas.toDataURL('image/png');
+  
+    console.log("✅ Canvas captured:", canvas.toDataURL().substring(0, 100)); // 🟢 Add this line
+    link.click();
+    exportWrapper.remove();
+  }).catch(err => {
+    console.error(`❌ Export failed for ${chartId}: `, err);
+    exportWrapper.remove();
+  });
   });
 }
     
