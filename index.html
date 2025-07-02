@@ -311,11 +311,6 @@ function exportSelectedCharts() {
     exportWrapper.style.left = '-9999px';
 
     const chartCanvas = wrapper.querySelector('.single-chart');
-    const legend = wrapper.querySelector('.chart-legend');
-
-    if (!chartCanvas || !legend) {
-      console.warn(`⚠️ Chart or legend missing for ${chartId}`);
-      return;
     }
 
     const chartClone = chartCanvas.cloneNode(true);
