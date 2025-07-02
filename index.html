@@ -20,7 +20,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 40px;
-      margin-top: 40px;
+      justify-conent: center;
     }
     .chart-block {
       border: 1px solid #ddd;
@@ -170,7 +170,6 @@
           row.append(k.split('!')[0]);
           legend.appendChild(row);
         });
-        wrapper.appendChild(legend);
 
         block.appendChild(wrapper);
 
@@ -182,7 +181,8 @@
         grid.appendChild(block);
         drawSingleChart(chartDiv.id, variableKeys, scores, normWeights);
       });
-    });
+        createGlobalLegend();
+      });
 
     function drawSingleChart(id, labels, scores, weights) {
       let traces = [], startAngle = 0;
@@ -207,7 +207,7 @@
         });
         startAngle += angle;
       }
-
+      
 Plotly.newPlot(id, traces, {
   polar: {
     radialaxis: { visible: false, range: [0, 1] },
@@ -217,6 +217,40 @@ Plotly.newPlot(id, traces, {
   width: 300, height: 300
 }, { displayModeBar: false });
     }
+    
+function createGlobalLegend() {
+  const existing = document.getElementById('global-legend');
+  if (existing) existing.remove();
+
+  const legend = document.createElement('div');
+  legend.id = 'global-legend';
+  legend.className = 'chart-legend';
+  legend.style.maxWidth = '1000px';
+  legend.style.margin = '40px auto';
+  legend.style.display = 'grid';
+  legend.style.gridTemplateColumns = 'repeat(auto-fit, minmax(200px, 1fr))';
+  legend.style.rowGap = '10px';
+  legend.style.columnGap = '20px';
+
+  variableKeys.forEach((k, j) => {
+    const row = document.createElement('div');
+    const colorBox = document.createElement('span');
+    colorBox.style.backgroundColor = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
+    Object.assign(colorBox.style, {
+      width: '16px',
+      height: '16px',
+      display: 'inline-block',
+      marginRight: '6px',
+      borderRadius: '3px'
+    });
+
+    row.appendChild(colorBox);
+    row.append(k.split('!')[0]);
+    legend.appendChild(row);
+  });
+
+  document.body.appendChild(legend);
+}
 
 function downloadCSV() {
   if (!parsedData.length) {
