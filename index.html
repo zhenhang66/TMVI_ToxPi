@@ -6,7 +6,6 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <style>
     body { font-family: sans-serif; margin: 40px; }
     h2, h3 { text-align: center; }
@@ -40,22 +39,20 @@
       justify-content: center;
       gap: 12px;
     }
-  .single-chart {
-  width: 500px;
-  height: 500px;
-  max-width: 100%;
-  margin: auto;
-  transform: scale(1); /* Reset any previous dynamic scaling */
-  }
-  .chart-legend {
-  font-size: 16px;
-  max-width: 500px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  row-gap: 10px;
-  column-gap: 20px;
-  margin: 20px auto;
-  }
+    .single-chart { width: 300px; height: 300px; }
+    .chart-legend div {
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .chart-legend span {
+      width: 12px;
+      height: 12px;
+      display: inline-block;
+      margin-right: 6px;
+      border-radius: 2px;
+    }
   </style>
 </head>
 <body>
@@ -256,7 +253,7 @@ function exportSelectedCharts() {
   const checkboxes = document.querySelectorAll('.download-checkbox:checked');
 
   checkboxes.forEach(cb => {
-    const chartId = cb.dataset.id;
+    const chartId = cb.dataset.id; // e.g., "chart-2"
     const chartIndex = chartId.split('-')[1];
     const wrapper = document.getElementById(`wrapper-${chartIndex}`);
 
@@ -264,66 +261,21 @@ function exportSelectedCharts() {
       console.warn(`⚠️ No wrapper found for ${chartId}`);
       return;
     }
-    
-    console.log("📦 Exporting chart:", chartId);
-    const exportWrapper = document.createElement('div');
-    exportWrapper.style.width = '3000px';
-    exportWrapper.style.height = '2500px';
-    exportWrapper.style.overflow = 'hidden';
-    exportWrapper.style.display = 'flex';
-    exportWrapper.style.alignItems = 'center';
-    exportWrapper.style.justifyContent = 'space-between';
-    exportWrapper.style.padding = '60px';
-    exportWrapper.style.background = 'white';
 
-    exportWrapper.style.position = 'absolute';
-    exportWrapper.style.left = '-9999px';
-
-    const chartCanvas = wrapper.querySelector('.single-chart');
-    const legend = wrapper.querySelector('.chart-legend');
-
-    if (!chartCanvas || !legend) {
-      console.warn(`⚠️ Missing chart or legend in ${chartId}`);
-      return;
-    }
-
-    const chartClone = chartCanvas.cloneNode(true);
-    chartClone.setAttribute('width', '1600');
-    chartClone.setAttribute('height', '1600');
-    chartClone.style.width = '1600px';
-    chartClone.style.height = '1600px';
-    
-    legendClone.style.display = 'grid';
-    legendClone.style.gridTemplateColumns = 'repeat(auto-fit, minmax(250px, 1fr))';
-    legendClone.style.rowGap = '15px';
-    legendClone.style.columnGap = '30px';
-    legendClone.style.fontSize = '36px';
-    legendClone.style.maxWidth = '1600px';
-    legendClone.style.marginLeft = '40px'; // Optional: adds spacing from chart
-
-
-    exportWrapper.appendChild(chartClone);
-    exportWrapper.appendChild(legendClone);
-    document.body.appendChild(exportWrapper);
-
-    html2canvas(exportWrapper, {
+    html2canvas(wrapper, {
       backgroundColor: null,
-      scale: 2,
-      width: 3300,
-      height: 2550
+      scale: 3
     }).then(canvas => {
       const link = document.createElement('a');
       link.download = `${chartId}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
-      exportWrapper.remove();
     }).catch(err => {
-      console.error(`❌ Export failed for ${chartId}:`, err);
-      exportWrapper.remove();
+      console.error(`❌ Failed to export ${chartId}:`, err);
     });
-  }); // ✅ closes forEach
-}     // ✅ closes exportSelectedCharts
-
+  });
+}
+    
 </script>
 </body>
 </html>
