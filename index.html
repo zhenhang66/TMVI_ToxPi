@@ -27,14 +27,9 @@
       border-radius: 6px;
       background: #f9f9f9;
       padding: 12px;
+      overflow: visible;
+      min-height: 420px; /* or whatever fits your layout */
     }
-    @media screen {
-    .chart-block {
-      transform: scale(0.5);
-      transform-origin: top left;
-      margin-bottom: -200px; /* adjust if needed */
-    }
-  }
     .chart-title {
       text-align: center;
       font-weight: bold;
@@ -54,6 +49,13 @@
       align-items: center;
       justify-content: center;
       position: relative;
+    }
+    
+    @media screen {
+      .single-chart {
+        transform: scale(0.5);
+        transform-origin: top left;
+      }
     }
     .chart-legend div {
       display: flex;
