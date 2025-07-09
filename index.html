@@ -39,7 +39,15 @@
       justify-content: center;
       gap: 12px;
     }
-    .single-chart { width: 300px; height: 300px; }
+    .single-chart {
+      width: 800px;
+      height: 800px;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
     .chart-legend div {
       display: flex;
       align-items: center;
@@ -213,9 +221,11 @@ Plotly.newPlot(id, traces, {
     radialaxis: { visible: false, range: [0, 1] },
     angularaxis: { direction: 'counterclockwise', rotation: 90 }
   },
-  margin: { t: 10, b: 10, l: 10, r: 10 },
-  width: 300, height: 300
-}, { displayModeBar: false });
+  margin: { t: 0, b: 0, l: 0, r: 0 },
+  width: 800, height: 800
+}, { 
+  displayModeBar: false 
+});
     }
     
 function createGlobalLegend() {
