@@ -283,71 +283,92 @@ function downloadCSV() {
   link.click();
 }
  
-function exportSelectedCharts() {
-  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
-
-  checkboxes.forEach(cb => {
-    const chartId = cb.dataset.id;
-    const chartIndex = chartId.split('-')[1];
-    const wrapper = document.getElementById(`wrapper-${chartIndex}`);
-
-    if (!wrapper) {
-      console.warn(`⚠️ No wrapper found for ${chartId}`);
-      return;
-    }
-
-    console.log("📤 Exporting", chartId);
-
-    const exportWrapper = document.createElement('div');
-    exportWrapper.style.width = '1122px';
-    exportWrapper.style.height = '793px';
-    exportWrapper.style.display = 'flex';
-    exportWrapper.style.alignItems = 'center';
-    exportWrapper.style.justifyContent = 'center';
-    exportWrapper.style.background = 'white';
-    exportWrapper.style.padding = '60px';
-    exportWrapper.style.position = 'absolute';
-    exportWrapper.style.left = '-9999px';
-
-    const chartCanvas = wrapper.querySelector('.single-chart');
-
-    if (!chartCanvas) {
-      console.warn(`⚠️ Chart missing for ${chartId}`);
-      return;
-    }
-
-    const chartClone = chartCanvas.cloneNode(true);
-    chartClone.style.width = '1600px';
-    chartClone.style.height = '1600px';
-    chartClone.setAttribute('width', '1600');
-    chartClone.setAttribute('height', '1600');
-    chartClone.style.transform = 'scale(1)';
-    chartClone.style.transformOrigin = 'top left';
-
-    exportWrapper.appendChild(chartClone);
-    document.body.appendChild(exportWrapper);
-
-  // Optional: Force the chartClone to a larger size
-    chartClone.style.width = '800px';
-    chartClone.style.height = '800px';
-    chartClone.style.margin = 'auto';
-    chartClone.style.display = 'block';
-    
-  // Then call html2canvas with higher scale
-  html2canvas(exportWrapper, {
-    backgroundColor: null,
-    scale: 3, // High-res export
-    useCORS: true
-  }).then(canvas => {
-    const link = document.createElement('a');
-    link.download = `${chartId}.png`;
-    link.href = canvas.toDataURL('image/png');
-    link.click();
-    exportWrapper.remove();
-  });
-  });
-}
+  function exportSelectedCharts() {
+    const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+    const selectedCharts = [];
   
+    // Step 1: Collect selected charts
+    checkboxes.forEach(cb => {
+      const chartId = cb.dataset.id;
+      const chartIndex = chartId.split('-')[1];
+      const wrapper = document.getElementById(`wrapper-${chartIndex}`);
+      const chartCanvas = wrapper?.querySelector('.single-chart');
+  
+      if (chartCanvas) {
+        selectedCharts.push({ chartId, chartCanvas });
+      }
+    });
+  
+    if (selectedCharts.length === 0) {
+      alert('No charts selected for export.');
+      return;
+    }
+  
+    // Step 2: Layout logic
+    const chartsPerRow = 3;
+    const chartSize = 800;
+    const padding = 50;
+    const totalCharts = selectedCharts.length;
+    const rows = Math.ceil(totalCharts / chartsPerRow);
+    const canvasWidth = chartsPerRow * (chartSize + padding);
+    const canvasHeight = rows * (chartSize + padding + 50); // Extra space for labels
+  
+    const masterCanvas = document.createElement('canvas');
+    masterCanvas.width = canvasWidth;
+    masterCanvas.height = canvasHeight;
+    const ctx = masterCanvas.getContext('2d');
+  
+    // Step 3: Render each chart
+    const renderPromises = selectedCharts.map((chartObj, index) => {
+      const { chartId, chartCanvas } = chartObj;
+  
+      const chartClone = chartCanvas.cloneNode(true);
+      chartClone.style.width = '800px';
+      chartClone.style.height = '800px';
+      chartClone.style.margin = '0';
+      chartClone.style.display = 'block';
+  
+      const exportWrapper = document.createElement('div');
+      exportWrapper.style.position = 'absolute';
+      exportWrapper.style.left = '-9999px';
+      exportWrapper.style.top = '0';
+      exportWrapper.style.width = '800px';
+      exportWrapper.style.height = '800px';
+      exportWrapper.style.background = 'white';
+      exportWrapper.appendChild(chartClone);
+      document.body.appendChild(exportWrapper);
+  
+      const col = index % chartsPerRow;
+      const row = Math.floor(index / chartsPerRow);
+      const x = col * (chartSize + padding);
+      const y = row * (chartSize + padding + 50); // 50px for label
+  
+      return html2canvas(exportWrapper, {
+        backgroundColor: null,
+        scale: 3,
+        useCORS: true
+      }).then(canvas => {
+        ctx.drawImage(canvas, x, y, chartSize, chartSize);
+  
+        // Add chart name
+        ctx.font = '28px sans-serif';
+        ctx.fillStyle = '#000';
+        ctx.textAlign = 'center';
+        ctx.fillText(chartId, x + chartSize / 2, y + chartSize + 35);
+  
+        exportWrapper.remove();
+      });
+    });
+  
+    // Step 4: Export final image
+    Promise.all(renderPromises).then(() => {
+      const link = document.createElement('a');
+      link.download = 'radial-diagrams.png';
+      link.href = masterCanvas.toDataURL('image/png');
+      link.click();
+    });
+  }
+    
 </script>
 </body>
 </html>
