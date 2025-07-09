@@ -327,21 +327,26 @@ function exportSelectedCharts() {
     exportWrapper.appendChild(chartClone);
     document.body.appendChild(exportWrapper);
 
-    html2canvas(exportWrapper, {
+  // Optional: Force the chartClone to a larger size
+  chartClone.style.width = '800px';
+  chartClone.style.height = '800px';
+  
+  // Then call html2canvas with higher scale
+  html2canvas(exportWrapper, {
       backgroundColor: null,
-      scale: 2,
+      scale: 3, // Increase this for higher resolution
       width: 1600,
       height: 1600
-    }).then(canvas => {
+  }).then(canvas => {
       const link = document.createElement('a');
       link.download = `${chartId}.png`;
       link.href = canvas.toDataURL('image/png');
-      setTimeout(() => link.click(), 0); // This helps avoid browser popup blockers
+      setTimeout(() => link.click(), 0); // Helps avoid popup blockers
       exportWrapper.remove();
-    }).catch(err => {
+  }).catch(err => {
       console.error(`❌ Export failed for ${chartId}:`, err);
       exportWrapper.remove();
-    });
+  });
   });
 }
   
