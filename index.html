@@ -47,6 +47,8 @@
       align-items: center;
       justify-content: center;
       position: relative;
+      transform: scale(0.5); /* visually shrink */
+      transform-origin: top left;
     }
     .chart-legend div {
       display: flex;
@@ -64,8 +66,8 @@
      /* Responsive chart sizing */
     @media screen {
       .single-chart {
-        width: 400px;
-        height: 400px;
+        transform: scale(0.5);
+        transform-origin: top left;
       }
     }
 
