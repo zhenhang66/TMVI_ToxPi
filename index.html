@@ -299,8 +299,8 @@ function exportSelectedCharts() {
     console.log("📤 Exporting", chartId);
 
     const exportWrapper = document.createElement('div');
-    exportWrapper.style.width = '1600px';
-    exportWrapper.style.height = '1600px';
+    exportWrapper.style.width = '1122px';
+    exportWrapper.style.height = '793px';
     exportWrapper.style.display = 'flex';
     exportWrapper.style.alignItems = 'center';
     exportWrapper.style.justifyContent = 'center';
@@ -328,24 +328,22 @@ function exportSelectedCharts() {
     document.body.appendChild(exportWrapper);
 
   // Optional: Force the chartClone to a larger size
-  chartClone.style.width = '800px';
-  chartClone.style.height = '800px';
-  
+    chartClone.style.width = '800px';
+    chartClone.style.height = '800px';
+    chartClone.style.margin = 'auto';
+    chartClone.style.display = 'block';
+    
   // Then call html2canvas with higher scale
   html2canvas(exportWrapper, {
-      backgroundColor: null,
-      scale: 3, // Increase this for higher resolution
-      width: 1600,
-      height: 1600
+    backgroundColor: null,
+    scale: 3, // High-res export
+    useCORS: true
   }).then(canvas => {
-      const link = document.createElement('a');
-      link.download = `${chartId}.png`;
-      link.href = canvas.toDataURL('image/png');
-      setTimeout(() => link.click(), 0); // Helps avoid popup blockers
-      exportWrapper.remove();
-  }).catch(err => {
-      console.error(`❌ Export failed for ${chartId}:`, err);
-      exportWrapper.remove();
+    const link = document.createElement('a');
+    link.download = `${chartId}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+    exportWrapper.remove();
   });
   });
 }
