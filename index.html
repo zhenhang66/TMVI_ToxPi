@@ -17,10 +17,11 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 40px;
-      justify-conent: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: flex-start;
     }
     .chart-block {
       border: 1px solid #ddd;
@@ -65,9 +66,10 @@
     }
      /* Responsive chart sizing */
     @media screen {
-      .single-chart {
+      .chart-block {
         transform: scale(0.5);
         transform-origin: top left;
+        margin-bottom: -200px; /* adjust spacing if needed */
       }
     }
 
@@ -318,7 +320,7 @@ function downloadCSV() {
       const chartId = cb.dataset.id;
       const chartIndex = chartId.split('-')[1];
       const wrapper = document.getElementById(`wrapper-${chartIndex}`);
-      const chartCanvas = wrapper?.querySelector('.single-chart');
+      const chartCanvas = wrapper; // includes title, score, and chart
   
       if (chartCanvas) {
         selectedCharts.push({ chartId, chartCanvas });
