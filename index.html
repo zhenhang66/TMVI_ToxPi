@@ -230,33 +230,33 @@
       }
     
         Plotly.newPlot(id, traces, {
-    polar: {
-      radialaxis: {
-        visible: false,
-        range: [0, 1],
-        showticklabels: false,
-        ticks: '',
-        showline: false
-      },
-      angularaxis: {
-        direction: 'counterclockwise',
-        rotation: 90,
-        showticklabels: false,
-        ticks: '',
-        showline: false
-      },
-      domain: {
-        x: [0, 1],  // full width
-        y: [0, 1]   // full height
-      }
+  polar: {
+    radialaxis: {
+      visible: false,
+      range: [0, 1],
+      showticklabels: false,
+      ticks: '',
+      showline: false
     },
-    margin: { t: 0, b: 0, l: 0, r: 0 },
-    width: 800,
-    height: 800
-  }, {
-    displayModeBar: false,
-    staticPlot: true
-  });
+    angularaxis: {
+      direction: 'counterclockwise',
+      rotation: 90,
+      showticklabels: false,
+      ticks: '',
+      showline: false
+    },
+    domain: {
+      x: [0.02, 0.98],  // tighter margins
+      y: [0.02, 0.98]
+    }
+  },
+  margin: { t: 0, b: 0, l: 0, r: 0 },
+  width: 800,
+  height: 800
+}, {
+  displayModeBar: false,
+  staticPlot: true
+});
       
 function createGlobalLegend() {
   const existing = document.getElementById('global-legend');
