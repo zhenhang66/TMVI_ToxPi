@@ -262,13 +262,12 @@ Plotly.newPlot(id, traces, {
   displayModeBar: false
 }).then(() => {
   // ✅ Force a reflow after rendering
-setTimeout(() => {
+  requestAnimationFrame(() => {
     Plotly.Plots.resize(document.getElementById(id));
-  }, 100);  // delay allows layout to settle
-});
+  });
 });
 }
-    
+      
 function createGlobalLegend() {
   const existing = document.getElementById('global-legend');
   if (existing) existing.remove();
