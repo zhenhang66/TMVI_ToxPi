@@ -232,14 +232,24 @@
 Plotly.newPlot(id, traces, {
   polar: {
     radialaxis: { visible: false, range: [0, 1] },
-    angularaxis: { direction: 'counterclockwise', rotation: 90 }
+    angularaxis: {
+      direction: 'counterclockwise',
+      rotation: 90,
+      showticklabels: false,
+      ticks: '',
+      showline: false
+    },
+       domain: {
+      x: [0.025, 0.975],
+      y: [0.025, 0.975]
+    }
   },
   margin: { t: 0, b: 0, l: 0, r: 0 },
-  width: 800, height: 800
-}, { 
-  displayModeBar: false 
+  width: 800,
+  height: 800
+}, {
+  displayModeBar: false
 });
-    }
     
 function createGlobalLegend() {
   const existing = document.getElementById('global-legend');
