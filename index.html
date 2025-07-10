@@ -17,19 +17,16 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
-      align-items: flex-start;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 40px;
+      justify-conent: center;
     }
     .chart-block {
       border: 1px solid #ddd;
       border-radius: 6px;
       background: #f9f9f9;
       padding: 12px;
-      overflow: visible;
-      min-height: 420px; /* or whatever fits your layout */
     }
     .chart-title {
       text-align: center;
@@ -50,13 +47,6 @@
       align-items: center;
       justify-content: center;
       position: relative;
-    }
-    
-    @media screen {
-      .single-chart {
-        transform: scale(0.5);
-        transform-origin: top left;
-      }
     }
     .chart-legend div {
       display: flex;
