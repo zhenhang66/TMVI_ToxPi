@@ -17,20 +17,16 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: flex;
-      flex-wrap: nowrap; /* force one row */
-      gap: 20px;
-      justify-content: flex-start;
-      align-items: flex-start;
-      overflow-x: auto; /* horizontal scroll if needed */
-      padding: 10px;
-      background: #fefefe;
-      border: 1px solid #eee;
-      border-radius: 6px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 40px;
+      justify-conent: center;
     }
     .chart-block {
-      flex-shrink: 0; /* prevent charts from shrinking in flex row */
-      width: 420px;    /* enough for scaled chart + title/score */
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background: #f9f9f9;
+      padding: 12px;
     }
     .chart-title {
       text-align: center;
@@ -52,12 +48,6 @@
       justify-content: center;
       position: relative;
     }
-    @media screen {
-    .single-chart {
-      transform: scale(0.5);
-      transform-origin: top left;
-    }
-  }
     .chart-legend div {
       display: flex;
       align-items: center;
