@@ -229,14 +229,11 @@
         startAngle += angle;
       }
     
-        Plotly.newPlot(id, traces, {
+       Plotly.newPlot(id, traces, {
   polar: {
     radialaxis: {
       visible: false,
-      range: [0, 1],
-      showticklabels: false,
-      ticks: '',
-      showline: false
+      range: [0, 1]
     },
     angularaxis: {
       direction: 'counterclockwise',
@@ -246,16 +243,15 @@
       showline: false
     },
     domain: {
-      x: [0.02, 0.98],  // tighter margins
-      y: [0.02, 0.98]
+      x: [0.05, 0.95],  // 5% margin
+      y: [0.05, 0.95]
     }
   },
   margin: { t: 0, b: 0, l: 0, r: 0 },
   width: 800,
   height: 800
 }, {
-  displayModeBar: false,
-  staticPlot: true
+  displayModeBar: false
 });
       
 function createGlobalLegend() {
