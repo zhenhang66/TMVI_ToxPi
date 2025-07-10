@@ -206,53 +206,57 @@
       });
 
     function drawSingleChart(id, labels, scores, weights) {
-      let traces = [], startAngle = 0;
-      const colors = Array.from({ length: labels.length }, (_, i) =>
-        `hsl(${i * 360 / labels.length}, 60%, 60%)`
-      );
-    
-      for (let i = 0; i < labels.length; i++) {
-        const angle = weights[i] * 360;
-        const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
-        const r = [0, scores[i], scores[i], 0];
-        traces.push({
-          type: 'scatterpolar',
-          mode: 'lines',
-          r, theta,
-          fill: 'toself',
-          fillcolor: colors[i],
-          line: { width: 0 },
-          hoverinfo: 'text',
-          text: `${labels[i].split('!')[0]}<br>Score: ${scores[i].toFixed(2)}<br>Weight: ${(weights[i] * 100).toFixed(1)}%`,
-          showlegend: false
-        });
-        startAngle += angle;
+  let traces = [], startAngle = 0;
+  const colors = Array.from({ length: labels.length }, (_, i) =>
+    `hsl(${i * 360 / labels.length}, 60%, 60%)`
+  );
+
+  for (let i = 0; i < labels.length; i++) {
+    const angle = weights[i] * 360;
+    const theta = [startAngle, startAngle, startAngle + angle, startAngle + angle];
+    const r = [0, scores[i], scores[i], 0];
+    traces.push({
+      type: 'scatterpolar',
+      mode: 'lines',
+      r, theta,
+      fill: 'toself',
+      fillcolor: colors[i],
+      line: { width: 0 },
+      hoverinfo: 'text',
+      text: `${labels[i].split('!')[0]}<br>Score: ${scores[i].toFixed(2)}<br>Weight: ${(weights[i] * 100).toFixed(1)}%`,
+      showlegend: false
+    });
+    startAngle += angle;
+  }
+
+  Plotly.newPlot(id, traces, {
+    polar: {
+      radialaxis: {
+        visible: false,
+        range: [0, 1],
+        showticklabels: false,
+        ticks: '',
+        showline: false
+      },
+      angularaxis: {
+        direction: 'counterclockwise',
+        rotation: 90,
+        showticklabels: false,
+        ticks: '',
+        showline: false
+      },
+      domain: {
+        x: [0.04, 0.96],  // 4% margin
+        y: [0.04, 0.96]
       }
-    
-       Plotly.newPlot(id, traces, {
-  polar: {
-    radialaxis: {
-      visible: false,
-      range: [0, 1]
     },
-    angularaxis: {
-      direction: 'counterclockwise',
-      rotation: 90,
-      showticklabels: false,
-      ticks: '',
-      showline: false
-    },
-    domain: {
-      x: [0.05, 0.95],  // 5% margin
-      y: [0.05, 0.95]
-    }
-  },
-  margin: { t: 0, b: 0, l: 0, r: 0 },
-  width: 800,
-  height: 800
-}, {
-  displayModeBar: false
-});
+    margin: { t: 0, b: 0, l: 0, r: 0 },
+    width: 800,
+    height: 800
+  }, {
+    displayModeBar: false
+  });
+}
       
 function createGlobalLegend() {
   const existing = document.getElementById('global-legend');
