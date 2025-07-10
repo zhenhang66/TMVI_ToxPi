@@ -39,6 +39,12 @@
       justify-content: center;
       gap: 12px;
     }
+    .chart-scale {
+      width: 400px;
+      height: 400px;
+      overflow: hidden;
+      position: relative;
+    }
     .single-chart {
       width: 800px;
       height: 800px;
@@ -47,9 +53,8 @@
       align-items: center;
       justify-content: center;
       position: relative;
-    }
-         /* Add these lines */
-      zoom: 0.1;
+      transform: scale(0.5);
+      transform-origin: top left;
     }
     .chart-legend div {
       display: flex;
@@ -166,10 +171,15 @@
         wrapper.className = 'chart-wrapper';
         wrapper.id = `wrapper-${i}`;
 
+       const scaleWrapper = document.createElement('div');
+        scaleWrapper.className = 'chart-scale';
+        
         const chartDiv = document.createElement('div');
         chartDiv.className = 'single-chart';
         chartDiv.id = `chart-${i}`;
-        wrapper.appendChild(chartDiv);
+        
+        scaleWrapper.appendChild(chartDiv);
+        wrapper.appendChild(scaleWrapper);
 
         const legend = document.createElement('div');
         legend.className = 'chart-legend';
