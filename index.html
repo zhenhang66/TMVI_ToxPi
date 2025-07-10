@@ -171,7 +171,12 @@
        const scaleWrapper = document.createElement('div');
         scaleWrapper.className = 'chart-scale';
         
-        const chartDiv = document.createElement('div');
+       const chartDiv = document.getElementById('chart-XXXX'); // your chart ID
+       const svg = chartDiv.querySelector('.main-svg');
+        if (svg) {
+          svg.style.transform = 'translate(4px, 6px)';  // ✅ This works
+        }
+
         chartDiv.className = 'single-chart';
         chartDiv.id = `chart-${i}`;
         
