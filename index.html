@@ -17,10 +17,10 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-      gap: 40px;
+      display: flex;
+      flex-wrap: wrap;
       justify-content: center;
+      gap: 40px;
     }
     .chart-block {
       border: 1px solid #ddd;
