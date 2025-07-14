@@ -46,16 +46,22 @@
       position: relative;
     }
     .single-chart {
-      width: 19%;
-      aspect-ratio: 1 / 1;
-      background: white;
+      width: 800px;
+      height: 800px;
+      background: #e0e0e0; /* Gray outer block */
       display: flex;
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
-      padding: 10px;
-      margin: 0.5%;
-      border: 1px solid #ddd;
+      padding: 20px;
+    }
+    
+    .chart-canvas {
+      background: white; /* White block behind Plotly */
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+      position: relative;
     }
     .chart-legend div {
       display: flex;
@@ -230,40 +236,36 @@
     startAngle += angle;
   }
 
-Plotly.newPlot(id, traces, {
-  polar: {
-    radialaxis: {
-      visible: true,
-      showticklabels: false,
-      ticks: '',
-      showline: false,
-      gridcolor: '#ccc',
-      gridwidth: 1,
-      range: [0, 1]
+  Plotly.newPlot(id, traces, {
+    autosize: true,
+    margin: {
+      t: 10, b: 10, l: 10, r: 10, pad: 4
     },
-    angularaxis: {
-      direction: 'counterclockwise',
-      rotation: 90,
-      showticklabels: false,
-      ticks: '',
-      showline: false
-    },
-    domain: {
-      x: [0.035, 0.955],
-      y: [0.045, 0.965]
+    polar: {
+      domain: {
+        x: [0.05, 0.95], // balanced domain for centering
+        y: [0.05, 0.95]
+      },
+      radialaxis: {
+        visible: true,
+        range: [0, 1],
+        showticklabels: false,
+        ticks: '',
+        showline: false,
+        gridcolor: '#ccc',
+        gridwidth: 1
+      },
+      angularaxis: {
+        direction: 'counterclockwise',
+        rotation: 90,
+        showticklabels: false,
+        ticks: '',
+        showline: false
+      }
     }
-  },
-  margin: {
-    t: 10, b: 10, l: 10, r: 10,
-    pad: 4
-  },
-  autosize: true  // ✅ Let Plotly scale to container
-}, {
-  displayModeBar: false,
-  responsive: true  // ✅ Enable dynamic resizing
-}).then(() => {
-  requestAnimationFrame(() => {
-    Plotly.Plots.resize(document.getElementById(id));
+  }, {
+    displayModeBar: false,
+    responsive: true
   });
 });
 }
