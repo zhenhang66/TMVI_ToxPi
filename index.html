@@ -239,39 +239,44 @@
     });
     startAngle += angle;
   }
+for (let i = 0; i < data.length; i++) {
+  const id = `chart-${i}`;
+  const traces = [ /* your scatterpolar object for this chart */ ];
 
-  Plotly.newPlot(id, traces, {
-    autosize: true,
-    margin: {
-      t: 10, b: 10, l: 10, r: 10, pad: 4
-    },
-    polar: {
-      domain: {
-        x: [0.05, 0.95], // balanced domain for centering
-        y: [0.05, 0.95]
+  Plotly.newPlot(id, traces, 
+    {
+      autosize: true,
+      margin: {
+        t: 10, b: 10, l: 10, r: 10, pad: 4
       },
-      radialaxis: {
-        visible: true,
-        range: [0, 1],
-        showticklabels: false,
-        ticks: '',
-        showline: false,
-        gridcolor: '#ccc',
-        gridwidth: 1
-      },
-      angularaxis: {
-        direction: 'counterclockwise',
-        rotation: 90,
-        showticklabels: false,
-        ticks: '',
-        showline: false
+      polar: {
+        domain: {
+          x: [0.05, 0.95],
+          y: [0.05, 0.95]
+        },
+        radialaxis: {
+          visible: true,
+          range: [0, 1],
+          showticklabels: false,
+          ticks: '',
+          showline: false,
+          gridcolor: '#ccc',
+          gridwidth: 1
+        },
+        angularaxis: {
+          direction: 'counterclockwise',
+          rotation: 90,
+          showticklabels: false,
+          ticks: '',
+          showline: false
+        }
       }
+    }, 
+    {
+      displayModeBar: false,
+      responsive: true
     }
-  }, {
-    displayModeBar: false,
-    responsive: true
-  });
-});
+  );
 }
       
 function createGlobalLegend() {
