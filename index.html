@@ -365,7 +365,7 @@ function downloadCSV() {
   }
   async function exportSelectedAsPDF() {
     const { jsPDF } = window.jspdf;
-    const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+    const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
     if (checkboxes.length === 0) {
       alert('No charts selected.');
       return;
