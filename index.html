@@ -340,8 +340,10 @@ function downloadCSV() {
 }
  
   function exportSelectedCharts() {
-  const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));      
-    alert('No charts selected for export.');
+    const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
+  
+    if (checkboxes.length === 0) {
+      alert('No charts selected for export.');
       return;
     }
   
