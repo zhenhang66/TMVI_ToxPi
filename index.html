@@ -6,6 +6,7 @@
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body { font-family: sans-serif; margin: 40px; }
     h2, h3 { text-align: center; }
@@ -92,6 +93,7 @@
   <section style="text-align:center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
     <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
+    <button onclick="exportSelectedAsPDF()">Export Selected as PDF</button>
   </section>
 
   <section id="chartGrid" class="chart-grid"></section>
@@ -359,6 +361,49 @@ function exportSelectedCharts() {
       link.click();
     });
   });
+}
+  async function exportSelectedAsPDF() {
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF();
+  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+  if (checkboxes.length === 0) {
+    alert('No charts selected.');
+    return;
+  }
+
+  for (let i = 0; i < checkboxes.length; i++) {
+    const chartId = checkboxes[i].dataset.id;
+    const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+    
+    if (!chartBlock) continue;
+
+    const canvas = await html2canvas(chartBlock, {
+      scale: 2,  // High-res canvas
+      useCORS: true
+    });
+
+    const imgData = canvas.toDataURL('image/png');
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = (canvas.height / canvas.width) * pageWidth;
+
+    if (i > 0) pdf.addPage();
+    pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+  }
+
+  // ✅ Append global legend to final page
+  const legend = document.getElementById('global-legend');
+  if (legend) {
+    const legendCanvas = await html2canvas(legend, {
+      scale: 2,
+      useCORS: true
+    });
+    const legendData = legendCanvas.toDataURL('image/png');
+    pdf.addPage();
+    pdf.addImage(legendData, 'PNG', 10, 10, pdf.internal.pageSize.getWidth() - 20, 0);
+  }
+
+  const today = new Date().toISOString().slice(0,10);
+  pdf.save(`ToxPi_Charts_${today}.pdf`);
 }
    
 </script>
