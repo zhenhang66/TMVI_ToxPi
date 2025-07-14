@@ -410,22 +410,27 @@ function downloadCSV() {
   
       const chartDiv = chartBlock.querySelector('.plotly-graph-div');
 
-let imgData;
-if (chartDiv) {
-  // Use Plotly's native image export
-  imgData = await Plotly.toImage(chartDiv, {
-    format: 'png',
-    width: 800,
-    height: 800
-  });
-} else {
-  // Fallback to html2canvas if Plotly div is missing
-  const canvas = await html2canvas(chartBlock, {
-    scale: 3,
-    backgroundColor: '#ffffff'
-  });
-  imgData = canvas.toDataURL('image/png');
-}
+    let imgData;
+    try {
+      if (chartDiv) {
+        imgData = await Plotly.toImage(chartDiv, {
+          format: 'png',
+          width: 800,
+          height: 800
+        });
+        console.log(`✅ Image generated for chart: ${chartId}`);
+      } else {
+        const canvas = await html2canvas(chartBlock, {
+          scale: 3,
+          backgroundColor: '#ffffff'
+        });
+        imgData = canvas.toDataURL('image/png');
+        console.log(`📸 Fallback image generated for chart: ${chartId}`);
+      }
+    } catch (err) {
+      console.error(`❌ Failed to generate image for chart ${chartId}`, err);
+      return; // optionally skip this chart and continue
+    }
   
       // Image placement
       pdf.addImage(imgData, 'PNG', x, y, cellWidth, cellWidth);
@@ -472,6 +477,7 @@ if (chartDiv) {
   
     // 💾 Save with dynamic filename
     const today = new Date().toISOString().slice(0,10);
+    console.log('Saving PDF now...');
     pdf.save(`ToxPi_BP_Images_${today}.pdf`);
   }
    
