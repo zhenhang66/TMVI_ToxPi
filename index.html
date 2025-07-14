@@ -340,8 +340,8 @@ function downloadCSV() {
 }
  
   function exportSelectedCharts() {
-    const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
-  
+  const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
+    
     if (checkboxes.length === 0) {
       alert('No charts selected for export.');
       return;
@@ -372,7 +372,7 @@ function downloadCSV() {
     }
   
     // Prepare scoring and ranking
-    const tractScores = checkboxes.map(cb => {
+      const tractScores = checkboxes.map(cb => {
       const chartId = cb.dataset.id;
       const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
       const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
