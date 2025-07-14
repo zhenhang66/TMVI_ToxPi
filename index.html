@@ -339,30 +339,30 @@ function downloadCSV() {
   link.click();
 }
  
-function exportSelectedCharts() {
-  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
-  if (checkboxes.length === 0) {
-    alert('No charts selected for export.');
-    return;
-  }
-
-  checkboxes.forEach(cb => {
-    const chartId = cb.dataset.id;
-    const chartDiv = document.getElementById(chartId);
-
-    Plotly.toImage(chartDiv, {
-      format: 'png',
-      width: 800,
-      height: 800
-    }).then(dataUrl => {
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = `${chartId}.png`;
-      link.click();
+  function exportSelectedCharts() {
+    const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+    if (checkboxes.length === 0) {
+      alert('No charts selected for export.');
+      return;
+    }
+  
+    checkboxes.forEach(cb => {
+      const chartId = cb.dataset.id;
+      const chartDiv = document.getElementById(chartId);
+  
+      Plotly.toImage(chartDiv, {
+        format: 'png',
+        width: 800,
+        height: 800
+      }).then(dataUrl => {
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = `${chartId}.png`;
+        link.click();
+      });
     });
-  });
-}
-    async function exportSelectedAsPDF() {
+  }
+  async function exportSelectedAsPDF() {
     const { jsPDF } = window.jspdf;
     const checkboxes = document.querySelectorAll('.download-checkbox:checked');
     if (checkboxes.length === 0) {
@@ -370,53 +370,87 @@ function exportSelectedCharts() {
       return;
     }
   
-    // 🔽 Start PDF logic here
-    const chartHeightPt = 800 / 300 * 72; // 800px @300dpi in PDF points
-    const spacingPt = 24;
-    const legendHeightPt = 200; // approximate for now
-    const pageHeight = (chartHeightPt + spacingPt) * checkboxes.length + legendHeightPt + 40;
-  
-    const pdf = new jsPDF({
-      orientation: 'portrait',
-      unit: 'pt',
-      format: [chartHeightPt, pageHeight]
+    // Prepare scoring and ranking
+    const tractScores = checkboxes.map(cb => {
+      const chartId = cb.dataset.id;
+      const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+      const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
+      const match = title.match(/Score[:\s]+([\d.]+)/);
+      const score = match ? parseFloat(match[1]) : 0;
+      return { chartId, chartBlock, title, score };
     });
   
-    for (let i = 0; i < checkboxes.length; i++) {
-      const chartId = checkboxes[i].dataset.id;
-      const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+    // Sort by descending score
+    tractScores.sort((a, b) => b.score - a.score);
+  
+    // Assign ranks
+    tractScores.forEach((item, index) => {
+      item.rankText = `Rank: ${index + 1} of ${tractScores.length}`;
+    });
+  
+    // Initialize PDF — Letter size
+    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter' });
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+    const margin = 40;
+    const cellPadding = 12;
+    const chartsPerRow = 4;
+    const cellWidth = (pageWidth - margin * 2 - cellPadding * (chartsPerRow - 1)) / chartsPerRow;
+    const cellHeight = cellWidth + 40;
+  
+    let x = margin;
+    let y = margin;
+  
+    for (let i = 0; i < tractScores.length; i++) {
+      const { chartBlock, title, rankText } = tractScores[i];
       if (!chartBlock) continue;
   
-      chartBlock.style.background = '#fff'; // ensure clean background
+      chartBlock.style.background = '#ffffff';
+  
       const canvas = await html2canvas(chartBlock, {
         scale: 3,
         backgroundColor: '#ffffff'
       });
-  
       const imgData = canvas.toDataURL('image/png');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageY = (chartHeightPt + spacingPt) * i;
   
-      pdf.addImage(imgData, 'PNG', 0, pageY, pageWidth, chartHeightPt);
+      // Image placement
+      pdf.addImage(imgData, 'PNG', x, y, cellWidth, cellWidth);
+  
+      // Text below chart
+      pdf.setFontSize(10);
+      pdf.text(title, x + 2, y + cellWidth + 12, { maxWidth: cellWidth - 4 });
+      pdf.text(rankText, x + 2, y + cellWidth + 24);
+  
+      // Move to next column
+      if ((i + 1) % chartsPerRow === 0) {
+        x = margin;
+        y += cellHeight + cellPadding;
+  
+        // Add page if vertical space exceeds bounds
+        if (y + cellHeight > pageHeight - margin) {
+          pdf.addPage();
+          y = margin;
+        }
+      } else {
+        x += cellWidth + cellPadding;
+      }
     }
   
-    // 🔽 Add legend (final page segment)
+    // 📘 Add global legend to final page
     const legend = document.getElementById('global-legend');
     if (legend) {
+      pdf.addPage();
       const legendCanvas = await html2canvas(legend, {
         scale: 3,
         backgroundColor: '#ffffff'
       });
       const legendImg = legendCanvas.toDataURL('image/png');
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const legendY = pageHeight - legendHeightPt;
-  
-      pdf.addImage(legendImg, 'PNG', 0, legendY, pageWidth, legendHeightPt);
+      pdf.addImage(legendImg, 'PNG', margin, margin, pageWidth - margin * 2, 200);
     }
   
-    // 🔽 Use dynamic filename
+    // 💾 Save with dynamic filename
     const today = new Date().toISOString().slice(0,10);
-    pdf.save(`ToxPi_Charts_${today}.pdf`);
+    pdf.save(`ToxPi_BP_Images_${today}.pdf`);
   }
    
 </script>
