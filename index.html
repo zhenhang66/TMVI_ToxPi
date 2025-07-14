@@ -44,6 +44,10 @@
       height: 400px;
       overflow: hidden;
       position: relative;
+    
+      display: flex;                 /* Enable Flexbox */
+      align-items: center;          /* Vertically center content */
+      justify-content: center;      /* Horizontally center content */
     }
     .single-chart {
       width: 800px;
@@ -54,7 +58,7 @@
       justify-content: center;
       position: relative;
       transform: scale(0.5);
-      transform-origin: top left;
+      transform-origin: center;
     }
     .chart-legend div {
       display: flex;
@@ -248,8 +252,8 @@ Plotly.newPlot(id, traces, {
       showline: false
     },
     domain: {
-      x: [0.035, 0.955], // shift diagram right
-      y: [0.045, 0.965]  // shift diagram down
+      x: [0.1, 0.9], // shift diagram right
+      y: [0.1, 0.9]  // shift diagram down
     }
   },
   margin: {
