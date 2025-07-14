@@ -177,15 +177,19 @@
         const wrapper = document.createElement('div');
         wrapper.className = 'chart-wrapper';
         wrapper.id = `wrapper-${i}`;
-
-       const scaleWrapper = document.createElement('div');
+        
+        const scaleWrapper = document.createElement('div');
         scaleWrapper.className = 'chart-scale';
         
-        const chartDiv = document.createElement('div');
-        chartDiv.className = 'single-chart';
-        chartDiv.id = `chart-${i}`;
+        const chartDivWrapper = document.createElement('div');
+        chartDivWrapper.className = 'single-chart';
         
-        scaleWrapper.appendChild(chartDiv);
+        const chartCanvas = document.createElement('div');
+        chartCanvas.className = 'chart-canvas';
+        chartCanvas.id = `chart-${i}`;
+        
+        chartDivWrapper.appendChild(chartCanvas);
+        scaleWrapper.appendChild(chartDivWrapper);
         wrapper.appendChild(scaleWrapper);
 
         const legend = document.createElement('div');
