@@ -17,10 +17,10 @@
     label { flex: 1 1 200px; }
     input[type="number"] { width: 60px; }
     .chart-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
       gap: 40px;
+      justify-conent: center;
     }
     .chart-block {
       border: 1px solid #ddd;
@@ -48,20 +48,13 @@
     .single-chart {
       width: 800px;
       height: 800px;
-      background: #e0e0e0; /* Gray outer block */
+      background: white;
       display: flex;
       align-items: center;
       justify-content: center;
-      box-sizing: border-box;
-      padding: 20px;
-    }
-    
-    .chart-canvas {
-      background: white; /* White block behind Plotly */
-      width: 100%;
-      height: 100%;
-      box-sizing: border-box;
       position: relative;
+      transform: scale(0.5);
+      transform-origin: top left;
     }
     .chart-legend div {
       display: flex;
@@ -177,19 +170,15 @@
         const wrapper = document.createElement('div');
         wrapper.className = 'chart-wrapper';
         wrapper.id = `wrapper-${i}`;
-        
-        const scaleWrapper = document.createElement('div');
+
+       const scaleWrapper = document.createElement('div');
         scaleWrapper.className = 'chart-scale';
         
-        const chartDivWrapper = document.createElement('div');
-        chartDivWrapper.className = 'single-chart';
+        const chartDiv = document.createElement('div');
+        chartDiv.className = 'single-chart';
+        chartDiv.id = `chart-${i}`;
         
-        const chartCanvas = document.createElement('div');
-        chartCanvas.className = 'chart-canvas';
-        chartCanvas.id = `chart-${i}`;
-        
-        chartDivWrapper.appendChild(chartCanvas);
-        scaleWrapper.appendChild(chartDivWrapper);
+        scaleWrapper.appendChild(chartDiv);
         wrapper.appendChild(scaleWrapper);
 
         const legend = document.createElement('div');
@@ -239,44 +228,44 @@
     });
     startAngle += angle;
   }
-for (let i = 0; i < data.length; i++) {
-  const id = `chart-${i}`;
-  const traces = [ /* your scatterpolar object for this chart */ ];
 
-  Plotly.newPlot(id, traces, 
-    {
-      autosize: true,
-      margin: {
-        t: 10, b: 10, l: 10, r: 10, pad: 4
-      },
-      polar: {
-        domain: {
-          x: [0.05, 0.95],
-          y: [0.05, 0.95]
-        },
-        radialaxis: {
-          visible: true,
-          range: [0, 1],
-          showticklabels: false,
-          ticks: '',
-          showline: false,
-          gridcolor: '#ccc',
-          gridwidth: 1
-        },
-        angularaxis: {
-          direction: 'counterclockwise',
-          rotation: 90,
-          showticklabels: false,
-          ticks: '',
-          showline: false
-        }
-      }
-    }, 
-    {
-      displayModeBar: false,
-      responsive: true
+Plotly.newPlot(id, traces, {
+  polar: {
+    radialaxis: {
+      visible: true,
+      showticklabels: false,
+      ticks: '',
+      showline: false,
+      gridcolor: '#ccc',
+      gridwidth: 1,
+      range: [0, 1]
+    },
+    angularaxis: {
+      direction: 'counterclockwise',
+      rotation: 90,
+      showticklabels: false,
+      ticks: '',
+      showline: false
+    },
+    domain: {
+      x: [0.035, 0.955], // shift diagram right
+      y: [0.045, 0.965]  // shift diagram down
     }
-  );
+  },
+  margin: {
+    t: 10, b: 10, l: 10, r: 10,
+    pad: 4
+  },
+  width: 800,
+  height: 800
+}, {
+  displayModeBar: false
+}).then(() => {
+  // ✅ Force a reflow after rendering
+  requestAnimationFrame(() => {
+    Plotly.Plots.resize(document.getElementById(id));
+  });
+});
 }
       
 function createGlobalLegend() {
