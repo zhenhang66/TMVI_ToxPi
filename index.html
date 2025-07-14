@@ -441,12 +441,20 @@ function downloadCSV() {
     const legend = document.getElementById('global-legend');
     if (legend) {
       pdf.addPage();
-      const legendCanvas = await html2canvas(legend, {
-        scale: 3,
-        backgroundColor: '#ffffff'
-      });
-      const legendImg = legendCanvas.toDataURL('image/png');
-      pdf.addImage(legendImg, 'PNG', margin, margin, pageWidth - margin * 2, 200);
+    const legendCanvas = await html2canvas(legend, {
+      scale: 3,
+      backgroundColor: '#ffffff'
+    });
+    
+    const legendImg = legendCanvas.toDataURL('image/png');
+    
+    // ⬇️ Calculate aspect ratio
+    const legendRatio = legendCanvas.height / legendCanvas.width;
+    const legendWidth = pageWidth - margin * 2;
+    const legendHeight = legendWidth * legendRatio;
+    
+    // ⬇️ Insert legend at proper size
+    pdf.addImage(legendImg, 'PNG', margin, margin, legendWidth, legendHeight);
     }
   
     // 💾 Save with dynamic filename
