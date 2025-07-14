@@ -362,49 +362,62 @@ function exportSelectedCharts() {
     });
   });
 }
-  async function exportSelectedAsPDF() {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF();
-  const checkboxes = document.querySelectorAll('.download-checkbox:checked');
-  if (checkboxes.length === 0) {
-    alert('No charts selected.');
-    return;
-  }
-
-  for (let i = 0; i < checkboxes.length; i++) {
-    const chartId = checkboxes[i].dataset.id;
-    const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
-    
-    if (!chartBlock) continue;
-
-    const canvas = await html2canvas(chartBlock, {
-      scale: 2,  // High-res canvas
-      useCORS: true
+    async function exportSelectedAsPDF() {
+    const { jsPDF } = window.jspdf;
+    const checkboxes = document.querySelectorAll('.download-checkbox:checked');
+    if (checkboxes.length === 0) {
+      alert('No charts selected.');
+      return;
+    }
+  
+    // 🔽 Start PDF logic here
+    const chartHeightPt = 800 / 300 * 72; // 800px @300dpi in PDF points
+    const spacingPt = 24;
+    const legendHeightPt = 200; // approximate for now
+    const pageHeight = (chartHeightPt + spacingPt) * checkboxes.length + legendHeightPt + 40;
+  
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'pt',
+      format: [chartHeightPt, pageHeight]
     });
-
-    const imgData = canvas.toDataURL('image/png');
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = (canvas.height / canvas.width) * pageWidth;
-
-    if (i > 0) pdf.addPage();
-    pdf.addImage(imgData, 'PNG', 0, 0, pageWidth, pageHeight);
+  
+    for (let i = 0; i < checkboxes.length; i++) {
+      const chartId = checkboxes[i].dataset.id;
+      const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+      if (!chartBlock) continue;
+  
+      chartBlock.style.background = '#fff'; // ensure clean background
+      const canvas = await html2canvas(chartBlock, {
+        scale: 3,
+        backgroundColor: '#ffffff'
+      });
+  
+      const imgData = canvas.toDataURL('image/png');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageY = (chartHeightPt + spacingPt) * i;
+  
+      pdf.addImage(imgData, 'PNG', 0, pageY, pageWidth, chartHeightPt);
+    }
+  
+    // 🔽 Add legend (final page segment)
+    const legend = document.getElementById('global-legend');
+    if (legend) {
+      const legendCanvas = await html2canvas(legend, {
+        scale: 3,
+        backgroundColor: '#ffffff'
+      });
+      const legendImg = legendCanvas.toDataURL('image/png');
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const legendY = pageHeight - legendHeightPt;
+  
+      pdf.addImage(legendImg, 'PNG', 0, legendY, pageWidth, legendHeightPt);
+    }
+  
+    // 🔽 Use dynamic filename
+    const today = new Date().toISOString().slice(0,10);
+    pdf.save(`ToxPi_Charts_${today}.pdf`);
   }
-
-  // ✅ Append global legend to final page
-  const legend = document.getElementById('global-legend');
-  if (legend) {
-    const legendCanvas = await html2canvas(legend, {
-      scale: 2,
-      useCORS: true
-    });
-    const legendData = legendCanvas.toDataURL('image/png');
-    pdf.addPage();
-    pdf.addImage(legendData, 'PNG', 10, 10, pdf.internal.pageSize.getWidth() - 20, 0);
-  }
-
-  const today = new Date().toISOString().slice(0,10);
-  pdf.save(`ToxPi_Charts_${today}.pdf`);
-}
    
 </script>
 </body>
