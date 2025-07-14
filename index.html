@@ -403,7 +403,7 @@ function downloadCSV() {
     let y = margin;
   
     for (let i = 0; i < tractScores.length; i++) {
-      const { chartBlock, title, rankText } = tractScores[i];
+    const { chartId, chartBlock, title, rankText } = tractScores[i];      
       if (!chartBlock) continue;
   
       chartBlock.style.background = '#ffffff';
