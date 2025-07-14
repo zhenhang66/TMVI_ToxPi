@@ -408,11 +408,24 @@ function downloadCSV() {
   
       chartBlock.style.background = '#ffffff';
   
-      const canvas = await html2canvas(chartBlock, {
-        scale: 3,
-        backgroundColor: '#ffffff'
-      });
-      const imgData = canvas.toDataURL('image/png');
+      const chartDiv = chartBlock.querySelector('.plotly-graph-div');
+
+let imgData;
+if (chartDiv) {
+  // Use Plotly's native image export
+  imgData = await Plotly.toImage(chartDiv, {
+    format: 'png',
+    width: 800,
+    height: 800
+  });
+} else {
+  // Fallback to html2canvas if Plotly div is missing
+  const canvas = await html2canvas(chartBlock, {
+    scale: 3,
+    backgroundColor: '#ffffff'
+  });
+  imgData = canvas.toDataURL('image/png');
+}
   
       // Image placement
       pdf.addImage(imgData, 'PNG', x, y, cellWidth, cellWidth);
