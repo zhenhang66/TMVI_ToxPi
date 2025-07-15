@@ -93,6 +93,7 @@
   <section style="text-align:center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
     <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
+    <button onclick="exportCombinedPNG()">Export Selected Charts as Composite PNG</button>
   </section>
 
   <section id="chartGrid" class="chart-grid"></section>
@@ -389,7 +390,79 @@ function exportSelectedCharts() {
     });
   });
 }
-   
+     async function exportCombinedPNG() {
+    const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
+  
+    if (checkboxes.length === 0) {
+      alert('No charts selected for export.');
+      return;
+    }
+  
+    // 🧠 Extract chart info and compute score
+    const tractScores = checkboxes.map(cb => {
+      const chartId = cb.dataset.id;
+      const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+      const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
+      const match = title.match(/Score[:\s]+([\d.]+)/);
+      const score = match ? parseFloat(match[1]) : 0;
+      return { chartId, chartBlock, title, score };
+    });
+  
+    // 🔢 Sort and rank
+    tractScores.sort((a, b) => b.score - a.score);
+    tractScores.forEach((item, index) => {
+      item.rank = index + 1;
+    });
+  
+    // 📐 Set layout parameters
+    const chartsPerRow = 5;
+    const chartSize = 800;
+    const rows = Math.ceil(tractScores.length / chartsPerRow);
+    const canvasWidth = chartsPerRow * chartSize;
+    const canvasHeight = rows * chartSize;
+  
+    const canvas = document.createElement('canvas');
+    canvas.width = canvasWidth;
+    canvas.height = canvasHeight;
+    const ctx = canvas.getContext('2d');
+  
+    // 🖼️ Composite rendering
+    for (let i = 0; i < tractScores.length; i++) {
+      const { chartBlock, chartId, rank, title } = tractScores[i];
+      const chartDiv = chartBlock?.querySelector('.single-chart');
+  
+      if (!chartDiv) {
+        console.warn(`⚠️ Skipping ${chartId}: missing chart container`);
+        continue;
+      }
+  
+      try {
+        const imgData = await Plotly.toImage(chartDiv, {
+          format: 'png',
+          width: chartSize,
+          height: chartSize
+        });
+  
+        const img = new Image();
+        img.src = imgData;
+  
+        await new Promise(resolve => img.onload = resolve);
+  
+        const x = (i % chartsPerRow) * chartSize;
+        const y = Math.floor(i / chartsPerRow) * chartSize;
+  
+        ctx.drawImage(img, x, y, chartSize, chartSize);
+      } catch (err) {
+        console.error(`❌ Error rendering ${chartId}`, err);
+      }
+    }
+  
+    // 💾 Save composite PNG
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png', 1.0);
+    link.download = `ToxPi_Export_${new Date().toISOString().slice(0, 10)}.png`;
+    link.click();
+  }
 </script>
 </body>
 </html>
