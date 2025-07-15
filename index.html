@@ -339,80 +339,100 @@ function downloadCSV() {
   link.download = "toxpi_scores_expanded.csv";
   link.click();
 }
+async function exportCombinedPNG() {
+  const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
 
-    async function exportCombinedPNG() {
-    const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
-  
-    if (checkboxes.length === 0) {
-      alert('No charts selected for export.');
-      return;
-    }
-  
-    // 🧠 Extract chart info and compute score
-    const tractScores = checkboxes.map(cb => {
-      const chartId = cb.dataset.id;
-      const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
-      const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
-      const match = title.match(/Score[:\s]+([\d.]+)/);
-      const score = match ? parseFloat(match[1]) : 0;
-      return { chartId, chartBlock, title, score };
-    });
-  
-    // 🔢 Sort and rank
-    tractScores.sort((a, b) => b.score - a.score);
-    tractScores.forEach((item, index) => {
-      item.rank = index + 1;
-    });
-  
-    // 📐 Set layout parameters
-    const chartsPerRow = 5;
-    const chartSize = 800;
-    const rows = Math.ceil(tractScores.length / chartsPerRow);
-    const canvasWidth = chartsPerRow * chartSize;
-    const canvasHeight = rows * chartSize;
-  
-    const canvas = document.createElement('canvas');
-    canvas.width = canvasWidth;
-    canvas.height = canvasHeight;
-    const ctx = canvas.getContext('2d');
-  
-    // 🖼️ Composite rendering
-    for (let i = 0; i < tractScores.length; i++) {
-      const { chartBlock, chartId, rank, title } = tractScores[i];
-      const chartDiv = chartBlock?.querySelector('.single-chart');
-  
-      if (!chartDiv) {
-        console.warn(`⚠️ Skipping ${chartId}: missing chart container`);
-        continue;
-      }
-  
-      try {
-        const imgData = await Plotly.toImage(chartDiv, {
-          format: 'png',
-          width: chartSize,
-          height: chartSize
-        });
-  
-        const img = new Image();
-        img.src = imgData;
-  
-        await new Promise(resolve => img.onload = resolve);
-  
-        const x = (i % chartsPerRow) * chartSize;
-        const y = Math.floor(i / chartsPerRow) * chartSize;
-  
-        ctx.drawImage(img, x, y, chartSize, chartSize);
-      } catch (err) {
-        console.error(`❌ Error rendering ${chartId}`, err);
-      }
-    }
-  
-    // 💾 Save composite PNG
-    const link = document.createElement('a');
-    link.href = canvas.toDataURL('image/png', 1.0);
-    link.download = `ToxPi_Export_${new Date().toISOString().slice(0, 10)}.png`;
-    link.click();
+  if (checkboxes.length === 0) {
+    alert('No charts selected for export.');
+    return;
   }
+
+  // 🧠 Extract chart info and compute score
+  const tractScores = checkboxes.map(cb => {
+    const chartId = cb.dataset.id;
+    const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+    const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
+    const match = title.match(/Score[:\s]+([\d.]+)/);
+    const score = match ? parseFloat(match[1]) : 0;
+    return { chartId, chartBlock, title, score };
+  });
+
+  // 🔢 Sort and rank
+  tractScores.sort((a, b) => b.score - a.score);
+  tractScores.forEach((item, index) => {
+    item.rank = index + 1;
+  });
+
+  // 📐 Set layout parameters
+  const chartsPerRow = 5;
+  const chartSize = 800;
+  const rows = Math.ceil(tractScores.length / chartsPerRow);
+  const canvasWidth = chartsPerRow * chartSize;
+  const canvasHeight = rows * chartSize;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = canvasWidth;
+  canvas.height = canvasHeight;
+  const ctx = canvas.getContext('2d');
+
+  // 🖼️ Composite chart rendering with metadata overlay
+  for (let i = 0; i < tractScores.length; i++) {
+    const { chartBlock, chartId, rank, title, score } = tractScores[i];
+    const chartDiv = chartBlock?.querySelector('.single-chart');
+
+    if (!chartDiv) {
+      console.warn(`⚠️ Skipping ${chartId}: missing chart container`);
+      continue;
+    }
+
+    try {
+      const imgData = await Plotly.toImage(chartDiv, {
+        format: 'png',
+        width: chartSize,
+        height: chartSize
+      });
+
+      const img = new Image();
+      img.src = imgData;
+      await new Promise(resolve => img.onload = resolve);
+
+      const x = (i % chartsPerRow) * chartSize;
+      const y = Math.floor(i / chartsPerRow) * chartSize;
+
+      ctx.drawImage(img, x, y, chartSize, chartSize);
+
+      // ✍️ Draw metadata
+      ctx.font = '20px sans-serif';
+      ctx.fillStyle = '#000';
+      ctx.fillText(`Name: ${title}`, x + 12, y + chartSize - 46);
+      ctx.fillText(`Score: ${score.toFixed(3)}`, x + 12, y + chartSize - 26);
+      ctx.fillText(`Rank: ${rank}`, x + 12, y + chartSize - 6);
+    } catch (err) {
+      console.error(`❌ Error rendering ${chartId}`, err);
+    }
+  }
+
+  // 📘 Capture and append global legend
+  const legendCanvas = await html2canvas(document.getElementById('global-legend'), {
+    scale: 3,
+    backgroundColor: '#ffffff'
+  });
+
+  const finalCanvas = document.createElement('canvas');
+  finalCanvas.width = canvas.width;
+  finalCanvas.height = canvas.height + legendCanvas.height;
+  const finalCtx = finalCanvas.getContext('2d');
+
+  finalCtx.drawImage(canvas, 0, 0);
+  finalCtx.drawImage(legendCanvas, 0, canvas.height);
+
+  // 💾 Export final image
+  const link = document.createElement('a');
+  link.href = finalCanvas.toDataURL('image/png', 1.0);
+  link.download = `ToxPi_Export_${new Date().toISOString().slice(0, 10)}.png`;
+  link.click();
+}
+
 </script>
 </body>
 </html>
