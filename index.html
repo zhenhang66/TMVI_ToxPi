@@ -366,7 +366,7 @@ function exportSelectedCharts() {
 
   // 🖼️ Export each chart
   tractScores.forEach(({ chartId, chartBlock, title, rankText }, index) => {
-    const chartDiv = chartBlock?.querySelector('.plotly-graph-div');
+    const chartDiv = chartBlock?.querySelector('.single-chart');
     if (!chartDiv) {
       console.warn(`⚠️ Skipping chart: ${chartId} (missing plotly-graph-div)`);
       return;
