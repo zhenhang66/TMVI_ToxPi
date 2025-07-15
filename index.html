@@ -93,7 +93,6 @@
   <section style="text-align:center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
     <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
-    <button onclick="exportSelectedAsPDF()">Export Selected as PDF</button>
   </section>
 
   <section id="chartGrid" class="chart-grid"></section>
@@ -339,147 +338,57 @@ function downloadCSV() {
   link.click();
 }
  
-  function exportSelectedCharts() {
+function exportSelectedCharts() {
   const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
-    
-    if (checkboxes.length === 0) {
-      alert('No charts selected for export.');
-      return;
-    }
-  
-    checkboxes.forEach(cb => {
-      const chartId = cb.dataset.id;
-      const chartDiv = document.getElementById(chartId);
-  
-      Plotly.toImage(chartDiv, {
-        format: 'png',
-        width: 800,
-        height: 800
-      }).then(dataUrl => {
-        const link = document.createElement('a');
-        link.href = dataUrl;
-        link.download = `${chartId}.png`;
-        link.click();
-      });
-    });
-  }
-  async function exportSelectedAsPDF() {
-    const { jsPDF } = window.jspdf;
-    const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
-    if (checkboxes.length === 0) {
-      alert('No charts selected.');
-      return;
-    }
-  
-    // Prepare scoring and ranking
-      const tractScores = checkboxes.map(cb => {
-      const chartId = cb.dataset.id;
-      const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
-      const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
-      const match = title.match(/Score[:\s]+([\d.]+)/);
-      const score = match ? parseFloat(match[1]) : 0;
-      return { chartId, chartBlock, title, score };
-    });
-  
-    // Sort by descending score
-    tractScores.sort((a, b) => b.score - a.score);
-  
-    // Assign ranks
-    tractScores.forEach((item, index) => {
-      item.rankText = `Rank: ${index + 1} of ${tractScores.length}`;
-    });
-  
-    // Initialize PDF — Letter size
-    const pdf = new jsPDF({ orientation: 'portrait', unit: 'pt', format: 'letter' });
-    const pageWidth = pdf.internal.pageSize.getWidth();
-    const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 40;
-    const cellPadding = 12;
-    const chartsPerRow = 4;
-    const cellWidth = (pageWidth - margin * 2 - cellPadding * (chartsPerRow - 1)) / chartsPerRow;
-    const cellHeight = cellWidth + 40;
-  
-    let x = margin;
-    let y = margin;
-  
-    for (let i = 0; i < tractScores.length; i++) {
-    const { chartId, chartBlock, title, rankText } = tractScores[i];      
-      if (!chartBlock) continue;
-  
-      chartBlock.style.background = '#ffffff';
-  
-      const chartDiv = chartBlock.querySelector('.plotly-graph-div');
 
-    let imgData;
-    try {
-      if (chartDiv) {
-        imgData = await Plotly.toImage(chartDiv, {
-          format: 'png',
-          width: 800,
-          height: 800
-        });
-        console.log(`✅ Image generated for chart: ${chartId}`);
-      } else {
-        const canvas = await html2canvas(chartBlock, {
-          scale: 3,
-          backgroundColor: '#ffffff'
-        });
-        imgData = canvas.toDataURL('image/png');
-        console.log(`📸 Fallback image generated for chart: ${chartId}`);
-      }
-    } catch (err) {
-      console.error(`❌ Failed to generate image for chart ${chartId}`, err);
-      return; // optionally skip this chart and continue
-    }
-  
-      // Image placement
-      pdf.addImage(imgData, 'PNG', x, y, cellWidth, cellWidth);
-  
-      // Text below chart
-      pdf.setFontSize(10);
-      pdf.text(title, x + 2, y + cellWidth + 12, { maxWidth: cellWidth - 4 });
-      pdf.text(rankText, x + 2, y + cellWidth + 24);
-  
-      // Move to next column
-      if ((i + 1) % chartsPerRow === 0) {
-        x = margin;
-        y += cellHeight + cellPadding;
-  
-        // Add page if vertical space exceeds bounds
-        if (y + cellHeight > pageHeight - margin) {
-          pdf.addPage();
-          y = margin;
-        }
-      } else {
-        x += cellWidth + cellPadding;
-      }
-    }
-  
-    // 📘 Add global legend to final page
-    const legend = document.getElementById('global-legend');
-    if (legend) {
-      pdf.addPage();
-    const legendCanvas = await html2canvas(legend, {
-      scale: 3,
-      backgroundColor: '#ffffff'
-    });
-    
-    const legendImg = legendCanvas.toDataURL('image/png');
-    
-    // ⬇️ Calculate aspect ratio
-    const legendRatio = legendCanvas.height / legendCanvas.width;
-    const legendWidth = pageWidth - margin * 2;
-    const legendHeight = legendWidth * legendRatio;
-    
-    // ⬇️ Insert legend at proper size
-    pdf.addImage(legendImg, 'PNG', margin, margin, legendWidth, legendHeight);
-    }
-  
-    // 💾 Save with dynamic filename
-    const today = new Date().toISOString().slice(0,10);
-    console.log('Saving PDF now...');
-    pdf.save(`ToxPi_BP_Images_${today}.pdf`);
+  if (checkboxes.length === 0) {
+    alert('No charts selected for export.');
+    return;
   }
+
+  // 🧠 Extract info and parse score
+  const tractScores = checkboxes.map(cb => {
+    const chartId = cb.dataset.id;
+    const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
+    const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
+    const match = title.match(/Score[:\s]+([\d.]+)/);
+    const score = match ? parseFloat(match[1]) : 0;
+    return { chartId, chartBlock, title, score };
+  });
+
+  // 🔢 Sort charts by score
+  tractScores.sort((a, b) => b.score - a.score);
+
+  // 🏅 Assign ranks
+  tractScores.forEach((item, index) => {
+    item.rankText = `Rank: ${index + 1} of ${tractScores.length}`;
+  });
+
+  // 🖼️ Export each chart
+  tractScores.forEach(({ chartId, chartBlock, title, rankText }, index) => {
+    const chartDiv = chartBlock?.querySelector('.plotly-graph-div');
+    if (!chartDiv) {
+      console.warn(`⚠️ Skipping chart: ${chartId} (missing plotly-graph-div)`);
+      return;
+    }
+
+    Plotly.toImage(chartDiv, {
+      format: 'png',
+      width: 800,
+      height: 800
+    }).then(dataUrl => {
+      const safeTitle = title.replace(/[\s\/\\:<>?*|"]/g, '_');
+      const filename = `${chartId}_Rank${index + 1}_${safeTitle}.png`;
+
+      const link = document.createElement('a');
+      link.href = dataUrl;
+      link.download = filename;
+      link.click();
+    }).catch(err => {
+      console.error(`❌ Failed to export ${chartId}`, err);
+    });
+  });
+}
    
 </script>
 </body>
