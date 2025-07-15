@@ -297,15 +297,18 @@ function createGlobalLegend() {
       height: '16px',
       display: 'inline-block',
       marginRight: '6px',
-      borderRadius: '3px'
+      borderRadius: '3px',
+      flexShrink: '0' // ✅ Force box size consistency
     });
 
     row.appendChild(colorBox);
     row.append(k.split('!')[0]);
+    row.style.alignItems = 'center'; // For vertical alignment
     legend.appendChild(row);
   });
 
-  document.body.appendChild(legend);
+const buttonSection = document.querySelector('section[style*="margin-top"]');
+buttonSection.insertAdjacentElement('afterend', legend);
 }
 
 function downloadCSV() {
