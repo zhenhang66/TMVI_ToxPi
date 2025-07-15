@@ -92,9 +92,7 @@
 
   <section style="text-align:center; margin-top: 20px">
     <button onclick="downloadCSV()">Export Scores as CSV</button>
-    <button onclick="exportSelectedCharts()">Export Selected as PNG</button>
-    <button onclick="exportCombinedPNG()">Export Selected Charts as Composite PNG</button>
-  </section>
+    <button onclick="exportCombinedPNG()">Export Selected Charts as PNG</button>  </section>
 
   <section id="chartGrid" class="chart-grid"></section>
 
@@ -341,59 +339,8 @@ function downloadCSV() {
   link.download = "toxpi_scores_expanded.csv";
   link.click();
 }
- 
-function exportSelectedCharts() {
-  const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
 
-  if (checkboxes.length === 0) {
-    alert('No charts selected for export.');
-    return;
-  }
-
-  // 🧠 Extract info and parse score
-  const tractScores = checkboxes.map(cb => {
-    const chartId = cb.dataset.id;
-    const chartBlock = document.getElementById(chartId)?.closest('.chart-block');
-    const title = chartBlock?.querySelector('.chart-title')?.textContent || '';
-    const match = title.match(/Score[:\s]+([\d.]+)/);
-    const score = match ? parseFloat(match[1]) : 0;
-    return { chartId, chartBlock, title, score };
-  });
-
-  // 🔢 Sort charts by score
-  tractScores.sort((a, b) => b.score - a.score);
-
-  // 🏅 Assign ranks
-  tractScores.forEach((item, index) => {
-    item.rankText = `Rank: ${index + 1} of ${tractScores.length}`;
-  });
-
-  // 🖼️ Export each chart
-  tractScores.forEach(({ chartId, chartBlock, title, rankText }, index) => {
-    const chartDiv = chartBlock?.querySelector('.single-chart');
-    if (!chartDiv) {
-      console.warn(`⚠️ Skipping chart: ${chartId} (missing plotly-graph-div)`);
-      return;
-    }
-
-    Plotly.toImage(chartDiv, {
-      format: 'png',
-      width: 800,
-      height: 800
-    }).then(dataUrl => {
-      const safeTitle = title.replace(/[\s\/\\:<>?*|"]/g, '_');
-      const filename = `${chartId}_Rank${index + 1}_${safeTitle}.png`;
-
-      const link = document.createElement('a');
-      link.href = dataUrl;
-      link.download = filename;
-      link.click();
-    }).catch(err => {
-      console.error(`❌ Failed to export ${chartId}`, err);
-    });
-  });
-}
-     async function exportCombinedPNG() {
+    async function exportCombinedPNG() {
     const checkboxes = Array.from(document.querySelectorAll('.download-checkbox:checked'));
   
     if (checkboxes.length === 0) {
