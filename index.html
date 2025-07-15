@@ -286,35 +286,24 @@ function createGlobalLegend() {
   legend.style.rowGap = '10px';
   legend.style.columnGap = '20px';
 
-variableKeys.forEach((k, j) => {
-  const row = document.createElement('div');
-  row.style.display = 'flex';
-  row.style.alignItems = 'center';
-  row.style.marginBottom = '4px';
+  variableKeys.forEach((k, j) => {
+    const row = document.createElement('div');
+    const colorBox = document.createElement('span');
+    colorBox.style.backgroundColor = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
+    Object.assign(colorBox.style, {
+      width: '16px',
+      height: '16px',
+      display: 'inline-block',
+      marginRight: '6px',
+      borderRadius: '3px',
+      flexShrink: '0' // ✅ Force box size consistency
+    });
 
-  const colorBox = document.createElement('span');
-  colorBox.style.backgroundColor = `hsl(${j * 360 / variableKeys.length}, 60%, 60%)`;
-  Object.assign(colorBox.style, {
-    width: '16px',
-    height: '16px',
-    display: 'inline-block',
-    marginRight: '6px',
-    borderRadius: '3px',
-    flexShrink: '0'
+    row.appendChild(colorBox);
+    row.append(k.split('!')[0]);
+    row.style.alignItems = 'center'; // For vertical alignment
+    legend.appendChild(row);
   });
-
-  const labelText = document.createElement('span');
-  labelText.textContent = k.split('!')[0];
-  Object.assign(labelText.style, {
-    fontSize: '14px',              // ✅ Smaller than chart label (22px)
-    fontFamily: 'sans-serif',
-    verticalAlign: 'middle'
-  });
-
-  row.appendChild(colorBox);
-  row.appendChild(labelText);
-  legend.appendChild(row);
-});
 
 const buttonSection = document.querySelector('section[style*="margin-top"]');
 buttonSection.insertAdjacentElement('afterend', legend);
