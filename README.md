@@ -12,23 +12,13 @@ To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air 
 The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019) and TMVI (Malecha et al., 2020), expanding their methodologies to a spatially detailed and customizable format.
 
 ---
-# 📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
-
-| **Category**                     | **Description**                                                                                       | **Unit**             | **Year** | **Source**                                                  | **Accessible Link** |
-|----------------------------------|-------------------------------------------------------------------------------------------------------|----------------------|----------|-------------------------------------------------------------|---------------------|
-| **Study Unit**                   | TIGER/Line shapefiles of census tracts in Jefferson County, TX                                       | Census Tract         | 2023     | U.S. Census Bureau                                          | [Link](https://catalog.data.gov/dataset/tiger-line-shapefile-2023-county-jefferson-county-tx-topological-faces-polygons-with-all-geocod) |
-
-| **Built Environment Vulnerability** |                                                                                                     |                      |          |                                                             |                     |
-| Industrial Zoning                | % industrial zoning per study unit                                                                   | Zoning               | 2020     | City of Beaumont and Port Arthur                            | [Link](https://tamu.maps.arcgis.com/home/item.html?id=abf281897c184b3aae9868aae8923e0e) |
-| Impervious Surface              | % impervious surface per study unit                                                                  | Raster (30m × 30m)   | 2023     | USGS NLCD 2023 Impervious Products                          | [Link](https://www.mrlc.gov/data?f%5B0%5D=category%3AImpervious%20Descriptor) |
-| 100-Year Floodplain             | % area in 100-year floodplain per study unit                                                         | Raster (30m × 30m)   | N/A      | FEMA                                                        | [Link](https://services2.arcgis.com/LYMgRMwHfrWWEg3s/arcgis/rest/services/FEMA_Jefferson_Preliminary_Flood_Zones/FeatureServer) |
-
-| **Social Vulnerability**         |                                                                                                     |                      |          |                                                             |                     |
-| CDC's SVI                       | Four themes: socioeconomic status, household characteristics, minority status, housing/transportation | Census Tract         | 2022     | CDC / ATSDR                                                  | [Link](https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html) |
-
-| **Health Outcomes**              |                                                                                                     |                      |          |                                                             |                     |
-| CDC's PLACES Data               | 12 health indicators: arthritis, asthma, diabetes, obesity, depression, stroke, etc.                 | Census Tract         | 2024     | CDC                                                         | [Link](https://data.cdc.gov/500-Cities-Places/PLACES-Census-Tract-Data-GIS-Friendly-Format-2024-/yjkw-uj5s/data_preview) |
-
-| **Contamination Sources**        |                                                                                                     |                      |          |                                                             |                     |
-| Air Pollution                   | Ozone, PM2.5, diesel particulates, and air toxic cancer risks                                       | Census Tract         | 2024     | ATSDR Place and Health                                      | [Link](https://www.atsdr.cdc.gov/place-health/php/eji/eji-explorer.html) |
-| Proximity to Hazardous Sites    | Distances to NPL sites, TRI facilities, RMP sites, and TSDFs                                        | Point-Based          | N/A      | EPA / ATSDR                                                  | —                   |
+📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
+| Category | Description | Unit | Year | Source | Accessible Link | 
+| Study Unit | TIGER/Line shapefiles of census tracts in Jefferson County, TX | Census Tract | 2023 | U.S. Census Bureau | Link | 
+| Built Environment Vulnerability | Industrial Zoning — % industrial zoning per study unit | Zoning | 2020 | City of Beaumont and Port Arthur | Link | 
+|  | Impervious Surface — % impervious surface per study unit | Raster (30m × 30m) | 2023 | USGS NLCD 2023 | Link | 
+|  | 100-Year Floodplain — % area in floodplain per tract | Raster (30m × 30m) | N/A | FEMA | Link | 
+| Social Vulnerability | CDC’s SVI — themes include SES, household characteristics, minority status, housing/transportation | Census Tract | 2022 | CDC / ATSDR | Link | 
+| Health Outcomes | CDC’s PLACES — includes 12 indicators such as asthma, diabetes, obesity, depression, etc. | Census Tract | 2024 | CDC | Link | 
+| Contamination Sources | Air Pollution — ozone, PM2.5, diesel particulate, cancer risks | Census Tract | 2024 | ATSDR Place and Health | Link | 
+|  | Proximity to Hazardous Sites — distances to NPL, TRI, RMP, TSDF facilities | Point-Based | N/A | EPA / ATSDR | — | 
