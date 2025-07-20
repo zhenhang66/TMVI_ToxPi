@@ -13,7 +13,7 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 
 ---
 
-📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
+# 📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
 
 | **Category**                      | **Description**                                                                                       | **Unit**             | **Year** | **Source**                                                  | **Accessible Link** |
 |----------------------------------|-------------------------------------------------------------------------------------------------------|----------------------|----------|-------------------------------------------------------------|---------------------|
