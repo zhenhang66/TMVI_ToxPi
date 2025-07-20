@@ -12,7 +12,6 @@ To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air 
 The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019) and TMVI (Malecha et al., 2020), expanding their methodologies to a spatially detailed and customizable format.
 
 ---
-
 # 📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
 
 | **Category**                     | **Description**                                                                                       | **Unit**             | **Year** | **Source**                                                  | **Accessible Link** |
