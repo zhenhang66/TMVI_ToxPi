@@ -1,26 +1,29 @@
-# Containmination Detection: Toxics Mobility Vulnerability Index (CD-TMVI) Online Tool
-## Project Background
-To understand how the Beaumont-Port Arthur (BPA) region of Texas experienced air pollution and flooding, we used the ToxPI (Toxicological Prioritization Index) tool to identify the levels at a census-tract scale. To generate the Containmination Detection:Toxics Mobility Vulnerability Index (CD-TMVI) for the study area, we build upon the foundational studies on TMI by Teron et al. (2019) and TMVI by Malecha et al. (2020), including 27 geospatial variables from four categories: built envionrment vulnerability, social vulnerablity, health outcomes, and contamination sources. 
+# 🧪 Contamination Detection: Toxics Mobility Vulnerability Index (CD-TMVI) Online Tool
 
-Table 2. Overview of Datasets for Environmental Justice-Toxics Mobility Vulnerability Index (EJ-TMVI)
-	Description	Unit	Year	Source	Accessible Link
-Study Unit
-Census Tract	TIGER/Line shapefiles of census tracts in Jefferson County, TX	Census Tract	2023	U.S. Census Bureau	https://catalog.data.gov/dataset/tiger-line-shapefile-2023-county-jefferson-county-tx-topological-faces-polygons-with-all-geocod
+## 📍 Project Background
 
-Built Environment Vulnerability
-Industrial Zoning	% industrial zoning per study unit	Zoning	2020	City of Beaumont and Port Arthur	https://tamu.maps.arcgis.com/home/item.html?id=abf281897c184b3aae9868aae8923e0e 
+To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air pollution and flooding, we developed the **CD-TMVI** (Contamination Detection: Toxics Mobility Vulnerability Index) dashboard using the **ToxPI** (Toxicological Prioritization Index) framework. This tool visualizes census-tract-level vulnerability by integrating 27 geospatial variables across four key domains:
 
-Impervious Surface	% impervious surface per study unit	Raster (30m x 30m)	2023	USGS National Land Cover Database (NLCD) 2023 Impervious Products	https://www.mrlc.gov/data?f%5B0%5D=category%3AImpervious%20Descriptor
+- Built Environment Vulnerability  
+- Social Vulnerability  
+- Health Outcomes  
+- Contamination Sources  
 
-100-year Floodplain	% area in 100-year floodplain per study unit	Raster (30m x 30m)	N/A	Federal Emergency Management Agency (FEMA)	https://services2.arcgis.com/LYMgRMwHfrWWEg3s/arcgis/rest/services/FEMA_Jefferson_Preliminary_Flood_Zones/FeatureServer
+The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019) and TMVI (Malecha et al., 2020), expanding their methodologies to a spatially detailed and customizable format.
 
-Social Vulnerability
-CDC’s SVI	Include four themes: socioeconomic status, household characteristics, racial and ethnic minority status, and housing type or transportation.	Census Tract	2022	Centers for Disease Control and Prevention and Agency for Toxic Substances and Disease Registry Social Vulnerability Index (CDC/ATSDR SVI)	https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html
+---
 
-Health Outcomes
-CDC’s PLACES Data	Include 12 types of diseases: arthritis, high blood pressure, cancer, asthma, coronary heart disease, chronic obstructive pulmonary disease, depression, diagnosed diabetes, high cholesterol, obesity, stroke, and teeth lost.	Census Tract	2024	Centers for Disease Control	https://data.cdc.gov/500-Cities-Places/PLACES-Census-Tract-Data-GIS-Friendly-Format-2024-/yjkw-uj5s/data_preview
+## 📊 Table 2. Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
 
-Environmental Justice 
-Air Pollution	Include ozone levels, particulate matter 2.5 (PM2.5), diesel particulate matter, and air toxic cancer risks	Census Tract	2024	ATSDR Place and Health	https://www.atsdr.cdc.gov/place-health/php/eji/eji-explorer.html 
-
-Proximity to Hazardous and Toxic Site Points	Measure distances to national priority list sites, toxic release inventory sites, treatment and storage facilities, and risk management plan sites				
+| **Category**                 | **Description**                                                                                     | **Unit**         | **Year** | **Source**                                                | **Link** |
+|-----------------------------|-----------------------------------------------------------------------------------------------------|------------------|----------|-----------------------------------------------------------|----------|
+| **Study Unit**              | TIGER/Line shapefiles of census tracts in Jefferson County, TX                                     | Census Tract     | 2023     | U.S. Census Bureau                                         | [Link](https://catalog.data.gov/dataset/tiger-line-shapefile-2023-county-jefferson-county-tx-topological-faces-polygons-with-all-geocod) |
+| **Built Environment**       |                                                                                                     |                  |          |                                                           |          |
+| Industrial Zoning           | % industrial zoning per study unit                                                                  | Zoning           | 2020     | City of Beaumont and Port Arthur                          | [Link](https://tamu.maps.arcgis.com/home/item.html?id=abf281897c184b3aae9868aae8923e0e) |
+| Impervious Surface          | % impervious surface per study unit                                                                 | Raster (30m²)    | 2023     | USGS NLCD 2023                                             | [Link](https://www.mrlc.gov/data?f%5B0%5D=category%3AImpervious%20Descriptor) |
+| 100-Year Floodplain         | % area in 100-year floodplain per study unit                                                        | Raster (30m²)    | N/A      | FEMA                                                      | [Link](https://services2.arcgis.com/LYMgRMwHfrWWEg3s/arcgis/rest/services/FEMA_Jefferson_Preliminary_Flood_Zones/FeatureServer) |
+| **Social Vulnerability**    | Four SVI themes: SES, household characteristics, minority status, housing/transportation            | Census Tract     | 2022     | CDC / ATSDR                                                | [Link](https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html) |
+| **Health Outcomes**         | 12 conditions: asthma, diabetes, obesity, stroke, depression, cancer, etc.                          | Census Tract     | 2024     | CDC PLACES                                                 | [Link](https://data.cdc.gov/500-Cities-Places/PLACES-Census-Tract-Data-GIS-Friendly-Format-2024-/yjkw-uj5s/data_preview) |
+| **Environmental Justice**   |                                                                                                     |                  |          |                                                           |          |
+| Air Pollution               | Ozone, PM2.5, diesel particulates, air toxic cancer risk                                            | Census Tract     | 2024     | ATSDR Place & Health                                      | [Link](https://www.atsdr.cdc.gov/place-health/php/eji/eji-explorer.html) |
+| Proximity to Hazardous Sites| Distance to NPL, TRI, RMP, and TSDF locations                                                      | Point-Based      | N/A      | EPA / ATSDR (multiple sources)                            | —        |
