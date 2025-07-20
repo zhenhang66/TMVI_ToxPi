@@ -12,9 +12,6 @@ To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air 
 The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019) and TMVI (Malecha et al., 2020), expanding their methodologies to a spatially detailed and customizable format.
 
 ---
-Thanks for clarifying, Zhenhang—and yes, you absolutely can have this entire dataset overview rendered as a clean, scrollable **table** directly in your `README.md`. The key is to use **plain markdown** without wrapping the content inside a code block (no triple backticks). Here's your grouped structure rendered exactly the way you want—with section headers integrated into the table layout:
-
----
 
 ### 📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
 
@@ -27,10 +24,7 @@ Thanks for clarifying, Zhenhang—and yes, you absolutely can have this entire d
 | **Social Vulnerability** | CDC’s SVI — themes include SES, household characteristics, minority status, housing/transportation | Census Tract | 2022 | CDC / ATSDR | [Link](https://www.atsdr.cdc.gov/place-health/php/svi/svi-data-documentation-download.html) |
 | **Health Outcomes** | CDC’s PLACES — includes 12 indicators such as asthma, diabetes, obesity, depression, etc. | Census Tract | 2024 | CDC | [Link](https://data.cdc.gov/500-Cities-Places/PLACES-Census-Tract-Data-GIS-Friendly-Format-2024-/yjkw-uj5s/data_preview) |
 | **Contamination Sources** | Air Pollution — ozone, PM2.5, diesel particulate, cancer risks | Census Tract | 2024 | ATSDR Place and Health | [Link](https://www.atsdr.cdc.gov/place-health/php/eji/eji-explorer.html) |
-|  | Proximity to Hazardous Sites — distances to NPL, TRI, RMP, TSDF facilities | Point-Based | N/A | EPA / ATSDR | — |
+|  | Proximity to Hazardous Sites — distances to NPL, TRI, RMP, TSDF facilities | Point-Based | 2024 | EPA / ATSDR | [Link](https://www.atsdr.cdc.gov/place-health/php/eji/eji-explorer.html) |
 
 ---
 
-💡 To make this display properly, just paste it into your `README.md`—don’t wrap it in triple backticks, and make sure each line stays intact.
-
-Want to add spacing between categories or highlight rows with emojis or icons? I can dress it up further if you’d like to make it more visual or teaching-friendly for workshops or collaborators 📘✨.
