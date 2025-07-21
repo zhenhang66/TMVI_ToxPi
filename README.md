@@ -49,6 +49,8 @@ Notably:
   
 For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is available via GitHub at: https://github.com/orgs/ToxPi/repositories
 
+---
+
 ### ⚙️ Case 1. Customize Variable Weights to Generate CD-TMVI for the BPA Region
 
 #### 📁Step 0. Download the Input Dataset
@@ -79,10 +81,12 @@ Click “Export Scores as CSV” to download a detailed score table:
 - Overall CD-TMVI score per tract
 - Individual contributions from each variable
 
-The exported file is named toxpi_scores_expanded.csv.
+The exported file is named "toxpi_scores_expanded.csv".
 
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
 *Screenshot of "toxpi_scores_expanded.csv" on desktop*
+
+Additionally, the downloaded .csv file also includes the census tract GEOID, which can be further spatially joined to the BPA region census tract shapefile to display the priotization scores of each census tract. See more at Case 2. Spatially Applied the ToxPI Score.csv Result".
 
 #### 📁Step 5. Export Radial Charts as PNG
 To create map-ready graphics:
@@ -93,3 +97,7 @@ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and 
 
 <img width="4000" height="3908" alt="ToxPi_Export_2025-07-21" src="https://github.com/user-attachments/assets/408513a2-5549-4567-86ae-f5e7869f632e" />
 *Example of downloaded radial diagrams*
+
+---
+
+### ⚙️ Case 2. Use 
