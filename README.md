@@ -49,37 +49,45 @@ Notably:
   
 📦 For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is available via GitHub at: https://github.com/orgs/ToxPi/repositories
 
-### Case 1. Customize varaible weight to generate CD-TMVI for the BPA region
+### ⚙️ Case 1. Customize Variable Weights to Generate CD-TMVI for the BPA Region
 
-#### Step 0. Download Orginal Datasets as a .csv file
-File can be downloaded at [Downloads/ExampleInput_BPA.csv ](https://github.com/zhenhang66/TMVI_ToxPi/blob/968f560bde395d7be32e2ee617830e7c81a4218e/Downloads/ExampleInput_BPA.csv)
+#### Step 0. Download the Input Dataset
+Start by downloading the sample dataset used for the BPA region: [Downloads/ExampleInput_BPA.csv ](https://github.com/zhenhang66/TMVI_ToxPi/blob/968f560bde395d7be32e2ee617830e7c81a4218e/Downloads/ExampleInput_BPA.csv)
 
 #### Step 1. Upload your .csv file
-Click the "Choose File" button to upload "ExampleInput_BPA.csv"
+Click the "Choose File" button and select "ExampleInput_BPA.csv" from your device.
 
 <img width="452" height="145" alt="image" src="https://github.com/user-attachments/assets/8bda7396-714b-4c79-85ed-0d393242e13e" />
 
-
-#### Step 2. Adjust Weights
-The unit of weight is percentage. We can enter number between 0 to 100 of each variable, and make sure all variables are summed up to 100 in total.
+#### Step 2. Adjust Variable Weights
+Each variable accepts a weight from 0 to 100 (percentage). Make sure the sum of all weights equals 100 to proceed.
 
 <img width="1884" height="307" alt="image" src="https://github.com/user-attachments/assets/3b20838b-a454-4631-993b-3026ba7a8cab" />
 
 
-#### Step 2. Generate All Charts
-Click the "Generate All Charts" button, we will see the color legend of each variable, ToxPi score of each census tract, and a radial digram of 27 variables of each census tract.
+#### Step 3. Generate Charts & View Results
+Click “Generate All Charts” to calculate the CD-TMVI score for each census tract. The tool will display:
+- A color legend matching each variable
+- ToxPi scores for all tracts
+- Radial diagrams representing the 27-variable index per tract
 
 <img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/446dda2d-84ee-455b-bbeb-8acc15656e78" />
-Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage
+*Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage*
 
-
-Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract, file was downloaded as "toxpi_scores_expanded".
+#### Step 4. Export Scores
+Click “Export Scores as CSV” to download a detailed score table:
+- Overall CD-TMVI score per tract
+- Individual contributions from each variable
+The exported file is named toxpi_scores_expanded.csv.
 
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
 *Screenshot of "toxpi_scores_expanded.csv" on desktop*
 
-
-If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend. For the downloaded diagram, we set each radial digram is 800 pixel by 800 pixel, with 300 dpi, each row contains five radial diagrams.
+#### Step 5. Export Radial Charts as PNG
+To create map-ready graphics:
+- Select one or more tracts using the checkboxes
+- Click “Export Selected Charts as PNG”
+🖼️ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and an included color legend.
 
 <img width="4000" height="3908" alt="ToxPi_Export_2025-07-21" src="https://github.com/user-attachments/assets/408513a2-5549-4567-86ae-f5e7869f632e" />
-Example of downloaded radial diagrams
+*Example of downloaded radial diagrams*
