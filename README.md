@@ -86,7 +86,9 @@ The exported file is named "toxpi_scores_expanded.csv".
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
 *Screenshot of "toxpi_scores_expanded.csv" on desktop*
 
-Additionally, the downloaded .csv file also includes the census tract GEOID, which can be further spatially joined to the BPA region census tract shapefile to display the priotization scores of each census tract. See more at Case 2. Spatially Applied the ToxPI Score.csv Result".
+Additionally, the .csv file includes the census tract GEOID, allowing users to perform a spatial join with the BPA region shapefile to visualize CD-TMVI prioritization scores across the map.
+
+➡️ For an applied spatial mapping example, see Case 2: Spatially Apply the ToxPI Score.csv Result.
 
 #### 📁Step 5. Export Radial Charts as PNG
 To create map-ready graphics:
