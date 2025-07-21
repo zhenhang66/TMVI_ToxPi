@@ -62,7 +62,18 @@ Click the "Choose File" button to upload "ExampleInput_BPA.csv"
 #### Step 2. Adjust Weights
 The unit of weight is percentage. We can enter number between 0 to 100 of each variable, and make sure all variables are summed up to 100 in total.
 
+<img width="1884" height="307" alt="image" src="https://github.com/user-attachments/assets/3b20838b-a454-4631-993b-3026ba7a8cab" />
+
+
 #### Step 2. Generate All Charts
-Click the "Generate All Charts" button, we will see the color legend of each variable, ToxPi score of each census tract, and a radial digram of 27 variables of each census tract. 
-Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract.
+Click the "Generate All Charts" button, we will see the color legend of each variable, ToxPi score of each census tract, and a radial digram of 27 variables of each census tract.
+
+<img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/446dda2d-84ee-455b-bbeb-8acc15656e78" />
+
+Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract, file was downloaded as "toxpi_scores_expanded".
+
+
+Screenshot of "toxpi_scores_expanded.csv" on desktop
+<img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
+
 If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend.
