@@ -33,7 +33,7 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 
 ---
 
-## Online Tool: ToxPi-Style Radial Chart Generator
+## 🧪 Online Tool: ToxPi-Style Radial Chart Generator
 
 🚀Lauch Tool: https://zhenhang66.github.io/TMVI_ToxPi/
 
@@ -53,21 +53,21 @@ For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is 
 
 ### ⚙️ Case 1. Customize Variable Weights to Generate CD-TMVI for the BPA Region
 
-#### 📁Step 0. Download the Input Dataset
+#### 📁 Step 0. Download the Input Dataset
 Start by downloading the sample dataset used for the BPA region: [Downloads/ExampleInput_BPA.csv ](https://github.com/zhenhang66/TMVI_ToxPi/blob/968f560bde395d7be32e2ee617830e7c81a4218e/Downloads/ExampleInput_BPA.csv)
 
-#### 📤Step 1. Upload your .csv file
+#### 📤 Step 1. Upload your .csv file
 Click the "Choose File" button and select "ExampleInput_BPA.csv" from your device.
 
 <img width="452" height="145" alt="image" src="https://github.com/user-attachments/assets/8bda7396-714b-4c79-85ed-0d393242e13e" />
 
-#### 📄Step 2. Adjust Variable Weights
+#### 📄 Step 2. Adjust Variable Weights
 Each variable accepts a weight from 0 to 100 (percentage). Make sure the sum of all weights equals 100 to proceed.
 
 <img width="1884" height="307" alt="image" src="https://github.com/user-attachments/assets/3b20838b-a454-4631-993b-3026ba7a8cab" />
 
 
-#### 📄Step 3. Generate Charts & View Results
+#### 📄 Step 3. Generate Charts & View Results
 Click “Generate All Charts” to calculate the CD-TMVI score for each census tract. The tool will display:
 - A color legend matching each variable
 - ToxPi scores for all tracts
@@ -76,7 +76,7 @@ Click “Generate All Charts” to calculate the CD-TMVI score for each census t
 <img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/446dda2d-84ee-455b-bbeb-8acc15656e78" />
 *Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage*
 
-#### 📁Step 4. Export Scores
+#### 📁 Step 4. Export Scores
 Click “Export Scores as CSV” to download a detailed score table:
 - Overall CD-TMVI score per tract
 - Individual contributions from each variable
@@ -90,7 +90,7 @@ Additionally, the .csv file includes the census tract GEOID, allowing users to p
 
 👉 For an applied spatial mapping example, see Case 2: Spatially Apply the ToxPI Score.csv Result.
 
-#### 📁Step 5. Export Radial Charts as PNG
+#### 📁 Step 5. Export Radial Charts as PNG
 To create map-ready graphics:
 - Select one or more tracts using the checkboxes
 - Click “Export Selected Charts as PNG”
@@ -104,14 +104,25 @@ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and 
 
 ### ⚙️ Case 2: Spatially Apply the ToxPI Score.csv Result
 
-Via Case 1. Step 4, we downloaded user-customized ToxPI score results as .csv file from the online tool. Reflect on the CD-TMVI map by census tract on the Dashboard, we can spatially customize that map as well by following steps in Case 2.
+After completing Case 1, users download customized CD-TMVI score results as a .csv file. To reflect those scores in a geographic format—similar to the map shown in the ArcGIS Dashboard—this section walks you through the steps to spatially join scores by census tract using ArcGIS Online.
+
+CD-TMVI Map of the BPA Region (ArcGIS Dashboard)
 
 <img width="1905" height="917" alt="image" src="https://github.com/user-attachments/assets/3719dfd7-4515-434d-9818-4c83943de0b3" />
+
 *Screenshot of the CD-TMVI Map of the BPA Region from Dashboard*
 
-To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS Online account or have access to ArcGIS Pro or QGIS. If not, try to use GeoPandas in Python (Option 3). Current tutorial only works for Option 1 & 2.
+#### 🛠️ Setup Requirements
 
-    Here is an example code from Microsoft Copilot
+Before getting started, ensure one of the following tools is available:
+
+🧭 Option 1: ArcGIS Online account
+
+🖥️ Option 2: ArcGIS Pro desktop software
+
+🐍 Option 3 (alternative): Python + GeoPandas for coding workflows
+
+Here is an example code from Microsoft Copilot
     import geopandas as gpd
     import pandas as pd
     
@@ -131,10 +142,12 @@ To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS
     
     # Step 4: Export or visualize
     merged_gdf.to_file("tracts_with_scores.geojson", driver="GeoJSON")
-    
+
+📌 This tutorial focuses on ArcGIS Online (Option 1) and ArcGIS Pro (Option 2).
+
 #### File Prepration List
 
-✅Downloaded the "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
+✅Downloaded your customized "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
 
 For tutorial purpose, download this as an example (Downloads/toxpi_scores_expanded.csv): https://github.com/zhenhang66/TMVI_ToxPi/blob/2b9d4e20ef1c86055b6fac9198cd49e81c33b5af/Downloads/toxpi_scores_expanded.csv 
 
@@ -144,27 +157,25 @@ Lauch Map Viewer: https://tamu.maps.arcgis.com/apps/mapviewer/index.html?webmap=
 
 * Note: Downloaded results can't be uploaded until you sign in into your ArcGIS Online account.
 
-✅Sign into your ArcGIS Online Account (Option 1) or Start ArcGIS Pro (Option 2)
+✅Sign in to your ArcGIS Online Account
 
 Lauch ArcGIS Online: https://www.arcgis.com/index.html We need to upload your downloaded "toxpi_scores_expanded.csv" to your ArcGIS Online account before spatially joining tables. 
 
 ---
 
-#### Option 1. Display the BPA CD-TMVI from ArcGIS Online
+#### 🌐 Option 1. Display BPA CD-TMVI Map with ArcGIS Online
 
-##### Step 1. Sign into your ArcGIS Online Account
+##### 📁 Step 1. Create a Project Folder
 
-##### Step 2. Create a Folder for the Project
-
-Click on Content Tab (top-left of the screen) > Folders (left on the screen) > Name it as "Beaumont Port Arthur"
+Go to Content Tab → Folders → Create folder named Beaumont Port Arthur
 
 <img width="282" height="164" alt="image" src="https://github.com/user-attachments/assets/766de1cd-a8d5-4d8f-bad3-95f0433ef0d2" />
 
-*Screenshot of Creating Folder in ArcGIS Online Account*
+*Creating folder in ArcGIS Onlinet*
 
-##### Step 3. Upload "toxpi_scores_expanded.csv" to the Folder
+##### 📁 Step 2. Upload "toxpi_scores_expanded.csv" to the Folder
 
-Click "New Items" (below Content Ribbon) > Drag or Upload "toxpi_scores_expanded.csv"
+Click "New Items" → Upload your .csv file → Assign it to the created folder
 
 <img width="328" height="185" alt="image" src="https://github.com/user-attachments/assets/9f57cc31-ed36-41a8-b2cf-e421265b8525" />
 
@@ -178,19 +189,19 @@ Click "New Items" (below Content Ribbon) > Drag or Upload "toxpi_scores_expanded
 
 *Choose your Created Folder*
 
-##### Step 3. Add "toxpi_scores_expanded.csv" as a Table in the Map Viewer
+##### 📁 Step 3. Add CSV as a Table to the Map Viewer
 
 Lauch Map Viewer: https://tamu.maps.arcgis.com/apps/mapviewer/index.html?webmap=275c82d7b53b46b5b015218f0d6be4c7 
 
-Click the "Table Icon" on the left ribbon > Add Table > My Content, "toxpi_scores_expanded" > Click "Add" botton
+Click the Table icon on the left → Add Table → Select toxpi_scores_expanded from My Content
 
 <img width="440" height="237" alt="image" src="https://github.com/user-attachments/assets/c0cad21b-ae46-4733-aff6-7a75b183c206" />
 
 *Add Table to the Map Viewer*
 
-##### Step 4. Join Added "toxpi_scores_expanded.csv" to Existing "BPA_ToxPiScore_CnesusTract" Layer
+##### 📁 Step 4. Join Added "toxpi_scores_expanded.csv" to Existing "BPA_ToxPiScore_CnesusTract" Layer
 
-1. Click "Analysis Tool" on the right ribbon > Select Tools (second icon from left) > Choose "Join Features"
+1. Open Analysis Tool (right panel) → Click “Tools” → Choose “Join Features”
 
 <img width="293" height="481" alt="image" src="https://github.com/user-attachments/assets/0c945259-06f2-48a3-b658-8a879e40fcaa" />
 
@@ -200,7 +211,7 @@ Click the "Table Icon" on the left ribbon > Add Table > My Content, "toxpi_score
 
 *Join Features*
 
-2. Use Below Settings for Spatial Join
+2. Configure Join Settings:
    
 Input features:
 
@@ -229,18 +240,21 @@ Result layer:
 
 <img width="351" height="89" alt="image" src="https://github.com/user-attachments/assets/198d3463-90f7-463a-94d8-7544f40c839f" />
 
-Step 5. Customize Layer Symbology
-Click the "Layer" icon on the left ribbon > Find "CD_TMVI_Customized" layer > Click "Three dot" icon > Show Properties
+##### 📁 Step 5. Customize Map Symbology
+
+1. Find the CD_TMVI_Customized layer in the left panel
 
 <img width="464" height="193" alt="image" src="https://github.com/user-attachments/assets/27803cd7-1bdd-4a48-a051-8a3ce54a0da8" />
 
 *layer Symobology Editting*
 
-Properties > Edit layer style > Field: ToxPi_Score > Pick a style: Theme "High to low"
+2. Click the three dots → Show Properties → Edit Layer Style
 
 <img width="379" height="208" alt="image" src="https://github.com/user-attachments/assets/e7a70897-2932-42f3-93ad-fb2888bfa666" />
 
 *Edit Symbology*
+
+3. Choose: Field: ToxPi_Score; Style: “High to Low” Gradient or other thematic map style
 
 <img width="386" height="620" alt="image" src="https://github.com/user-attachments/assets/065250a5-6168-467d-be24-2da7fc4af3fb" />
 
