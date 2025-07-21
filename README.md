@@ -13,6 +13,11 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 
 ---
 
+### ArcGIS Dashboard
+Link: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
+
+---
+
 ### 📊 Overview of Datasets for Environmental Justice–Toxics Mobility Vulnerability Index (EJ-TMVI)
 
 | **Category** | **Description** | **Unit** | **Year** | **Source** | **Accessible Link** |
@@ -28,11 +33,12 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 
 ---
 
-### ArcGIS Dashboard
-Link: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
-
----
 ## Online Tool: ToxPi-Style Radial Chart Generator
+
 Link: https://zhenhang66.github.io/TMVI_ToxPi/
+
 ### Initiavtives
+
 To set up a baseline scenario for the BPA region, we used equal-weight approach for four categories of vairables, and equal weight of each individual variable within that category as well in the ArcGIS Dashboard display. However, people might have different perceptions on each variable weight. which inspired us to develop CD-TMVI online tool, "ToxPi-Style Radial Chart Generator". Additionally, the ToxPI GUI is a desktop Java program developed by researchers and scientists from Texas A&M University and North Carolina State University, requiring tutorials before using, see repositories at https://github.com/orgs/ToxPi/repositories ToxPi-Style Radial Chart Generator simplifies the process but keep its core logic and functions for quicker use. The baseline scenario of the BPA region result from the online tool were as same as the output from the ToxPI GUI. Lastly, the online tool can be used for other study topics and study sites as long as users have prepared their original datasets in a .csv file format.
+
+### How to Use the Online Tool
