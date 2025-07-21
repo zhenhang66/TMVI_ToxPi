@@ -159,18 +159,23 @@ Lauch ArcGIS Online: https://www.arcgis.com/index.html We need to upload your do
 Click on Content Tab (top-left of the screen) > Folders (left on the screen) > Name it as "Beaumont Port Arthur"
 
 <img width="282" height="164" alt="image" src="https://github.com/user-attachments/assets/766de1cd-a8d5-4d8f-bad3-95f0433ef0d2" />
+
 *Screenshot of Creating Folder in ArcGIS Online Account*
 
 ##### Step 3. Upload "toxpi_scores_expanded.csv" to the Folder
 
 Click "New Items" (below Content Ribbon) > Drag or Upload "toxpi_scores_expanded.csv"
+
 <img width="328" height="185" alt="image" src="https://github.com/user-attachments/assets/9f57cc31-ed36-41a8-b2cf-e421265b8525" />
+
 *Screenshot of Uploading .csv file*
 
 <img width="1093" height="327" alt="image" src="https://github.com/user-attachments/assets/e06f62bc-6087-478f-abee-eb057ac338c8" />
+
 *Screenshot of .csv Settings*
 
 <img width="1140" height="472" alt="image" src="https://github.com/user-attachments/assets/ec610a95-ae2e-44f0-aa2a-228a5d52d268" />
+
 *Choose your Created Folder*
 
 ##### Step 3. Add "toxpi_scores_expanded.csv" as a Table in the Map Viewer
@@ -180,6 +185,7 @@ Lauch Map Viewer: https://tamu.maps.arcgis.com/apps/mapviewer/index.html?webmap=
 Click the "Table Icon" on the left ribbon > Add Table > My Content, "toxpi_scores_expanded" > Click "Add" botton
 
 <img width="440" height="237" alt="image" src="https://github.com/user-attachments/assets/c0cad21b-ae46-4733-aff6-7a75b183c206" />
+
 *Add Table to the Map Viewer*
 
 ##### Step 4. Join Added "toxpi_scores_expanded.csv" to Existing "BPA_ToxPiScore_CnesusTract" Layer
@@ -187,9 +193,11 @@ Click the "Table Icon" on the left ribbon > Add Table > My Content, "toxpi_score
 1. Click "Analysis Tool" on the right ribbon > Select Tools (second icon from left) > Choose "Join Features"
 
 <img width="293" height="481" alt="image" src="https://github.com/user-attachments/assets/0c945259-06f2-48a3-b658-8a879e40fcaa" />
+
 *Analysis Tool on the Right Ribbon*
 
 <img width="385" height="337" alt="image" src="https://github.com/user-attachments/assets/d02323e8-f2be-4535-af1d-0744773f5ffc" />
+
 *Join Features*
 
 2. Use Below Settings for Spatial Join
@@ -216,6 +224,7 @@ Result layer:
 - Save in folder: Beaumont Port Arthur
   
 <img width="342" height="272" alt="image" src="https://github.com/user-attachments/assets/3e6f51ae-a0fe-4f9f-bc3a-bbe74117aaa6" />
+
 *Note: Might take a while to run final result. Can click the "Clock" icon (the last one from left) to check progress
 
 <img width="351" height="89" alt="image" src="https://github.com/user-attachments/assets/198d3463-90f7-463a-94d8-7544f40c839f" />
@@ -224,6 +233,7 @@ Step 5. Customize Layer Symbology
 Click the "Layer" icon on the left ribbon > Find "CD_TMVI_Customized" layer > Click "Three dot" icon > Show Properties
 
 <img width="464" height="193" alt="image" src="https://github.com/user-attachments/assets/27803cd7-1bdd-4a48-a051-8a3ce54a0da8" />
+
 *layer Symobology Editting*
 
 Properties > Edit layer style > Field: ToxPi_Score > Pick a style: Theme "High to low"
