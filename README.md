@@ -41,10 +41,26 @@ Lauch Tool: https://zhenhang66.github.io/TMVI_ToxPi/
 
 To establish a baseline scenario for the Beaumont–Port Arthur (BPA) region, we applied an equal-weighting approach across four variable categories, along with equal weighting within each category. This methodology was reflected in the ArcGIS Dashboard.
 However, individual perceptions of vulnerability factors may differ—prompting the development of the CD-TMVI online tool, a simplified and browser-based version of the original ToxPi GUI desktop software. This generator preserves ToxPi’s core logic while removing technical and training barriers for faster, more customizable use.
+
 Notably:
 - The results generated from the online tool match the BPA baseline scenario originally produced using the ToxPi GUI
 - Users can explore and adjust weights dynamically to reflect context-specific priorities
 - The tool supports any study region as long as input data is prepared in a .csv format
+  
 📦 For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is available via GitHub at: https://github.com/orgs/ToxPi/repositories
 
-### How to Use the Online Tool
+### Case 1. Customize varaible weight to generate CD-TMVI for the BPA region
+
+#### Step 0. Download Orginal Datasets as a .csv file
+File can be downloaded at [Downloads/ExampleInput_BPA.csv ](https://github.com/zhenhang66/TMVI_ToxPi/blob/968f560bde395d7be32e2ee617830e7c81a4218e/Downloads/ExampleInput_BPA.csv)
+
+#### Step 1. Upload your .csv file
+Click the "Choose File" button to upload "ExampleInput_BPA.csv"
+
+#### Step 2. Adjust Weights
+The unit of weight is percentage. We can enter number between 0 to 100 of each variable, and make sure all variables are summed up to 100 in total.
+
+#### Step 2. Generate All Charts
+Click the "Generate All Charts" button, we will see the color legend of each variable, ToxPi score of each census tract, and a radial digram of 27 variables of each census tract. 
+Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract.
+If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend.
