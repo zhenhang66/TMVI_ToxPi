@@ -152,16 +152,16 @@ Lauch ArcGIS Online: https://www.arcgis.com/index.html We need to upload your do
 
 #### Option 1. Display the BPA CD-TMVI from ArcGIS Online
 
-Step 1. Sign into your ArcGIS Online Account
+##### Step 1. Sign into your ArcGIS Online Account
 
-Step 2. Create a Folder for the Project
+##### Step 2. Create a Folder for the Project
 
 Click on Content Tab (top-left of the screen) > Folders (left on the screen) > Name it as "Beaumont Port Arthur"
 
 <img width="282" height="164" alt="image" src="https://github.com/user-attachments/assets/766de1cd-a8d5-4d8f-bad3-95f0433ef0d2" />
 *Screenshot of Creating Folder in ArcGIS Online Account*
 
-Step 3. Upload "toxpi_scores_expanded.csv" to the Folder
+##### Step 3. Upload "toxpi_scores_expanded.csv" to the Folder
 
 Click "New Items" (below Content Ribbon) > Drag or Upload "toxpi_scores_expanded.csv"
 <img width="328" height="185" alt="image" src="https://github.com/user-attachments/assets/9f57cc31-ed36-41a8-b2cf-e421265b8525" />
@@ -173,7 +173,7 @@ Click "New Items" (below Content Ribbon) > Drag or Upload "toxpi_scores_expanded
 <img width="1140" height="472" alt="image" src="https://github.com/user-attachments/assets/ec610a95-ae2e-44f0-aa2a-228a5d52d268" />
 *Choose your Created Folder*
 
-Step 3. Add "toxpi_scores_expanded.csv" as a Table in the Map Viewer
+##### Step 3. Add "toxpi_scores_expanded.csv" as a Table in the Map Viewer
 
 Lauch Map Viewer: https://tamu.maps.arcgis.com/apps/mapviewer/index.html?webmap=275c82d7b53b46b5b015218f0d6be4c7 
 
@@ -182,7 +182,7 @@ Click the "Table Icon" on the left ribbon > Add Table > My Content, "toxpi_score
 <img width="440" height="237" alt="image" src="https://github.com/user-attachments/assets/c0cad21b-ae46-4733-aff6-7a75b183c206" />
 *Add Table to the Map Viewer*
 
-Step 4. Join Added "toxpi_scores_expanded.csv" to Existing "BPA_ToxPiScore_CnesusTract" Layer
+##### Step 4. Join Added "toxpi_scores_expanded.csv" to Existing "BPA_ToxPiScore_CnesusTract" Layer
 
 1. Click "Analysis Tool" on the right ribbon > Select Tools (second icon from left) > Choose "Join Features"
 
@@ -195,22 +195,29 @@ Step 4. Join Added "toxpi_scores_expanded.csv" to Existing "BPA_ToxPiScore_Cnesu
 2. Use Below Settings for Spatial Join
    
 Input features:
+
 - Target layer: BPA_ToxPiScore_CensusTract
 - Join layer: toxpi_scores_expanded
+  
 <img width="390" height="394" alt="image" src="https://github.com/user-attachments/assets/47e93329-6a1c-464b-bc08-93faf4006a6d" />
 
 Join settings:
+
 - Target field: FIPS
 - Join field: Name
 - Join Operation: Join one to one, Only keep first matching record
 - Join type: Left join
+  
 <img width="336" height="748" alt="image" src="https://github.com/user-attachments/assets/fe5776a3-0df0-4995-a5f9-611d9662c2d5" />
 
 Result layer:
+
 - Output name: CD_TMVI_Customized
 - Save in folder: Beaumont Port Arthur
+  
 <img width="342" height="272" alt="image" src="https://github.com/user-attachments/assets/3e6f51ae-a0fe-4f9f-bc3a-bbe74117aaa6" />
 *Note: Might take a while to run final result. Can click the "Clock" icon (the last one from left) to check progress
+
 <img width="351" height="89" alt="image" src="https://github.com/user-attachments/assets/198d3463-90f7-463a-94d8-7544f40c839f" />
 
 Step 5. Customize Layer Symbology
@@ -220,6 +227,7 @@ Click the "Layer" icon on the left ribbon > Find "CD_TMVI_Customized" layer > Cl
 *layer Symobology Editting*
 
 Properties > Edit layer style > Field: ToxPi_Score > Pick a style: Theme "High to low"
+
 <img width="379" height="208" alt="image" src="https://github.com/user-attachments/assets/e7a70897-2932-42f3-93ad-fb2888bfa666" />
 
 <img width="386" height="620" alt="image" src="https://github.com/user-attachments/assets/065250a5-6168-467d-be24-2da7fc4af3fb" />
