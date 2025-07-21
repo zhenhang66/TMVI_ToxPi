@@ -103,3 +103,10 @@ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and 
 ---
 
 ### ⚙️ Case 2: Spatially Apply the ToxPI Score.csv Result
+Via Case 1. Step 4, we downloaded user-customized ToxPI score results as .csv file from the online tool. Reflect on the CD-TMVI map by census tract on the Dashboard, we can spatially customize that map as well by following steps in Case 2.
+
+<img width="1905" height="917" alt="image" src="https://github.com/user-attachments/assets/3719dfd7-4515-434d-9818-4c83943de0b3" />
+*Screenshot of the CD-TMVI Map of the BPA Region from Dashboard*
+
+#### 📁Step 0. File Prepration List
+To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS Online account or install 
