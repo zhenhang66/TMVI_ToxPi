@@ -69,11 +69,14 @@ The unit of weight is percentage. We can enter number between 0 to 100 of each v
 Click the "Generate All Charts" button, we will see the color legend of each variable, ToxPi score of each census tract, and a radial digram of 27 variables of each census tract.
 
 <img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/446dda2d-84ee-455b-bbeb-8acc15656e78" />
+Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage
 
 Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract, file was downloaded as "toxpi_scores_expanded".
 
-
-Screenshot of "toxpi_scores_expanded.csv" on desktop
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
+Screenshot of "toxpi_scores_expanded.csv" on desktop
 
-If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend.
+If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend. For the downloaded diagram, we set each radial digram is 800 pixel by 800 pixel, with 300 dpi, each row contains five radial diagrams.
+
+<img width="4000" height="3908" alt="ToxPi_Export_2025-07-21" src="https://github.com/user-attachments/assets/408513a2-5549-4567-86ae-f5e7869f632e" />
+Example of downloaded radial diagrams
