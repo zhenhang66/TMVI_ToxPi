@@ -103,17 +103,11 @@ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and 
 ---
 
 ### ⚙️ Case 2: Spatially Apply the ToxPI Score.csv Result
+
 Via Case 1. Step 4, we downloaded user-customized ToxPI score results as .csv file from the online tool. Reflect on the CD-TMVI map by census tract on the Dashboard, we can spatially customize that map as well by following steps in Case 2.
 
 <img width="1905" height="917" alt="image" src="https://github.com/user-attachments/assets/3719dfd7-4515-434d-9818-4c83943de0b3" />
 *Screenshot of the CD-TMVI Map of the BPA Region from Dashboard*
-
-#### 📁Step 0. File Prepration List
-✅Sign into your ArcGIS Online Account (Option 1) or Start ArcGIS Pro (Option 2)
-
-✅Downloaded the "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
-
-✅Open provided "BPA_MAP_ToxPiScore_CensusTract" in Map Viewer
 
 To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS Online account or have access to ArcGIS Pro or QGIS. If not, try to use GeoPandas in Python (Option 3). Current tutorial only works for Option 1 & 2.
 
@@ -137,6 +131,25 @@ To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS
     
     # Step 4: Export or visualize
     merged_gdf.to_file("tracts_with_scores.geojson", driver="GeoJSON")
-Have access
+    
+#### File Prepration List
+
+✅Downloaded the "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
+
+For tutorial purpose, download this as an example (Downloads/toxpi_scores_expanded.csv): https://github.com/zhenhang66/TMVI_ToxPi/blob/2b9d4e20ef1c86055b6fac9198cd49e81c33b5af/Downloads/toxpi_scores_expanded.csv 
+
+✅Open provided "BPA_MAP_ToxPiScore_CensusTract" in Map Viewer
+
+Lauch Map Viewer: https://tamu.maps.arcgis.com/apps/mapviewer/index.html?webmap=275c82d7b53b46b5b015218f0d6be4c7 
+
+* Note: Downloaded results can't be uploaded until you sign in into your ArcGIS Online account.
+
+✅Sign into your ArcGIS Online Account (Option 1) or Start ArcGIS Pro (Option 2)
+
+Lauch ArcGIS Online: https://www.arcgis.com/index.html We need to upload your downloaded "toxpi_scores_expanded.csv" to your ArcGIS Online account before spatially joining tables. 
+
+---
+
+#### Option 1. Display the BPA CD-TMVI from ArcGIS Online
 
 
