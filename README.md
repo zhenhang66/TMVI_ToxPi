@@ -59,6 +59,7 @@ Click the "Choose File" button to upload "ExampleInput_BPA.csv"
 
 <img width="452" height="145" alt="image" src="https://github.com/user-attachments/assets/8bda7396-714b-4c79-85ed-0d393242e13e" />
 
+
 #### Step 2. Adjust Weights
 The unit of weight is percentage. We can enter number between 0 to 100 of each variable, and make sure all variables are summed up to 100 in total.
 
@@ -71,10 +72,12 @@ Click the "Generate All Charts" button, we will see the color legend of each var
 <img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/446dda2d-84ee-455b-bbeb-8acc15656e78" />
 Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage
 
+
 Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract, file was downloaded as "toxpi_scores_expanded".
 
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
 Screenshot of "toxpi_scores_expanded.csv" on desktop
+
 
 If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend. For the downloaded diagram, we set each radial digram is 800 pixel by 800 pixel, with 300 dpi, each row contains five radial diagrams.
 
