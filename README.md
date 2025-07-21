@@ -110,8 +110,11 @@ Via Case 1. Step 4, we downloaded user-customized ToxPI score results as .csv fi
 
 #### 📁Step 0. File Prepration List
 ✅Sign into your ArcGIS Online Account (Option 1) or Start ArcGIS Pro (Option 2)
+
 ✅Downloaded the "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
+
 ✅Open provided "BPA_MAP_ToxPiScore_CensusTract" in Map Viewer
+
 To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS Online account or have access to ArcGIS Pro or QGIS. If not, try to use GeoPandas in Python (Option 3). Current tutorial only works for Option 1 & 2.
 
     Here is an example code from Microsoft Copilot
