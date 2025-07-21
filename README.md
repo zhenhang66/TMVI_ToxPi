@@ -1,6 +1,6 @@
 # 🧪 Contamination Detection: Toxics Mobility Vulnerability Index (CD-TMVI) Online Tool
 
-## 📍 Project Background
+## 🏙️ Project Background
 
 To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air pollution and flooding, we developed the **CD-TMVI** (Contamination Detection: Toxics Mobility Vulnerability Index) dashboard using the **ToxPI** (Toxicological Prioritization Index) framework. This tool visualizes census-tract-level vulnerability by integrating 27 geospatial variables across four key domains:
 
@@ -13,8 +13,8 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 
 ---
 
-### ArcGIS Dashboard
-Lauch Dashboard: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
+### 🗺️ ArcGIS Dashboard
+🚀Lauch Dashboard: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
 
 ---
 
@@ -35,9 +35,9 @@ Lauch Dashboard: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a4
 
 ## Online Tool: ToxPi-Style Radial Chart Generator
 
-Lauch Tool: https://zhenhang66.github.io/TMVI_ToxPi/
+🚀Lauch Tool: https://zhenhang66.github.io/TMVI_ToxPi/
 
-### Initiavtives
+### 💡 Initiavtives
 
 To establish a baseline scenario for the Beaumont–Port Arthur (BPA) region, we applied an equal-weighting approach across four variable categories, along with equal weighting within each category. This methodology was reflected in the ArcGIS Dashboard.
 However, individual perceptions of vulnerability factors may differ—prompting the development of the CD-TMVI online tool, a simplified and browser-based version of the original ToxPi GUI desktop software. This generator preserves ToxPi’s core logic while removing technical and training barriers for faster, more customizable use.
@@ -47,25 +47,25 @@ Notably:
 - Users can explore and adjust weights dynamically to reflect context-specific priorities
 - The tool supports any study region as long as input data is prepared in a .csv format
   
-📦 For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is available via GitHub at: https://github.com/orgs/ToxPi/repositories
+For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is available via GitHub at: https://github.com/orgs/ToxPi/repositories
 
 ### ⚙️ Case 1. Customize Variable Weights to Generate CD-TMVI for the BPA Region
 
-#### Step 0. Download the Input Dataset
+#### 📁Step 0. Download the Input Dataset
 Start by downloading the sample dataset used for the BPA region: [Downloads/ExampleInput_BPA.csv ](https://github.com/zhenhang66/TMVI_ToxPi/blob/968f560bde395d7be32e2ee617830e7c81a4218e/Downloads/ExampleInput_BPA.csv)
 
-#### Step 1. Upload your .csv file
+#### 📤Step 1. Upload your .csv file
 Click the "Choose File" button and select "ExampleInput_BPA.csv" from your device.
 
 <img width="452" height="145" alt="image" src="https://github.com/user-attachments/assets/8bda7396-714b-4c79-85ed-0d393242e13e" />
 
-#### Step 2. Adjust Variable Weights
+#### 📄Step 2. Adjust Variable Weights
 Each variable accepts a weight from 0 to 100 (percentage). Make sure the sum of all weights equals 100 to proceed.
 
 <img width="1884" height="307" alt="image" src="https://github.com/user-attachments/assets/3b20838b-a454-4631-993b-3026ba7a8cab" />
 
 
-#### Step 3. Generate Charts & View Results
+#### 📄Step 3. Generate Charts & View Results
 Click “Generate All Charts” to calculate the CD-TMVI score for each census tract. The tool will display:
 - A color legend matching each variable
 - ToxPi scores for all tracts
@@ -74,7 +74,7 @@ Click “Generate All Charts” to calculate the CD-TMVI score for each census t
 <img width="1897" height="887" alt="image" src="https://github.com/user-attachments/assets/446dda2d-84ee-455b-bbeb-8acc15656e78" />
 *Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage*
 
-#### Step 4. Export Scores
+#### 📁Step 4. Export Scores
 Click “Export Scores as CSV” to download a detailed score table:
 - Overall CD-TMVI score per tract
 - Individual contributions from each variable
@@ -84,12 +84,12 @@ The exported file is named toxpi_scores_expanded.csv.
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
 *Screenshot of "toxpi_scores_expanded.csv" on desktop*
 
-#### Step 5. Export Radial Charts as PNG
+#### 📁Step 5. Export Radial Charts as PNG
 To create map-ready graphics:
 - Select one or more tracts using the checkboxes
 - Click “Export Selected Charts as PNG”
   
-🖼️ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and an included color legend.
+Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and an included color legend.
 
 <img width="4000" height="3908" alt="ToxPi_Export_2025-07-21" src="https://github.com/user-attachments/assets/408513a2-5549-4567-86ae-f5e7869f632e" />
 *Example of downloaded radial diagrams*
