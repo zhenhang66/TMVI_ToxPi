@@ -56,6 +56,7 @@ File can be downloaded at [Downloads/ExampleInput_BPA.csv ](https://github.com/z
 
 #### Step 1. Upload your .csv file
 Click the "Choose File" button to upload "ExampleInput_BPA.csv"
+<img width="452" height="145" alt="image" src="https://github.com/user-attachments/assets/8bda7396-714b-4c79-85ed-0d393242e13e" />
 
 #### Step 2. Adjust Weights
 The unit of weight is percentage. We can enter number between 0 to 100 of each variable, and make sure all variables are summed up to 100 in total.
