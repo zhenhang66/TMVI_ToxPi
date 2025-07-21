@@ -56,6 +56,7 @@ File can be downloaded at [Downloads/ExampleInput_BPA.csv ](https://github.com/z
 
 #### Step 1. Upload your .csv file
 Click the "Choose File" button to upload "ExampleInput_BPA.csv"
+
 <img width="452" height="145" alt="image" src="https://github.com/user-attachments/assets/8bda7396-714b-4c79-85ed-0d393242e13e" />
 
 #### Step 2. Adjust Weights
