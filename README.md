@@ -14,7 +14,7 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 ---
 
 ### ArcGIS Dashboard
-Link: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
+Lauch Dashboard: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
 
 ---
 
@@ -35,10 +35,16 @@ Link: https://www.arcgis.com/apps/dashboards/4ce52c18b89c4b6f965678a44fa05cb6
 
 ## Online Tool: ToxPi-Style Radial Chart Generator
 
-Link: https://zhenhang66.github.io/TMVI_ToxPi/
+Lauch Tool: https://zhenhang66.github.io/TMVI_ToxPi/
 
 ### Initiavtives
 
-To set up a baseline scenario for the BPA region, we used equal-weight approach for four categories of vairables, and equal weight of each individual variable within that category as well in the ArcGIS Dashboard display. However, people might have different perceptions on each variable weight. which inspired us to develop CD-TMVI online tool, "ToxPi-Style Radial Chart Generator". Additionally, the ToxPI GUI is a desktop Java program developed by researchers and scientists from Texas A&M University and North Carolina State University, requiring tutorials before using, see repositories at https://github.com/orgs/ToxPi/repositories ToxPi-Style Radial Chart Generator simplifies the process but keep its core logic and functions for quicker use. The baseline scenario of the BPA region result from the online tool were as same as the output from the ToxPI GUI. Lastly, the online tool can be used for other study topics and study sites as long as users have prepared their original datasets in a .csv file format.
+To establish a baseline scenario for the Beaumont–Port Arthur (BPA) region, we applied an equal-weighting approach across four variable categories, along with equal weighting within each category. This methodology was reflected in the ArcGIS Dashboard.
+However, individual perceptions of vulnerability factors may differ—prompting the development of the CD-TMVI online tool, a simplified and browser-based version of the original ToxPi GUI desktop software. This generator preserves ToxPi’s core logic while removing technical and training barriers for faster, more customizable use.
+Notably:
+- The results generated from the online tool match the BPA baseline scenario originally produced using the ToxPi GUI
+- Users can explore and adjust weights dynamically to reflect context-specific priorities
+- The tool supports any study region as long as input data is prepared in a .csv format
+📦 For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is available via GitHub at: https://github.com/orgs/ToxPi/repositories
 
 ### How to Use the Online Tool
