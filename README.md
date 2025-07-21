@@ -102,4 +102,4 @@ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and 
 
 ---
 
-### ⚙️ Case 2. Use 
+### ⚙️ Case 2: Spatially Apply the ToxPI Score.csv Result
