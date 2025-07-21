@@ -240,7 +240,11 @@ Properties > Edit layer style > Field: ToxPi_Score > Pick a style: Theme "High t
 
 <img width="379" height="208" alt="image" src="https://github.com/user-attachments/assets/e7a70897-2932-42f3-93ad-fb2888bfa666" />
 
+*Edit Symbology*
+
 <img width="386" height="620" alt="image" src="https://github.com/user-attachments/assets/065250a5-6168-467d-be24-2da7fc4af3fb" />
+
+*Pick up your ideal symobology to represent map*
 
 
 
