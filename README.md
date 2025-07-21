@@ -76,7 +76,7 @@ Screenshot of "Online Tool: ToxPi-Style Radial Chart Generator" webpage
 Click the "Export Scores as CSV" to download the total ToxPi score of each census tract and scores of indiviudal variables within each census tract, file was downloaded as "toxpi_scores_expanded".
 
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
-Screenshot of "toxpi_scores_expanded.csv" on desktop
+*Screenshot of "toxpi_scores_expanded.csv" on desktop*
 
 
 If we are intersted in any census tract or mulitple for future mapping, we can (multi)check the box "Select for PNG Export" and click "Export Selected Charts as PNG" to download selected raidal diagrams in one single PNG with color legend. For the downloaded diagram, we set each radial digram is 800 pixel by 800 pixel, with 300 dpi, each row contains five radial diagrams.
