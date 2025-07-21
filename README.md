@@ -109,4 +109,31 @@ Via Case 1. Step 4, we downloaded user-customized ToxPI score results as .csv fi
 *Screenshot of the CD-TMVI Map of the BPA Region from Dashboard*
 
 #### 📁Step 0. File Prepration List
-To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS Online account or install 
+✅Sign into your ArcGIS Online Account (Option 1) or Start ArcGIS Pro (Option 2)
+✅Downloaded the "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
+✅Open provided "BPA_MAP_ToxPiScore_CensusTract" in Map Viewer
+To spatially display your CD-TMVI census tract map, make sure you have an ArcGIS Online account or have access to ArcGIS Pro or QGIS. If not, try to use GeoPandas in Python (Option 3). Current tutorial only works for Option 1 & 2.
+
+    Here is an example code from Microsoft Copilot
+    import geopandas as gpd
+    import pandas as pd
+    
+    # Step 1: Load census tract shapefile (GeoDataFrame)
+    tracts_gdf = gpd.read_file("path/to/tract_shapefile.shp")
+    
+    # Step 2: Load ToxPI scores CSV (DataFrame)
+    scores_df = pd.read_csv("toxpi_scores_expanded.csv")
+    
+    # Step 3: Merge on the GEOID column
+    # Make sure GEOID fields match in name and format (e.g., string type with leading zeros)
+    tracts_gdf["GEOID"] = tracts_gdf["GEOID"].astype(str)
+    scores_df["GEOID"] = scores_df["GEOID"].astype(str)
+    
+    # Spatial join via attribute match
+    merged_gdf = tracts_gdf.merge(scores_df, on="GEOID")
+    
+    # Step 4: Export or visualize
+    merged_gdf.to_file("tracts_with_scores.geojson", driver="GeoJSON")
+Have access
+
+
