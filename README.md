@@ -145,7 +145,7 @@ Here is an example code from Microsoft Copilot
 
 📌 This tutorial focuses on ArcGIS Online (Option 1) and ArcGIS Pro (Option 2).
 
-#### ✅ File Prepration List
+#### 📂 File Prepration List
 
 ✅Downloaded your customized "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
 
