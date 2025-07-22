@@ -145,7 +145,7 @@ Here is an example code from Microsoft Copilot
 
 📌 This tutorial focuses on ArcGIS Online (Option 1) and ArcGIS Pro (Option 2).
 
-#### File Prepration List
+#### ✅ File Prepration List
 
 ✅Downloaded your customized "toxpi_scores_expanded.csv" from Case 1. Step 4 to your device
 
@@ -263,21 +263,21 @@ Result layer:
 
 ---
 
-#### 🌐 Option 2. Display BPA CD-TMVI Map in ArcGIS Pro
+#### 🌐 Option 2. Display BPA CD-TMVI Map in ArcGIS Pro (AGP)
 
 ##### 📄 Step 1. Download the BPA Census Tract Shapefile Folder
 
 Download and UNZIP the folder to your device: https://github.com/zhenhang66/TMVI_ToxPi/blob/a9adf25a19cb8f8a8da9312ed42800e8f8bedb43/Downloads/CensusTract_Project.zip
 
-##### 📄 Step 2. Add "toxpi_scores_expanded.csv" and shapefiles in AGP
+##### 📄 Step 2. Add "toxpi_scores_expanded.csv" and shapefiles in to AGP
 
-1. Edit "toxpi_scores_expanded.csv" as a AGP Supportive File in Excel
+1. Prepare CSV for ArcGIS Pro compatibility
    
-Expand Name Column and set them as Text > File, Save as an Excel Workbook. xlsx
+Expand Name Column and set them as Text → File, Save as an Excel Workbook. xlsx
 
 <img width="344" height="173" alt="image" src="https://github.com/user-attachments/assets/3ad50b82-60c3-4bb4-8f07-95417a2f7cc0" />
 
-2. Open ArcGIS Pro > Click "Add Data" Symbol (beneath Imagery Tab) to add both files
+2. Open ArcGIS Pro → Click "Add Data" Symbol (beneath Imagery Tab) to add both files
 
 <img width="1322" height="448" alt="image" src="https://github.com/user-attachments/assets/64ca0fb3-9b61-4c58-9ea0-d19d192f4824" />
 
@@ -291,7 +291,7 @@ To add Excel Workbook, double click the .xlsx and add file ending with "$"
 
 ##### 📄 Step 3. Spatial Join the "toxpi_scores_expanded.csv"
 
-Right click "CensusTract_Project" > Joins and Relates > Add Join > Use settings below > Click "Validate Join" before finish
+Right click "CensusTract_Project" → Joins and Relates → Add Join → Use settings below → Click "Validate Join" before finish
 
 <img width="839" height="534" alt="image" src="https://github.com/user-attachments/assets/9dcbe1df-ab85-43af-826d-c00124694e9c" />
 
@@ -303,7 +303,7 @@ Right click "CensusTract_Project" > Joins and Relates > Add Join > Use settings 
 
 ##### 📄 Step 4. Customize Map Symbology
 
-Click Feature Layer (On the top panel), Symbology > Primary Symbology (on the right of screen), choose "Graduated Colors"
+Click Feature Layer (On the top panel), Symbology → Primary Symbology (on the right of screen), choose "Graduated Colors"
 
 <img width="3833" height="2027" alt="image" src="https://github.com/user-attachments/assets/cc6b99ed-8153-4036-bf4b-4083173a87f8" />
 
