@@ -1,15 +1,15 @@
-# 🧪 Contamination Detection: Toxics Mobility Vulnerability Index (CD-TMVI) Online Tool
+# 🧪 Contamination Distribution Centered Toxics Mobility Vulnerability Index (CDC-TMVI) Online Tool
 
 ## 🏙️ Project Background
 
-To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air pollution and flooding, we developed the **CD-TMVI** (Contamination Detection: Toxics Mobility Vulnerability Index) dashboard using the **ToxPI** (Toxicological Prioritization Index) framework. This tool visualizes census-tract-level vulnerability by integrating 27 geospatial variables across four key domains:
+To examine how the Beaumont–Port Arthur (BPA) region of Texas experiences air pollution and flooding, we developed the **CDC-TMVI** (Contamination Distribution Centered Toxics Mobility Vulnerability Index) dashboard using the **ToxPI** (Toxicological Prioritization Index) framework. This tool visualizes census-tract-level vulnerability by integrating 27 geospatial variables across four key domains:
 
 - Built Environment Vulnerability  
 - Social Vulnerability  
 - Health Outcomes  
 - Contamination Sources  
 
-The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019) and TMVI (Malecha et al., 2020), expanding their methodologies to a spatially detailed and customizable format.
+The CDC-TMVI builds upon foundational research including TMI (Teron et al., 2019) and TMVI (Malecha et al., 2020), expanding their methodologies to a spatially detailed and customizable format.
 
 ---
 
@@ -40,7 +40,7 @@ The CD-TMVI builds upon foundational research including TMI (Teron et al., 2019)
 ### 💡 Initiavtives
 
 To establish a baseline scenario for the Beaumont–Port Arthur (BPA) region, we applied an equal-weighting approach across four variable categories, along with equal weighting within each category. This methodology was reflected in the ArcGIS Dashboard.
-However, individual perceptions of vulnerability factors may differ—prompting the development of the CD-TMVI online tool, a simplified and browser-based version of the original ToxPi GUI desktop software. This generator preserves ToxPi’s core logic while removing technical and training barriers for faster, more customizable use.
+However, individual perceptions of vulnerability factors may differ—prompting the development of the CDC-TMVI online tool, a simplified and browser-based version of the original ToxPi GUI desktop software. This generator preserves ToxPi’s core logic while removing technical and training barriers for faster, more customizable use.
 
 Notably:
 - The results generated from the online tool match the BPA baseline scenario originally produced using the ToxPi GUI
@@ -51,7 +51,7 @@ For comparison, the original ToxPi GUI (developed by Texas A&M and NC State) is 
 
 ---
 
-### ⚙️ Case 1. Customize Variable Weights to Generate CD-TMVI for the BPA Region
+### ⚙️ Case 1. Customize Variable Weights to Generate CDC-TMVI for the BPA Region
 
 #### 📄 Step 0. Download the Input Dataset
 Start by downloading the sample dataset used for the BPA region: [Downloads/ExampleInput_BPA.csv ](https://github.com/zhenhang66/TMVI_ToxPi/blob/968f560bde395d7be32e2ee617830e7c81a4218e/Downloads/ExampleInput_BPA.csv)
@@ -68,7 +68,7 @@ Each variable accepts a weight from 0 to 100 (percentage). Make sure the sum of 
 
 
 #### 📄 Step 3. Generate Charts & View Results
-Click “Generate All Charts” to calculate the CD-TMVI score for each census tract. The tool will display:
+Click “Generate All Charts” to calculate the CDC-TMVI score for each census tract. The tool will display:
 - A color legend matching each variable
 - ToxPi scores for all tracts
 - Radial diagrams representing the 27-variable index per tract
@@ -78,7 +78,7 @@ Click “Generate All Charts” to calculate the CD-TMVI score for each census t
 
 #### 📄 Step 4. Export Scores
 Click “Export Scores as CSV” to download a detailed score table:
-- Overall CD-TMVI score per tract
+- Overall CDC-TMVI score per tract
 - Individual contributions from each variable
 
 The exported file is named "toxpi_scores_expanded.csv".
@@ -86,7 +86,7 @@ The exported file is named "toxpi_scores_expanded.csv".
 <img width="1908" height="793" alt="image" src="https://github.com/user-attachments/assets/eec489d7-141a-47c4-8457-b609d1d85efc" />
 *Screenshot of "toxpi_scores_expanded.csv" on desktop*
 
-Additionally, the .csv file includes the census tract GEOID, allowing users to perform a spatial join with the BPA region shapefile to visualize CD-TMVI prioritization scores across the map.
+Additionally, the .csv file includes the census tract GEOID, allowing users to perform a spatial join with the BPA region shapefile to visualize CDC-TMVI prioritization scores across the map.
 
 👉 For an applied spatial mapping example, see Case 2: Spatially Apply the ToxPI Score.csv Result.
 
@@ -104,13 +104,13 @@ Charts are exported at 800×800 pixels, 300 dpi, with five diagrams per row and 
 
 ### ⚙️ Case 2. Spatially Apply the ToxPI Score.csv Result
 
-After completing Case 1, users download customized CD-TMVI score results as a .csv file. To reflect those scores in a geographic format—similar to the map shown in the ArcGIS Dashboard—this section walks you through the steps to spatially join scores by census tract using ArcGIS Online.
+After completing Case 1, users download customized CDC-TMVI score results as a .csv file. To reflect those scores in a geographic format—similar to the map shown in the ArcGIS Dashboard—this section walks you through the steps to spatially join scores by census tract using ArcGIS Online.
 
-CD-TMVI Map of the BPA Region (ArcGIS Dashboard)
+CDC-TMVI Map of the BPA Region (ArcGIS Dashboard)
 
 <img width="1905" height="917" alt="image" src="https://github.com/user-attachments/assets/3719dfd7-4515-434d-9818-4c83943de0b3" />
 
-*Screenshot of the CD-TMVI Map of the BPA Region from Dashboard*
+*Screenshot of the CDC-TMVI Map of the BPA Region from Dashboard*
 
 #### 🛠️ Setup Requirements
 
@@ -163,7 +163,7 @@ Lauch ArcGIS Online: https://www.arcgis.com/index.html We need to upload your do
 
 ---
 
-#### 🌐 Option 1. Display BPA CD-TMVI Map with ArcGIS Online
+#### 🌐 Option 1. Display BPA CDC-TMVI Map with ArcGIS Online
 
 ##### 📄 Step 1. Create a Project Folder
 
@@ -263,7 +263,7 @@ Result layer:
 
 ---
 
-#### 🌐 Option 2. Display BPA CD-TMVI Map in ArcGIS Pro (AGP)
+#### 🌐 Option 2. Display BPA CDC-TMVI Map in ArcGIS Pro (AGP)
 
 ##### 📄 Step 1. Download the BPA Census Tract Shapefile Folder
 
